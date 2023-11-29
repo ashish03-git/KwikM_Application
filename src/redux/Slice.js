@@ -1,0 +1,60 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+const slice = createSlice({
+    name: "details",
+    initialState: {
+        values: [], // Change "register" to "values"
+        number: [], // Change "register" to "values"
+        category_id: [], // Change "register" to "values"
+        product_id: [], // Change "register" to "values"
+        login_data: [],
+
+
+
+        // corporate redux store
+        recentTransactions: [],
+        myDistributorsList: [],
+       
+    },
+    reducers: {
+        addDetails: (state, action) => {
+            // console.log(action.payload)
+            state.values = action.payload;
+        },
+        addNumber: (state, action) => {
+            // console.log(action.payload)
+            state.number = action.payload;
+        },
+        addCategoryId: (state, action) => {
+            // console.log(action.payload)
+            state.category_id = action.payload;
+        },
+        addProductId: (state, action) => {
+            // console.log(action.payload)
+            state.product_id = action.payload;
+        },
+        addLogin_data: (state, action) => {
+            state.login_data = action.payload
+        },
+        addRecentTransactions: (state, action) => {
+            // console.log(action.payload)
+            state.recentTransactions = action.payload
+        },
+        addMyDistibutorList: (state, action) => {
+            // console.log("Slice",action.payload)
+            state.myDistributorsList = action.payload
+        }
+    },
+});
+
+export const {
+    addDetails,
+    addNumber,
+    addCategoryId,
+    addProductId,
+    addLogin_data,
+    addRecentTransactions,
+    addMyDistibutorList,
+   
+} = slice.actions;
+export default slice.reducer;
