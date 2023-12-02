@@ -1,5 +1,15 @@
-import { View, Text, TouchableOpacity, Image, TextInput, Modal, FlatList, StatusBar, StyleSheet } from 'react-native'
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    TextInput,
+    Modal,
+    FlatList,
+    StatusBar,
+    StyleSheet,
+    Share
+} from 'react-native'
 import React, { useEffect, useState, useMemo } from 'react'
 import { responsiveHeight, responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions'
 import Font6 from "react-native-vector-icons/FontAwesome6"
@@ -10,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
 import { useSelector } from 'react-redux';
+// import { Share } from 'react-native/Libraries/Share/Share';
 
 const AddCustomer = () => {
 
@@ -48,8 +59,9 @@ const AddCustomer = () => {
     }, [full_name, mobile_nun, pan, pincode, email, required_amount])
 
     const RetailerValidation = () => {
-        if (full_name.length >= 2 && mobile_nun.length == 10 && pan.length == 10 && pincode.length == 6 && email.length >= 11 && required_amount.length > 0) {
+        if (full_name.length >= 2 && mobile_nun.length == 10 && pan.length == 10 && pincode.length >= 2 && email.length >= 11 && required_amount.length > 0) {
             setButtonStatus(true)
+            console.log("validated")
         }
         else {
             setButtonStatus(false)
@@ -164,7 +176,6 @@ const AddCustomer = () => {
         else {
             const data = await response.json()
             // console.log(data)
-
             if (data.message.pan) {
                 setPanErrStatus(false)
                 setPanErr(data.message.pan[0])
@@ -215,9 +226,9 @@ const AddCustomer = () => {
                         setLeadGenerationStatus(data.status)
                         setMsg(data.message)
                         setTimeout(() => {
-                            naviagtion.navigate("productDetails")
+                            ShareLeadDetails(data)
                             setMsg("")
-                        }, 1000);
+                        }, 400);
                     }
                     else {
                         setLeadGenerationStatus(false)
@@ -232,6 +243,30 @@ const AddCustomer = () => {
         }
     }
 
+    const ShareLeadDetails = async (data) => {
+
+        const leadCode = data.data.lead_code;
+        const campaignUrl = data.data.campaign_url
+     
+
+        const message = `Lead Code: ${leadCode}\nCampaign URL: ${campaignUrl}`;
+        try {
+            // Share the message
+            const result = await Share.share({
+                message: message,
+                title: 'KWIKM App',
+            });
+            // if (result.action === Share.sharedAction) {
+            //     console.log("successfully shared result")
+            // } else if (result.action === Share.dismissedAction) {
+            //     console.log('Share cancelled');
+            // }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    
     return (
 
         <View style={{ flex: 1, backgroundColor: "#eaffea" }}>
@@ -245,7 +280,12 @@ const AddCustomer = () => {
                         >
                             <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
                         </TouchableOpacity>
-                        <View style={{ flex: 4, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+                        <View style={{
+                            flex: 4,
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            flexDirection: "row"
+                        }}>
                             <View>
                                 <Text style={{ fontSize: responsiveFontSize(2.5), color: "black", fontWeight: "700" }}>Add Customer</Text>
                             </View>
@@ -275,7 +315,7 @@ const AddCustomer = () => {
                                                 borderWidth: 1,
                                                 borderRadius: responsiveWidth(3),
                                                 borderColor: "#DADADA",
-                                                color:"black"
+                                                color: "black"
                                             }}
                                             value={full_name}
                                             placeholder='Full Name'
@@ -356,7 +396,7 @@ const AddCustomer = () => {
                                                 borderWidth: 1,
                                                 borderRadius: responsiveWidth(3),
                                                 borderColor: "#DADADA",
-                                                color:"black"
+                                                color: "black"
                                             }}
                                             value={full_name}
                                             placeholder='Full Name'
@@ -373,7 +413,7 @@ const AddCustomer = () => {
                                                 borderWidth: 1,
                                                 borderRadius: responsiveWidth(3),
                                                 borderColor: "#DADADA",
-                                                color:"black"
+                                                color: "black"
                                             }}
                                             value={pan}
                                             placeholder="Pan No."
@@ -390,7 +430,7 @@ const AddCustomer = () => {
                                                 borderWidth: 1,
                                                 borderRadius: responsiveWidth(3),
                                                 borderColor: "#DADADA",
-                                                colorL:"black"
+                                                color: "black"
                                             }}
                                             keyboardType="numeric"
                                             value={mobile_nun}
@@ -407,13 +447,13 @@ const AddCustomer = () => {
                                                 borderWidth: 1,
                                                 borderRadius: responsiveWidth(3),
                                                 borderColor: "#DADADA",
-                                                color:"black"
+                                                color: "black"
                                             }}
                                             keyboardType="numeric"
                                             value={pincode}
                                             placeholder='Pincode'
                                             placeholderTextColor={"gray"}
-                                            />
+                                        />
                                     </View>
 
                                     <View style={{ marginTop: responsiveWidth(4) }}>
@@ -425,7 +465,7 @@ const AddCustomer = () => {
                                                 borderWidth: 1,
                                                 borderRadius: responsiveWidth(3),
                                                 borderColor: "#DADADA",
-                                                color:"black"
+                                                color: "black"
                                             }}
                                             value={email}
                                             placeholder='Email Address'
@@ -442,7 +482,7 @@ const AddCustomer = () => {
                                                 borderWidth: 1,
                                                 borderRadius: responsiveWidth(3),
                                                 borderColor: "#DADADA",
-                                                color:"black"
+                                                color: "black"
                                             }}
                                             keyboardType="numeric"
                                             value={required_amount}

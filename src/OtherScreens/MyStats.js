@@ -35,9 +35,11 @@ const MyStats = () => {
     )
 
     const fetchData = async () => {
+        // console.log("hiii")
         try {
             const userId = await AsyncStorage.getItem('user_id');
             setUser_Id(JSON.parse(userId));
+            // console.log(userId)
             if (userId) {
                 await FethchLeadStatus(userId);
             }
@@ -69,7 +71,6 @@ const MyStats = () => {
                     }
 
                 })
-
         }
         catch (error) {
             console.log(error)

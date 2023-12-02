@@ -41,14 +41,13 @@ import WebViewScreen from './src/OtherScreens/WebViewScreeen'
 import InsuaranceProductsScreens from './src/OtherScreens/InsuaranceProductsScreens'
 import PurchaseInsuarance from './src/OtherScreens/PurchaseInsuarance'
 import AddRetailer from './src/Distributor/AddRetailer'
-
-
+import MyLeadRetailer from './src/Retailer/MyLeadRetailer'
+import TrainingVideoScreen from './src/Retailer/TrainingVideoScreen'
+import HelpScreen from './src/Retailer/HelpScreen'
 
 
 const Stack = createStackNavigator()
 const App = () => {
-
-
 
   return (
     <View style={{ flex: 1 }}>
@@ -66,6 +65,9 @@ const App = () => {
             <Stack.Screen name='loginNumber' options={{ headerShown: false }} component={LoginWithNumber} />
             <Stack.Screen name='loginOtp' options={{ headerShown: false }} component={LoginOtpScreen} />
             <Stack.Screen name='tabs' options={{ headerShown: false }} component={BottomTab} />
+            <Stack.Screen name='mylead' options={{ headerShown: false }} component={MyLeadRetailer} />
+            <Stack.Screen name='trainingVideo' options={{ headerShown: false }} component={TrainingVideoScreen} />
+            <Stack.Screen name='help' options={{ headerShown: false }} component={HelpScreen} />
             <Stack.Screen name='products' options={{ headerShown: false }} component={ProductsScreen} />
             <Stack.Screen name='productDetails' options={{ headerShown: false }} component={ProductDetails} />
             <Stack.Screen name='addcustomer' options={{ headerShown: false }} component={AddCustomer} />

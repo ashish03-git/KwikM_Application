@@ -23,7 +23,7 @@ const SplashScreen = () => {
             const position = await AsyncStorage.getItem('role');
             const usersRole = JSON.parse(position)
             // console.log(position)
-            if (storedStatus !== null) {
+            if (storedStatus) {
                 // Assuming the stored status is a string representing a boolean 
                 const parsedStatus = JSON.parse(storedStatus);
                 if (parsedStatus) {

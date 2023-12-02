@@ -43,6 +43,7 @@ const HomeScreen = () => {
     const [actual_balance, setActualBalance] = useState(null)
     const [highEarningCategory, setHighEarningCategory] = useState("")
     const [userPhone, setUserPhone] = useState(null)
+    const [auth_token, setAuth_Token] = useState("")
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const [activityIndicator, setActivityIndicator] = useState(false)
@@ -52,7 +53,7 @@ const HomeScreen = () => {
     useEffect(() => {
         AsyncStorage.setItem("login", JSON.stringify(true))
         setActivityIndicator(true)
-        getUserName()
+        getUserDetails()
         FetchBalance()
         SellDataFun()
         HighEarningFun()
@@ -64,11 +65,12 @@ const HomeScreen = () => {
         };
     }, [highEarningCategory, lead_balance])
 
-    const getUserName = async () => {
+    const getUserDetails = async () => {
         try {
             await AsyncStorage.getItem("name").then((user_name) => setName(JSON.parse(user_name)));
             await AsyncStorage.getItem("user_id").then((user_id) => setUserId(JSON.parse(user_id)))
             await AsyncStorage.getItem("user_number").then((user_phone) => setUserPhone(JSON.parse(user_phone)));
+            await AsyncStorage.getItem("auth_token").then((auth) => setAuth_Token(JSON.parse(auth)));
         } catch (error) {
             console.log(error)
         }
@@ -158,6 +160,7 @@ const HomeScreen = () => {
             })
 
     }
+
 
     // high earning
     const HighEarningFun = async () => {
@@ -255,6 +258,7 @@ const HomeScreen = () => {
                 >
                     {netinfo ? <>
                         <StatusBar backgroundColor="#eaffea" />
+
                         <View style={styles.main_container}>
 
                             <View>
@@ -380,7 +384,10 @@ const HomeScreen = () => {
                                 </View>
 
                                 <View style={styles.help_details}>
-                                    <TouchableOpacity style={styles.help_details_item1}>
+
+                                    <TouchableOpacity
+                                        onPress={() => navigation.navigate("trainingVideo")}
+                                        style={styles.help_details_item1}>
                                         <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
                                             <View style={styles.help_details_item_img1}>
                                                 <Font5 name="desktop" size={responsiveWidth(5.2)} color="#065399" />
@@ -391,18 +398,25 @@ const HomeScreen = () => {
                                             <Text style={styles.help_details_item_txt}>TRAINING</Text>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.help_details_item2}>
+
+                                    <TouchableOpacity
+                                        onPress={() => navigation.navigate("mylead")}
+                                        style={styles.help_details_item2}>
                                         <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
                                             <View style={styles.help_details_item_img2}>
                                                 <Font5 name="user-friends" size={responsiveWidth(5.2)} color="#065399" />
                                             </View>
                                         </View>
-                                        <View style={{ flex: 1, alignItems: "center" }}>
+                                        <TouchableOpacity
+                                            style={{ flex: 1, alignItems: "center" }}>
                                             <Text style={styles.help_details_item_txt}>MY</Text>
                                             <Text style={styles.help_details_item_txt}>LEAD</Text>
-                                        </View>
+                                        </TouchableOpacity>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.help_details_item3}>
+
+                                    <TouchableOpacity
+                                        onPress={() => navigation.navigate("help")}
+                                        style={styles.help_details_item3}>
                                         <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
                                             <View style={styles.help_details_item_img3}>
                                                 <Font5 name="headset" size={responsiveWidth(5.4)} color="#065399" />
@@ -514,7 +528,7 @@ const HomeScreen = () => {
                                     justifyContent: "space-between",
                                     alignItems: "center",
                                     flexDirection: "row"
-                                 }}>
+                                }}>
                                     <View>
                                         <Text style={{
                                             fontSize: responsiveFontSize(2),
