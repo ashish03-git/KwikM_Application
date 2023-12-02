@@ -61,7 +61,7 @@ const CorporateHome = () => {
         };
     }, [])
 
-    
+
     const getUserDetails = async () => {
         await AsyncStorage.getItem("name").then((user_name) => {
             const user = JSON.parse(user_name)
@@ -93,7 +93,7 @@ const CorporateHome = () => {
                 // console.log(recentTransactionData)
                 setActivityIndicator(false)
                 setRecentTransactions(recentTransactionData)
-                
+
             }
             else {
                 setRecentTransactions([])
@@ -182,7 +182,7 @@ const CorporateHome = () => {
                 :
 
                 <View
-                  
+
                     style={{
                         width: responsiveWidth(100),
                         height: responsiveHeight(100),
@@ -261,10 +261,11 @@ const CorporateHome = () => {
                                         )}
                                     />
 
-
                                     <View style={styles.help_details}>
 
-                                        <TouchableOpacity style={styles.help_details_item1}>
+                                        <TouchableOpacity
+                                            onPress={() => navigation.navigate("trainingVideo")}
+                                            style={styles.help_details_item1}>
                                             <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
                                                 <View style={styles.help_details_item_img1}>
                                                     <Font5 name="desktop" size={responsiveWidth(5.2)} color="#065399" />
@@ -291,7 +292,9 @@ const CorporateHome = () => {
                                             </View>
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity style={styles.help_details_item3}>
+                                        <TouchableOpacity
+                                            onPress={() => navigation.navigate("help")}
+                                            style={styles.help_details_item3}>
                                             <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
                                                 <View style={styles.help_details_item_img3}>
                                                     <Font5 name="headset" size={responsiveWidth(5.4)} color="#065399" />
@@ -387,7 +390,7 @@ const CorporateHome = () => {
                                     </TouchableOpacity>
 
                                 </View>
-                           </View >
+                            </View >
 
 
                             {/* recent transactions */}
@@ -403,7 +406,7 @@ const CorporateHome = () => {
                                         Recent Transactions
                                     </Text>
                                 </View>
-                                
+
                                 {/* recent transaction ui and api  */}
                                 <View style={{ alignItems: "center", paddingBottom: responsiveWidth(15) }}>
 
@@ -490,7 +493,7 @@ const CorporateHome = () => {
                                                 autoPlay
                                                 loop
                                             />
-                                            <View style={{ height: responsiveHeight(3)}}>
+                                            <View style={{ height: responsiveHeight(3) }}>
                                                 <Text style={{
                                                     color: "black",
                                                     fontSize: responsiveFontSize(2.2),

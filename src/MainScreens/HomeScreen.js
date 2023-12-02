@@ -639,8 +639,8 @@ const HomeScreen = () => {
                                     <LinearGradient
                                         colors={["#64F583", "#5CE5B4"]}
                                         style={{
-                                            width: responsiveWidth(55),
-                                            height: responsiveHeight(10),
+                                            width: responsiveWidth(45),
+                                            height: responsiveHeight(11),
                                             borderRadius: responsiveWidth(6),
                                             flexDirection: "row",
                                             marginLeft: responsiveWidth(3),
@@ -673,8 +673,9 @@ const HomeScreen = () => {
                                     <LinearGradient
                                         colors={["#64F583", "#5CE5B4"]}
                                         style={{
-                                            width: responsiveWidth(55),
-                                            height: responsiveHeight(10),
+                                            
+                                            width: responsiveWidth(45),
+                                            height: responsiveHeight(11),
                                             borderRadius: responsiveWidth(6),
                                             flexDirection: "row",
                                             marginLeft: responsiveWidth(3),
@@ -699,8 +700,6 @@ const HomeScreen = () => {
                                             <Text style={{ fontSize: responsiveFontSize(1.8), fontWeight: "700", color: "black" }}>Insurance </Text>
                                             <Text style={{ fontSize: responsiveFontSize(1.8), fontWeight: "400", color: "black" }}>Earn Upto Rs.150/-</Text>
                                         </View>
-
-
                                     </LinearGradient>
                                 </TouchableOpacity>
 

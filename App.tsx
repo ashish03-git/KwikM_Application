@@ -35,7 +35,6 @@ import MyTeamCorporate from './src/Corporate/MyTeamCorporate'
 import EarningDetailsCorporate from './src/Corporate/EarningDetailsCorporate'
 import UserProfile from './src/ProfileScreens/UserProfile'
 import AddDistributor from './src/Corporate/AddDistributor'
-import ProfileDetailsScreen from './src/ProfileScreens/ProfileDetailsScreen'
 import ChangeMpinScreen from './src/ProfileScreens/ChangeMpinScreen'
 import WebViewScreen from './src/OtherScreens/WebViewScreeen'
 import InsuaranceProductsScreens from './src/OtherScreens/InsuaranceProductsScreens'
@@ -44,6 +43,8 @@ import AddRetailer from './src/Distributor/AddRetailer'
 import MyLeadRetailer from './src/Retailer/MyLeadRetailer'
 import TrainingVideoScreen from './src/Retailer/TrainingVideoScreen'
 import HelpScreen from './src/Retailer/HelpScreen'
+import ProductTabScreen from './src/Retailer/ProductTabScreen'
+import LeadAddSuccessMesageScreen from './src/OtherScreens/LeadAddSuccessMesageScreen'
 
 
 const Stack = createStackNavigator()
@@ -55,7 +56,7 @@ const App = () => {
         <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
         <NavigationContainer>
           {/* <Stack.Navigator initialRouteName='onboarding'> */}
-          <Stack.Navigator initialRouteName='spalsh'>
+          <Stack.Navigator initialRouteName='splash'>
             <Stack.Screen name="spalsh" options={{ headerShown: false }} component={SpalshScreen} />
             <Stack.Screen name='onboarding' options={{ headerShown: false }} component={OnbordingScreen1} />
             <Stack.Screen name='register' options={{ headerShown: false }} component={RegisterScreen} />
@@ -70,6 +71,7 @@ const App = () => {
             <Stack.Screen name='help' options={{ headerShown: false }} component={HelpScreen} />
             <Stack.Screen name='products' options={{ headerShown: false }} component={ProductsScreen} />
             <Stack.Screen name='productDetails' options={{ headerShown: false }} component={ProductDetails} />
+            <Stack.Screen name='productTab' options={{ headerShown: false }} component={ProductTabScreen} />
             <Stack.Screen name='addcustomer' options={{ headerShown: false }} component={AddCustomer} />
             <Stack.Screen name='apkSubscription' options={{ headerShown: false }} component={ApkSubscripton} />
             <Stack.Screen name='paytmScreen' options={{ headerShown: false }} component={PaytmScreen} />
@@ -78,11 +80,12 @@ const App = () => {
             <Stack.Screen name='insuaranceProducts' options={{ headerShown: false }} component={InsuaranceProductsScreens} />
             <Stack.Screen name='purchaseInsuarance' options={{ headerShown: false }} component={PurchaseInsuarance} />
             <Stack.Screen name='openWebView' options={{ headerShown: false }} component={WebViewScreen} />
+            <Stack.Screen name='leadSuccessMsg' options={{ headerShown: false }} component={LeadAddSuccessMesageScreen} />
 
 
             {/* common screen */}
             <Stack.Screen name="userProfile" options={{ headerShown: false }} component={UserProfile} />
-            <Stack.Screen name="profileDetails" options={{ headerShown: false }} component={ProfileDetailsScreen} />
+            {/* <Stack.Screen name="profileDetails" options={{ headerShown: false }} component={ProfileDetailsScreen} /> */}
             <Stack.Screen name="changeMpin" options={{ headerShown: false }} component={ChangeMpinScreen} />
 
 
@@ -91,7 +94,7 @@ const App = () => {
             <Stack.Screen name='myTeamDistributor' options={{ headerShown: false }} component={MyTeamDistributor} />
             <Stack.Screen name='earningDetailsDistributor' options={{ headerShown: false }} component={EarningDetailsDistributor} />
             <Stack.Screen name='addRetailer' options={{ headerShown: false }} component={AddRetailer} />
-         
+
 
             {/* Corporate Partner   */}
             <Stack.Screen name='corpDistributorTab' options={{ headerShown: false }} component={CorpBottomTab} />

@@ -52,7 +52,7 @@ const HelpScreen = () => {
             "user_id": userId,
             "auth_token": token
         }
-        // console.log(ob)
+        console.log(ob)
         await fetch("https://kwikm.in/dev_kwikm/api/get_help.php", {
             method: "POST",
             headers: {
@@ -61,7 +61,7 @@ const HelpScreen = () => {
             body: JSON.stringify(ob)
         }).then(response => response.json())
             .then(data => {
-                // console.log(data)
+                console.log(data)
                 if (data.status) {
                     setHelpDetails([{}])
                 }
@@ -92,13 +92,14 @@ const HelpScreen = () => {
                     style={{ flex: 1, backgroundColor: "#EAFFEA" }}
                 >
                     <StatusBar backgroundColor="#EAFFEA" />
+                    
                     <View style={{ height: responsiveHeight(8), flexDirection: "row" }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}
                             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
                         </TouchableOpacity>
-                        <View style={{ flex: 4, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+                        <View style={{ flex: 5, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
                             <View>
                                 <Text style={{ fontSize: responsiveFontSize(2.5), color: "black", fontWeight: "700" }}>Get Help</Text>
                             </View>
@@ -262,9 +263,6 @@ const HelpScreen = () => {
                         </View>
 
                     </View>
-
-
-
 
                 </View>
                 :

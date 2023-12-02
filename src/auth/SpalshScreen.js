@@ -23,33 +23,26 @@ const SplashScreen = () => {
             const position = await AsyncStorage.getItem('role');
             const usersRole = JSON.parse(position)
             // console.log(position)
-            if (storedStatus) {
-                // Assuming the stored status is a string representing a boolean 
-                const parsedStatus = JSON.parse(storedStatus);
-                if (parsedStatus) {
-                    // set userRole in below if condition
-                    switch (usersRole) {
-                        case 1: setTimeout(() => {
-                            navigation.navigate("corpDistributorTab")
-                            // console.log("aaa")
+            if (JSON.parse(storedStatus)) {
+                // set userRole in below if condition
+                switch (usersRole) {
+                    case 1: setTimeout(() => {
+                        navigation.navigate("corpDistributorTab")
+                        // console.log("aaa")
+                    }, 1500); break;
+                    case 2: setTimeout(() => {
+                        navigation.navigate("distributorTab")
+                        // console.log("bbbb")
+                    }, 1500); break;
+                    case 3: setTimeout(() => {
+                        navigation.navigate("tabs")
+                        // console.log("cccc")
+                    }, 1500); break;
+                    default:
+                        setTimeout(() => {
+                            navigation.navigate("loginMPIN")
                         }, 1500); break;
-                        case 2: setTimeout(() => {
-                            navigation.navigate("distributorTab")
-                            // console.log("bbbb")
-                        }, 1500); break;
-                        case 3: setTimeout(() => {
-                            navigation.navigate("tabs")
-                            // console.log("cccc")
-                        }, 1500); break;
-                        default:
-                            setTimeout(() => {
-                                navigation.navigate("loginMPIN")
-                            }, 1500); break;
-                    }
-
-
                 }
-
             } else {
                 setTimeout(() => {
                     navigation.navigate("loginMPIN")

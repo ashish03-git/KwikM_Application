@@ -30,7 +30,6 @@ const ChangeMpinScreen = () => {
         getValueFromStorage();
     })
 
-
     // extracting id stored in registerOTPScreen from async storage
     const getValueFromStorage = async () => {
         try {
@@ -139,7 +138,13 @@ const ChangeMpinScreen = () => {
                             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
                         </TouchableOpacity>
-                        <View style={{ flex: 6, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+                    
+                        <View style={{
+                            flex: 5,
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            flexDirection: "row"
+                        }}>
                             <View>
                                 <Text style={{
                                     fontSize: responsiveFontSize(2.5),

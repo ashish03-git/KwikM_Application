@@ -9,6 +9,10 @@ import LeadsScreen from '../MainScreens/LeadsScreen';
 import AddScreen from '../MainScreens/AddScreen';
 import ReferrelsScreen from '../MainScreens/ReferrelsScreen';
 import SupportScreen from '../MainScreens/SupportScreen';
+import MyLeadRetailer from '../Retailer/MyLeadRetailer';
+import AddCustomer from '../OtherScreens/AddCustomer';
+import ProductsScreen from '../OtherScreens/ProductsScreen';
+import ProductTabScreen from '../Retailer/ProductTabScreen';
 
 
 const CustomTabBarIcon = ({ name, size, focused }) => {
@@ -29,15 +33,15 @@ const Tab = createBottomTabNavigator()
 const BottomTab = () => {
     return (
         <View style={{ flex: 1 }}>
-            <Tab.Navigator 
-            screenOptions={{
-                tabBarStyle:{
-                    height:responsiveHeight(7),
-                },
-                tabBarActiveTintColor:"#0B7E8E",
-                tabBarInactiveTintColor:"#444444",
-                // tabBarShowLabel:false
-            }}
+            <Tab.Navigator
+                screenOptions={{
+                    tabBarStyle: {
+                        height: responsiveHeight(7),
+                    },
+                    tabBarActiveTintColor: "#0B7E8E",
+                    tabBarInactiveTintColor: "#444444",
+                    // tabBarShowLabel:false
+                }}
             >
 
                 <Tab.Screen
@@ -51,13 +55,13 @@ const BottomTab = () => {
                         tabBarLabelStyle: {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
-                            marginBottom:responsiveWidth(1)
+                            marginBottom: responsiveWidth(1)
                         }
                     }}
                 />
                 <Tab.Screen
                     name="Products"
-                    component={LeadsScreen}
+                    component={ProductTabScreen}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ focused, color, size }) => (
@@ -66,14 +70,14 @@ const BottomTab = () => {
                         tabBarLabelStyle: {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
-                            marginBottom:responsiveWidth(1)
+                            marginBottom: responsiveWidth(1)
 
                         }
                     }}
                 />
-                <Tab.Screen
+                {/* <Tab.Screen
                     name='Add'
-                    component={AddScreen}
+                    component={AddCustomer}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ focused, color, size }) => (
@@ -88,8 +92,8 @@ const BottomTab = () => {
                       
                         
                     }}
-                />
-                    <Tab.Screen
+                /> */}
+                <Tab.Screen
                     name='Referrels'
                     component={ReferrelsScreen}
                     options={{
@@ -100,12 +104,12 @@ const BottomTab = () => {
                         tabBarLabelStyle: {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
-                            marginBottom:responsiveWidth(1)
+                            marginBottom: responsiveWidth(1)
 
                         }
                     }}
                 />
-                <Tab.Screen 
+                <Tab.Screen
                     name='Support'
                     component={SupportScreen}
                     options={{
@@ -116,7 +120,7 @@ const BottomTab = () => {
                         tabBarLabelStyle: {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
-                            marginBottom:responsiveWidth(1)
+                            marginBottom: responsiveWidth(1)
 
                         }
                     }}

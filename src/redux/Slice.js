@@ -8,13 +8,15 @@ const slice = createSlice({
         category_id: [], // Change "register" to "values"
         product_id: [], // Change "register" to "values"
         login_data: [],
+        lead_details: [],
+
 
 
 
         // corporate redux store
         recentTransactions: [],
         myDistributorsList: [],
-       
+
     },
     reducers: {
         addDetails: (state, action) => {
@@ -43,6 +45,10 @@ const slice = createSlice({
         addMyDistibutorList: (state, action) => {
             // console.log("Slice",action.payload)
             state.myDistributorsList = action.payload
+        },
+        add_lead_Details: (state, action) => {
+            // console.log(action.payload)
+            state.lead_details = action.payload
         }
     },
 });
@@ -55,6 +61,7 @@ export const {
     addLogin_data,
     addRecentTransactions,
     addMyDistibutorList,
-   
+    add_lead_Details
+
 } = slice.actions;
 export default slice.reducer;

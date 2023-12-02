@@ -111,12 +111,13 @@ const LoginMPINScreen = () => {
             body: JSON.stringify(ob)
         }).then(response => response.json())
             .then(data => {
+                // console.log(data)
                 dispatch(addLogin_data(data))
                 if (data.status) {
                     AsyncStorage.setItem("name", JSON.stringify(data.name))
                     AsyncStorage.setItem("user_id", JSON.stringify(data.user_id))
                     AsyncStorage.setItem("role", JSON.stringify(data.role))
-                    // AsyncStorage.setItem("auth_token", JSON.stringify(data.auth_token))
+                    AsyncStorage.setItem("auth_token", JSON.stringify(data.auth_token))
                     AsyncStorage.setItem("user_mpin", MPIN)
                     // console.log(phone)
                     AsyncStorage.setItem("user_number", phone)

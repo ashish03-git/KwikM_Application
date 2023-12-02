@@ -19,7 +19,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import { add_lead_Details } from '../redux/Slice'
 // import { Share } from 'react-native/Libraries/Share/Share';
 
 const AddCustomer = () => {
@@ -27,6 +28,7 @@ const AddCustomer = () => {
     // variables
     const naviagtion = useNavigation()
     const route = useRoute()
+    const dispatch = useDispatch()
     const [full_name, setFull_Name] = useState("")
     const [pan, setPan] = useState("")
     const [mobile_nun, setMobile_Num] = useState("")
@@ -61,7 +63,7 @@ const AddCustomer = () => {
     const RetailerValidation = () => {
         if (full_name.length >= 2 && mobile_nun.length == 10 && pan.length == 10 && pincode.length >= 2 && email.length >= 11 && required_amount.length > 0) {
             setButtonStatus(true)
-            console.log("validated")
+            // console.log("validated")
         }
         else {
             setButtonStatus(false)
@@ -223,10 +225,11 @@ const AddCustomer = () => {
                 .then(data => {
                     // console.log(data)
                     if (data.status) {
+                        dispatch(add_lead_Details([data,ob]))
                         setLeadGenerationStatus(data.status)
                         setMsg(data.message)
                         setTimeout(() => {
-                            ShareLeadDetails(data)
+                            naviagtion.navigate("leadSuccessMsg")
                             setMsg("")
                         }, 400);
                     }
@@ -243,30 +246,9 @@ const AddCustomer = () => {
         }
     }
 
-    const ShareLeadDetails = async (data) => {
+   
 
-        const leadCode = data.data.lead_code;
-        const campaignUrl = data.data.campaign_url
-     
 
-        const message = `Lead Code: ${leadCode}\nCampaign URL: ${campaignUrl}`;
-        try {
-            // Share the message
-            const result = await Share.share({
-                message: message,
-                title: 'KWIKM App',
-            });
-            // if (result.action === Share.sharedAction) {
-            //     console.log("successfully shared result")
-            // } else if (result.action === Share.dismissedAction) {
-            //     console.log('Share cancelled');
-            // }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    
     return (
 
         <View style={{ flex: 1, backgroundColor: "#eaffea" }}>
@@ -281,7 +263,7 @@ const AddCustomer = () => {
                             <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
                         </TouchableOpacity>
                         <View style={{
-                            flex: 4,
+                            flex: 5,
                             justifyContent: "space-between",
                             alignItems: "center",
                             flexDirection: "row"
@@ -293,8 +275,6 @@ const AddCustomer = () => {
                     </View>
 
                     <View style={{ justifyContent: "center", alignItems: "center" }}>
-
-
                         {/* condition based form showing if user is comming from patym screen the this screen will show */}
                         {screenName === "paytm" ?
                             <View style={{
@@ -380,12 +360,14 @@ const AddCustomer = () => {
                                 </View>
 
                             </View>
-
                             :
                             <>
-                                <View style={{ width: responsiveWidth(95), backgroundColor: "white", padding: responsiveWidth(5), borderRadius: responsiveWidth(3) }}>
-
-
+                                <View style={{
+                                    width: responsiveWidth(95),
+                                    backgroundColor: "white",
+                                    padding: responsiveWidth(5),
+                                    borderRadius: responsiveWidth(3)
+                                }}>
                                     <View style={{ marginTop: responsiveWidth(4) }}>
                                         <TextInput
                                             onChangeText={text => setFull_Name(text)}
@@ -419,7 +401,17 @@ const AddCustomer = () => {
                                             placeholder="Pan No."
                                         />
                                     </View>
-                                    {panErrStatus ? null : <Text style={{ fontSize: responsiveFontSize(1.8), color: "red", margin: responsiveWidth(2), marginBottom: 0 }}>{panErr}</Text>}
+
+                                    {panErrStatus ?
+                                        null :
+                                        <Text style={{
+                                            fontSize: responsiveFontSize(1.8),
+                                            color: "red",
+                                            margin: responsiveWidth(2),
+                                            marginBottom: 0
+                                        }}>
+                                            {panErr}
+                                        </Text>}
                                     <View style={{ marginTop: responsiveWidth(4) }}>
                                         <TextInput
                                             onChangeText={text => setMobile_Num(text)}
@@ -437,7 +429,15 @@ const AddCustomer = () => {
                                             placeholder='Customer Mobile Number '
                                         />
                                     </View>
-                                    {mobileErrStatus ? null : <Text style={{ fontSize: responsiveFontSize(1.8), color: "red", margin: responsiveWidth(2), marginBottom: 0 }}>{mobileErr}</Text>}
+                                    {mobileErrStatus ?
+                                        null :
+                                        <Text style={{
+                                            fontSize: responsiveFontSize(1.8),
+                                            color: "red",
+                                            margin: responsiveWidth(2),
+                                            marginBottom: 0
+                                        }}>
+                                            {mobileErr}</Text>}
                                     <View style={{ marginTop: responsiveWidth(4) }}>
                                         <TextInput
                                             onChangeText={text => setPincode(text)}

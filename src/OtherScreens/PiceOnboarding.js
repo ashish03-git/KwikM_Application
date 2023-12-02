@@ -191,26 +191,22 @@ const PiceOnboarding = () => {
             {netInfo ?
                 <>
                     <View style={{ flex: 1, backgroundColor: "#eaffea" }}>
-                        <ScrollView 
-                        showsVerticalScrollIndicator={false}
-                        style={{ width: responsiveWidth(100) }}
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            style={{ width: responsiveWidth(100) }}
                         >
-
-
                             <View style={{ height: responsiveHeight(7), flexDirection: "row" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
                                     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                     <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
                                 </TouchableOpacity>
-                                <View style={{ flex: 4, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+                                <View style={{ flex: 5, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
                                     <View>
                                         <Text style={{ fontSize: responsiveFontSize(2.5), color: "black", fontWeight: "700" }}> Pice</Text>
                                     </View>
                                 </View>
                             </View>
-
-
 
                             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                 <Image
@@ -220,7 +216,6 @@ const PiceOnboarding = () => {
                                     style={{ width: responsiveWidth(96), height: responsiveHeight(30), resizeMode: 'contain', borderRadius: responsiveWidth(4) }}
                                 />
                             </View>
-
 
                             <View style={{ flex: 2 }}>
 
@@ -490,6 +485,7 @@ const PiceOnboarding = () => {
 
 
                             </View>
+                            
                         </ScrollView>
                     </View>
                 </>

@@ -16,6 +16,8 @@ const UserProfile = () => {
     const navigation = useNavigation()
     const [selectImage, setSelectedImage] = useState(null)
     const [name, setName] = useState(null)
+    const [phone, setPhone] = useState(null)
+    const [userId, setUserId] = useState(null)
 
     useEffect(() => {
         getUserDetails()
@@ -26,6 +28,14 @@ const UserProfile = () => {
             await AsyncStorage.getItem("name").then((user_name) => {
                 // console.log(JSON.parse(user_name))
                 setName(JSON.parse(user_name))
+            });
+            await AsyncStorage.getItem("user_number").then((number) => {
+                // console.log(JSON.parse(user_name))
+                setPhone(JSON.parse(number))
+            });
+            await AsyncStorage.getItem("user_id").then((id) => {
+                // console.log(JSON.parse(user_name))
+                setUserId(JSON.parse(id))
             });
 
         }
@@ -111,7 +121,7 @@ const UserProfile = () => {
                         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                         <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
                     </TouchableOpacity>
-                    <View style={{ flex: 4, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+                    <View style={{ flex: 5, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
                         <View>
                             <Text style={{ fontSize: responsiveFontSize(2.5), color: "black", fontWeight: "700" }}>My Profile</Text>
                         </View>
@@ -181,8 +191,8 @@ const UserProfile = () => {
 
                         <View style={{ flex: 2, justifyContent: "center" }}>
                             <Text style={{ fontSize: responsiveFontSize(2.2), color: "white", fontWeight: "700" }}>Name - {name}</Text>
-                            <Text style={{ fontSize: responsiveFontSize(1.9), color: "white", fontWeight: "400" }}>Emp Code: 1003994020</Text>
-                            <Text style={{ fontSize: responsiveFontSize(1.9), color: "white", fontWeight: "400" }}>Number - 1234567890</Text>
+                            <Text style={{ fontSize: responsiveFontSize(1.9), color: "white", fontWeight: "400" }}>Emp Code: {userId}</Text>
+                            <Text style={{ fontSize: responsiveFontSize(1.9), color: "white", fontWeight: "400" }}>Number - {phone}</Text>
                             <Text style={{ fontSize: responsiveFontSize(1.9), color: "white", fontWeight: "400" }}>Email - abc@gmail.com</Text>
                         </View>
 
