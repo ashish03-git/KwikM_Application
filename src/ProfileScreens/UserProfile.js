@@ -1,4 +1,14 @@
-import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Alert, Share, Image } from 'react-native'
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StatusBar,
+    StyleSheet,
+    Alert,
+    Share,
+    Image,
+    BackHandler
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { responsiveHeight, responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions'
 import { useNavigation } from '@react-navigation/native'
@@ -45,7 +55,6 @@ const UserProfile = () => {
     }
 
     const handleLogOut = () => {
-
         Alert.alert(
             'Log Out',
             'Do you want to log out?',
@@ -63,7 +72,9 @@ const UserProfile = () => {
                         AsyncStorage.removeItem("user_id")
                         AsyncStorage.removeItem("role")
                         AsyncStorage.removeItem("user_number")
-                        navigation.navigate("loginMPIN")
+                        navigation.navigate("loginMPIN"),
+                            BackHandler.exitApp();
+
                     }
                 }
             ],

@@ -9,6 +9,7 @@ const slice = createSlice({
         product_id: [], // Change "register" to "values"
         login_data: [],
         lead_details: [],
+        paytm_lead_details: [],
 
 
 
@@ -49,7 +50,11 @@ const slice = createSlice({
         add_lead_Details: (state, action) => {
             // console.log(action.payload)
             state.lead_details = action.payload
-        }
+        },
+        add_paytm_lead_details: (state, action) => {
+            // console.log(action.payload)
+            state.paytm_lead_details = action.payload
+        },
     },
 });
 
@@ -61,7 +66,8 @@ export const {
     addLogin_data,
     addRecentTransactions,
     addMyDistibutorList,
-    add_lead_Details
+    add_lead_Details,
+    add_paytm_lead_details
 
 } = slice.actions;
 export default slice.reducer;

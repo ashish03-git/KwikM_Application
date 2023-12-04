@@ -22,7 +22,8 @@ const HelpScreen = () => {
     const netinfo = useNetInfo()
     const [userId, setUserId] = useState(null)
     const [activityIndicator, setActivityIndicator] = useState(false)
-    const [helpDetails, setHelpDetails] = useState({})
+    const [upline_details, setUpline_Details] = useState({})
+    const [company_details, setCompany_details] = useState({})
     // const reduxMyDistributorsList = useSelector(state => state.details.myDistributorsList)
     const token = useSelector(state => state.details.login_data.auth_token)
     const [auth_token, setAuth_Token] = useState("")
@@ -48,40 +49,45 @@ const HelpScreen = () => {
 
     // All Lead
     const FetchHelpDetails = async () => {
+        // console.log("fetch help details function",auth_token)
         let ob = {
             "user_id": userId,
-            "auth_token": token
+            "auth_token": auth_token
         }
-        console.log(ob)
+        // console.log(ob)
         await fetch("https://kwikm.in/dev_kwikm/api/get_help.php", {
             method: "POST",
             headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify(ob)
-        }).then(response => response.json())
+        }).then(response => response.text())
             .then(data => {
-                console.log(data)
-                if (data.status) {
-                    setHelpDetails([{}])
+
+                // Fix the structure by adding a comma between the two objects
+                let fixedData = data.replace(/}{/, '},{');
+
+                // Wrap the entire data in square brackets to make it an array of objects
+                let jsonArray = '[' + fixedData + ']';
+
+                // Parse the JSON array
+                try {
+                    let parsedArray = JSON.parse(jsonArray);
+
+                    // Extract individual objects
+                    let uplineDetails = parsedArray[0].upline_details;
+                    let companyDetails = parsedArray[1].company_details;
+                    setUpline_Details(uplineDetails)
+                    setCompany_details(companyDetails)
+                 
+                } catch (error) {
+                    console.error("Error parsing JSON:", error);
                 }
-                else {
-                    setHelpDetails({})
-                }
+                
             })
     }
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-
-    const handleSave = () => {
-        // Implement your save logic here
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Phone Number:', phoneNumber);
-    };
-
+    
 
     return (
 
@@ -92,7 +98,7 @@ const HelpScreen = () => {
                     style={{ flex: 1, backgroundColor: "#EAFFEA" }}
                 >
                     <StatusBar backgroundColor="#EAFFEA" />
-                    
+
                     <View style={{ height: responsiveHeight(8), flexDirection: "row" }}>
                         <TouchableOpacity
                             onPress={() => navigation.goBack()}
@@ -134,7 +140,7 @@ const HelpScreen = () => {
                                 <Text
                                     style={{ fontSize: responsiveFontSize(2), color: "black" }}
                                 >
-                                    Name
+                                    Name : <Text style={{color:'black'}}>{upline_details.name}</Text> 
                                 </Text>
                             </View>
                         </View>
@@ -156,7 +162,7 @@ const HelpScreen = () => {
                                 <Text
                                     style={{ fontSize: responsiveFontSize(2), color: "black" }}
                                 >
-                                    Phone
+                                    Phone : {upline_details.phone}
                                 </Text>
                             </View>
                         </View>
@@ -178,14 +184,14 @@ const HelpScreen = () => {
                                 <Text
                                     style={{ fontSize: responsiveFontSize(2), color: "black" }}
                                 >
-                                    Email
+                                    Email : {upline_details.email}
                                 </Text>
                             </View>
                         </View>
 
                     </View>
 
-                    <View style={{ alignItems: "center",marginTop:responsiveWidth(5) }}>
+                    <View style={{ alignItems: "center", marginTop: responsiveWidth(5) }}>
 
 
                         <Text style={{
@@ -213,7 +219,7 @@ const HelpScreen = () => {
                                 <Text
                                     style={{ fontSize: responsiveFontSize(2), color: "black" }}
                                 >
-                                    Name
+                                    Name : {company_details.name}
                                 </Text>
                             </View>
                         </View>
@@ -235,7 +241,7 @@ const HelpScreen = () => {
                                 <Text
                                     style={{ fontSize: responsiveFontSize(2), color: "black" }}
                                 >
-                                    Phone
+                                    Phone : {company_details.phone}
                                 </Text>
                             </View>
                         </View>
@@ -257,7 +263,7 @@ const HelpScreen = () => {
                                 <Text
                                     style={{ fontSize: responsiveFontSize(2), color: "black" }}
                                 >
-                                    Email
+                                    Email : {company_details.email}
                                 </Text>
                             </View>
                         </View>

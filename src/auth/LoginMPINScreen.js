@@ -196,6 +196,7 @@ const LoginMPINScreen = () => {
                                             placeholderTextColor={"gray"}
                                             onChangeText={txt => setPhone(txt)}
                                             value={phone}
+                                            maxLength={10}
                                             style={{ fontSize: responsiveFontSize(2), color: "black" }}
                                         />
                                     </View>

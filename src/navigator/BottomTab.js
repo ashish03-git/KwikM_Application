@@ -13,6 +13,7 @@ import MyLeadRetailer from '../Retailer/MyLeadRetailer';
 import AddCustomer from '../OtherScreens/AddCustomer';
 import ProductsScreen from '../OtherScreens/ProductsScreen';
 import ProductTabScreen from '../Retailer/ProductTabScreen';
+import HelpScreen from '../Retailer/HelpScreen';
 
 
 const CustomTabBarIcon = ({ name, size, focused }) => {
@@ -43,7 +44,6 @@ const BottomTab = () => {
                     // tabBarShowLabel:false
                 }}
             >
-
                 <Tab.Screen
                     name="Home"
                     component={HomeScreen}
@@ -75,24 +75,6 @@ const BottomTab = () => {
                         }
                     }}
                 />
-                {/* <Tab.Screen
-                    name='Add'
-                    component={AddCustomer}
-                    options={{
-                        headerShown: false,
-                        tabBarIcon: ({ focused, color, size }) => (
-                            <FontAwesome5 name="plus-circle" size={responsiveWidth(12)} color={color} />
-                        ),
-                        tabBarLabelStyle: {
-                            fontSize: responsiveFontSize(1.6),
-                            fontWeight: "600",
-                            display:"none"
-                        },
-                        // tabBarShowLabel:false
-                      
-                        
-                    }}
-                /> */}
                 <Tab.Screen
                     name='Referrels'
                     component={ReferrelsScreen}
@@ -111,7 +93,7 @@ const BottomTab = () => {
                 />
                 <Tab.Screen
                     name='Support'
-                    component={SupportScreen}
+                    component={HelpScreen}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ focused, color, size }) => (
@@ -121,7 +103,6 @@ const BottomTab = () => {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
                             marginBottom: responsiveWidth(1)
-
                         }
                     }}
                 />

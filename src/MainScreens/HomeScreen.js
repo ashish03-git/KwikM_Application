@@ -464,7 +464,7 @@ const HomeScreen = () => {
                                             margin: responsiveWidth(4),
                                             marginTop: 0
                                         }}>
-                                        Higher Earnings on Credit Cards
+                                        Best seller products
                                     </Text>
                                 </View>
                                 <FlatList
@@ -631,7 +631,7 @@ const HomeScreen = () => {
                         {/* Referal and subscription */}
                         <View style={{ justifyContent: "center", alignItems: "center", marginBottom: responsiveWidth(10) }}>
 
-                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
 
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate("apkSubscription")}
@@ -640,7 +640,7 @@ const HomeScreen = () => {
                                         colors={["#64F583", "#5CE5B4"]}
                                         style={{
                                             width: responsiveWidth(45),
-                                            height: responsiveHeight(11),
+                                            height: responsiveHeight(10),
                                             borderRadius: responsiveWidth(6),
                                             flexDirection: "row",
                                             marginLeft: responsiveWidth(3),
@@ -661,8 +661,8 @@ const HomeScreen = () => {
                                             </View>
                                         </View>
                                         <View style={{ flex: 2, justifyContent: "center" }}>
-                                            <Text style={{ fontSize: responsiveFontSize(1.8), fontWeight: "700", color: "black" }}>APK Subscription</Text>
-                                            <Text style={{ fontSize: responsiveFontSize(1.8), fontWeight: "400", color: "black" }}>Earn Upto Rs.150/-</Text>
+                                            <Text style={{ fontSize: responsiveFontSize(1.6), fontWeight: "700", color: "black" }}>APK Subscription</Text>
+                                            <Text style={{ fontSize: responsiveFontSize(1.6), fontWeight: "400", color: "black" }}>Earn Upto Rs.150/-</Text>
                                         </View>
                                     </LinearGradient>
                                 </TouchableOpacity>
@@ -675,7 +675,7 @@ const HomeScreen = () => {
                                         style={{
                                             
                                             width: responsiveWidth(45),
-                                            height: responsiveHeight(11),
+                                            height: responsiveHeight(10),
                                             borderRadius: responsiveWidth(6),
                                             flexDirection: "row",
                                             marginLeft: responsiveWidth(3),
@@ -697,8 +697,8 @@ const HomeScreen = () => {
                                             </View>
                                         </View>
                                         <View style={{ flex: 2, justifyContent: "center" }}>
-                                            <Text style={{ fontSize: responsiveFontSize(1.8), fontWeight: "700", color: "black" }}>Insurance </Text>
-                                            <Text style={{ fontSize: responsiveFontSize(1.8), fontWeight: "400", color: "black" }}>Earn Upto Rs.150/-</Text>
+                                            <Text style={{ fontSize: responsiveFontSize(1.6), fontWeight: "700", color: "black" }}>Insurance </Text>
+                                            <Text style={{ fontSize: responsiveFontSize(1.6), fontWeight: "400", color: "black" }}>Earn Upto Rs.150/-</Text>
                                         </View>
                                     </LinearGradient>
                                 </TouchableOpacity>

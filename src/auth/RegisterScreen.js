@@ -131,7 +131,13 @@ const RegisterScreen = () => {
                                         <Font5 name="phone-alt" size={responsiveWidth(6)} color="black" />
                                     </View>
                                     <View style={{ flex: 5, justifyContent: "center" }}>
-                                        <TextInput placeholder='Phone Number' onChangeText={txt => setPhone(txt)} value={phone} style={{ fontSize: responsiveFontSize(2) }} />
+                                        <TextInput 
+                                        placeholder='Phone Number' 
+                                        onChangeText={txt => setPhone(txt)} 
+                                        value={phone} 
+                                        style={{ fontSize: responsiveFontSize(2) }} 
+                                        maxLength={10}
+                                        />
                                     </View>
                                 </View>
                                 <View style={{

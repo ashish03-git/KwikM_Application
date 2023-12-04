@@ -278,6 +278,7 @@ const PiceOnboarding = () => {
                                                     placeholderTextColor={"gray"}
                                                     keyboardType="numeric"
                                                     value={mobile_num}
+                                                    maxLength={10}
                                                     onChangeText={txt => setMobile_Num(txt)}
                                                     style={{ fontSize: responsiveFontSize(2), color: "black" }}
                                                 />
@@ -305,6 +306,7 @@ const PiceOnboarding = () => {
                                                     placeholderTextColor={"gray"}
                                                     value={pan}
                                                     onChangeText={txt => setPan(txt)}
+                                                    autoCapitalize="characters"
                                                     style={{ fontSize: responsiveFontSize(2), color: 'black' }}
                                                 />
                                             </View>

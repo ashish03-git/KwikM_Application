@@ -39,7 +39,7 @@ const ApkSubscripton = () => {
                                     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                     <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
                                 </TouchableOpacity>
-                                <View style={{ flex: 4, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+                                <View style={{ flex: 6, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
                                     <View>
                                         <Text style={{ fontSize: responsiveFontSize(2.5), color: "black", fontWeight: "700" }}>APK Subscriptions</Text>
                                     </View>
@@ -66,7 +66,7 @@ const ApkSubscripton = () => {
                                     <Image
                                         source={{
                                             uri:
-                                            "https://s3-alpha-sig.figma.com/img/9187/ed89/ad6786507da60004a172c93ff2bfda2c?Expires=1702252800&Signature=iRRNySEdcedbb-Bk4cW~NjhvUNDyHJsSIWH8gJwfndHwV7GQeW-H3qm1qOJBPli55x75c3Qx29ddU9PcPmqsxf1Z5UY-RwIld79SrYnGcqyeNvw7LsHS84QNx3rPXgzUn1Z5oWeQlJtwxATZbFdIfE4ZzganHeQkxAtwz9W3PB8aOcM3p7GkaK~74FfS9I2UkpAkljYcIPDbZUVz2hv2Ay9-Lm2ye7DIgGVNeE7X7DFXBROka8UMSonn4XDNTFDIeUfL2vErgQLII-UiQoLetR1XBVhN9NQSnMu9gRCtMjwn1o1ArF2qiJJykt~tocUJA2Uj0ti6D~omU9zS2~~CLg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                                                "https://s3-alpha-sig.figma.com/img/9187/ed89/ad6786507da60004a172c93ff2bfda2c?Expires=1702252800&Signature=iRRNySEdcedbb-Bk4cW~NjhvUNDyHJsSIWH8gJwfndHwV7GQeW-H3qm1qOJBPli55x75c3Qx29ddU9PcPmqsxf1Z5UY-RwIld79SrYnGcqyeNvw7LsHS84QNx3rPXgzUn1Z5oWeQlJtwxATZbFdIfE4ZzganHeQkxAtwz9W3PB8aOcM3p7GkaK~74FfS9I2UkpAkljYcIPDbZUVz2hv2Ay9-Lm2ye7DIgGVNeE7X7DFXBROka8UMSonn4XDNTFDIeUfL2vErgQLII-UiQoLetR1XBVhN9NQSnMu9gRCtMjwn1o1ArF2qiJJykt~tocUJA2Uj0ti6D~omU9zS2~~CLg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
                                         }}
                                         style={{
                                             width: responsiveWidth(46),
@@ -98,6 +98,39 @@ const ApkSubscripton = () => {
                                         }}
                                     />
                                 </TouchableOpacity>
+
+
+                            </View>
+
+                            <View style={{
+                                height: responsiveHeight(15),
+                                margin: responsiveWidth(2)
+                            }}
+                            >
+                                <TouchableOpacity
+                                    onPress={() => navigation.navigate("piceLeadScreen")}
+                                    style={{
+                                        width: responsiveWidth(46),
+                                        height: responsiveHeight(12),
+                                        borderRadius: responsiveWidth(4),
+                                        backgroundColor: "white",
+                                        elevation: 5,
+                                        shadowColor: "black",
+                                    }}
+                                >
+                                    <Image
+                                        source={{
+                                            uri: "https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1702857600&Signature=Av-qbmpOdf1ejuomjhi3AqOFEMXRrIHcAqcseIlcT2zHDT1SbIpUOh0P0d8eCZmU2xjEQmUWe62IKgJX9Mnp6pQlEd1n8CDZcB-ODA89c9dXHkKpWbU-epZOoz79H4uN9H3Ft4a9JIpQAhXZeAkHAZdFvazWRQYYvqQM6n93eMKRG86J5byn8~CoYOm12vPS6foKzmM2R3UYaw6xRvWrSCa3kcD7Npu81DH9Cc~L5whoHClzTlT6y9~8PE6c82kJjH04jajLVVDro7rE~nSCfhKJaOLnLqejZpkVSDNVk23HOmvRpy6xCSFjbWKCvhevd9u5ZxyIdAN9g4XfgMN~Hw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                                        }}
+                                        style={{
+                                            width: responsiveWidth(46),
+                                            height: responsiveHeight(12),
+                                            borderRadius: responsiveWidth(4),
+                                            resizeMode: "contain"
+                                        }}
+                                    />
+                                </TouchableOpacity>
+
                             </View>
 
                         </>

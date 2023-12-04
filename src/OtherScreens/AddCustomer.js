@@ -19,8 +19,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
-import { useSelector,useDispatch } from 'react-redux';
-import { add_lead_Details } from '../redux/Slice'
+import { useSelector, useDispatch } from 'react-redux';
+import { add_lead_Details, add_paytm_lead_details } from '../redux/Slice'
 // import { Share } from 'react-native/Libraries/Share/Share';
 
 const AddCustomer = () => {
@@ -105,12 +105,12 @@ const AddCustomer = () => {
         }
     }
 
-    const PaytmSprint = (ob) => {
-        let bodyData = {
-            "refid": ob.refid,
-            "merchantcode": ob.merchantcode,
-            "customer_name": ob.customer_name,
-            "customer_mobile": ob.customer_mobile,
+    const PaytmSprint = (data) => {
+        let ob = {
+            "refid": data.refid,
+            "merchantcode": data.merchantcode,
+            "customer_name": data.customer_name,
+            "customer_mobile": data.customer_mobile,
         }
         // console.log("body Data", bodyData)
         fetch("https://paysprint.in/service-api/api/v1/service/paytm-qr/Registration/getlink", {
@@ -120,15 +120,17 @@ const AddCustomer = () => {
                 "Authorisedkey": "YjVhM2YzYjZkNWQyNjBjOWE5MzgwZjAxYjU1NTEwZmU=",
                 "Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXFpZCI6Ijc2NjUyNjM0NzgiLCJwYXJ0bmVySWQiOiJQUzAwMTU3OCIsInRpbWVzdGFtcCI6MTY5ODc1Mjc4Mn0.kwzPhhax0580Cz6eHjLMDj_gw-kes1rydb8dAFDUkq0"
             },
-            body: JSON.stringify(bodyData)
+            body: JSON.stringify(ob)
         }).then(response => response.json())
             .then(paySprintData => {
                 setPaytmSprintStatus(paySprintData.status)
+                // console.log(paySprintData)
                 if (paySprintData.status) {
                     setMsg(paySprintData.message)
+                    dispatch(add_lead_Details([paySprintData,ob]))
                     setTimeout(() => {
                         setMsg("")
-                        naviagtion.navigate("paytmScreen")
+                        naviagtion.navigate("leadSuccessMsg",{screen:"paytm"})
                     }, 1000);
                 }
                 else {
@@ -225,11 +227,11 @@ const AddCustomer = () => {
                 .then(data => {
                     // console.log(data)
                     if (data.status) {
-                        dispatch(add_lead_Details([data,ob]))
+                        dispatch(add_lead_Details([data, ob]))
                         setLeadGenerationStatus(data.status)
                         setMsg(data.message)
                         setTimeout(() => {
-                            naviagtion.navigate("leadSuccessMsg")
+                            naviagtion.navigate("leadSuccessMsg",{screen:"retailer"})
                             setMsg("")
                         }, 400);
                     }
@@ -246,7 +248,7 @@ const AddCustomer = () => {
         }
     }
 
-   
+
 
 
     return (
@@ -313,6 +315,7 @@ const AddCustomer = () => {
                                                 borderColor: "#DADADA"
                                             }}
                                             value={mobile_nun}
+                                            maxLength={10}
                                             placeholder='Customer Mobile Number'
                                             placeholderTextColor={"gray"}
                                         />
@@ -399,6 +402,7 @@ const AddCustomer = () => {
                                             }}
                                             value={pan}
                                             placeholder="Pan No."
+                                            autoCapitalize="characters"
                                         />
                                     </View>
 
@@ -411,7 +415,9 @@ const AddCustomer = () => {
                                             marginBottom: 0
                                         }}>
                                             {panErr}
-                                        </Text>}
+                                        </Text>
+                                    }
+
                                     <View style={{ marginTop: responsiveWidth(4) }}>
                                         <TextInput
                                             onChangeText={text => setMobile_Num(text)}
@@ -425,10 +431,12 @@ const AddCustomer = () => {
                                                 color: "black"
                                             }}
                                             keyboardType="numeric"
+                                            maxLength={10}
                                             value={mobile_nun}
                                             placeholder='Customer Mobile Number '
                                         />
                                     </View>
+
                                     {mobileErrStatus ?
                                         null :
                                         <Text style={{
@@ -437,7 +445,9 @@ const AddCustomer = () => {
                                             margin: responsiveWidth(2),
                                             marginBottom: 0
                                         }}>
-                                            {mobileErr}</Text>}
+                                            {mobileErr}</Text>
+                                    }
+                                    
                                     <View style={{ marginTop: responsiveWidth(4) }}>
                                         <TextInput
                                             onChangeText={text => setPincode(text)}

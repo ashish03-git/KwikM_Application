@@ -236,6 +236,7 @@ const PurchaseInsuarance = () => {
                                                     keyboardType="numeric"
                                                     value={mobile_nun}
                                                     placeholder='Mobile Number'
+                                                    maxLength={10}
                                                 />
                                             </View>
                                         </View>
