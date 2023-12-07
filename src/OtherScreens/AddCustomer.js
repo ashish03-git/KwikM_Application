@@ -8,7 +8,9 @@ import {
     FlatList,
     StatusBar,
     StyleSheet,
-    Share
+    Share,
+    Linking,
+    Platform
 } from 'react-native'
 import React, { useEffect, useState, useMemo } from 'react'
 import { responsiveHeight, responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions'
@@ -21,7 +23,8 @@ import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
 import { useSelector, useDispatch } from 'react-redux';
 import { add_lead_Details, add_paytm_lead_details } from '../redux/Slice'
-// import { Share } from 'react-native/Libraries/Share/Share';
+
+
 
 const AddCustomer = () => {
 
@@ -35,13 +38,13 @@ const AddCustomer = () => {
     const [pincode, setPincode] = useState("")
     const [email, setEmail] = useState("")
     const [paytmSprintStatus, setPaytmSprintStatus] = useState()
-    const [leadGenerationStatus, setLeadGenerationStatus] = useState('')
+    const [leadGenerationStatus, setLeadGenerationStatus] = useState(true)
     const [screenName, setScreenName] = useState(route.params.screenName)
     const product_id = useSelector(state => state.details.product_id.product_id)
     // console.log("add customer product id ",product_id)
     const category_id = useSelector(state => state.details.category_id)
     // console.log("add customer customer id ",category_id                                                                                  )
-    const [required_amount, setRequired_Amount] = useState("")
+    const [required_amount, setRequired_Amount] = useState("0")
     const netInfo = useNetInfo()
     const [msg, setMsg] = useState('')
     const [user_id, setUser_Id] = useState(null)
@@ -50,6 +53,10 @@ const AddCustomer = () => {
     const [panErr, setPanErr] = useState('')
     const [panErrStatus, setPanErrStatus] = useState(true)
     const [mobileErrStatus, setMobileErrStatus] = useState(true)
+
+
+
+
 
     useEffect(() => {
         getUserId()
@@ -60,16 +67,38 @@ const AddCustomer = () => {
         RetailerValidation()
     }, [full_name, mobile_nun, pan, pincode, email, required_amount])
 
+
     const RetailerValidation = () => {
-        if (full_name.length >= 2 && mobile_nun.length == 10 && pan.length == 10 && pincode.length >= 2 && email.length >= 11 && required_amount.length > 0) {
-            setButtonStatus(true)
+
+        if (
+            full_name.length >= 2 &&
+            mobile_nun.length == 10 &&
+            pan.length == 10 &&
+            pincode.length == 6 &&
+            email.length >= 11 &&
+            required_amount.length >= 0
+        ) {
+            let panPattern = /^([A-Z]{5})(\d{4})([A-Z])$/;
+            let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+            if (panPattern.test(pan)) {
+                setPanErrStatus(true)
+                setButtonStatus(true);
+            }
+            else {
+                setPanErrStatus(false)
+                setPanErr("enter a valid pancard number")
+            }
+
+            if (emailPattern.test(email)) {
+                setLeadGenerationStatus()
+            }
             // console.log("validated")
         }
         else {
             setButtonStatus(false)
         }
     }
-
 
     const getUserId = async () => {
         try {
@@ -95,8 +124,16 @@ const AddCustomer = () => {
                 body: JSON.stringify(ob)
             }).then(response => response.json())
                 .then(data => {
+                    // console.log(data)
                     if (data.status === "Success") {
                         PaytmSprint(data)
+                    }
+                    if (data.status === "Failure") {
+                        setPaytmSprintStatus(false)
+                        setMsg(data.message)
+                        setTimeout(() => {
+                            setMsg("")
+                        }, 1000);
                     }
                 })
         }
@@ -111,8 +148,8 @@ const AddCustomer = () => {
             "merchantcode": data.merchantcode,
             "customer_name": data.customer_name,
             "customer_mobile": data.customer_mobile,
-        }
-        // console.log("body Data", bodyData)
+        };
+
         fetch("https://paysprint.in/service-api/api/v1/service/paytm-qr/Registration/getlink", {
             method: "POST",
             headers: {
@@ -123,25 +160,23 @@ const AddCustomer = () => {
             body: JSON.stringify(ob)
         }).then(response => response.json())
             .then(paySprintData => {
-                setPaytmSprintStatus(paySprintData.status)
-                // console.log(paySprintData)
-                if (paySprintData.status) {
-                    setMsg(paySprintData.message)
-                    dispatch(add_lead_Details([paySprintData,ob]))
-                    setTimeout(() => {
-                        setMsg("")
-                        naviagtion.navigate("leadSuccessMsg",{screen:"paytm"})
-                    }, 1000);
-                }
-                else {
-                    setMsg(paySprintData.message)
-                    setTimeout(() => {
-                        setMsg("")
-                    }, 1000);
-                }
+                setPaytmSprintStatus(paySprintData.status);
 
-            })
-    }
+                if (paySprintData.status) {
+                    setMsg(paySprintData.message);
+                    dispatch(add_lead_Details([paySprintData, ob]));
+                    setTimeout(() => {
+                        setMsg("");
+                        naviagtion.navigate("leadSuccessMsg", { screen: "paytm" });
+                    }, 1000);
+                } else {
+                    setMsg(paySprintData.message);
+                    setTimeout(() => {
+                        setMsg("");
+                    }, 1000);
+                }
+            });
+    };
 
     const VerifyDetails = async () => {
 
@@ -231,7 +266,7 @@ const AddCustomer = () => {
                         setLeadGenerationStatus(data.status)
                         setMsg(data.message)
                         setTimeout(() => {
-                            naviagtion.navigate("leadSuccessMsg",{screen:"retailer"})
+                            naviagtion.navigate("leadSuccessMsg", { screen: "retailer" })
                             setMsg("")
                         }, 400);
                     }
@@ -251,12 +286,14 @@ const AddCustomer = () => {
 
 
 
+
     return (
 
         <View style={{ flex: 1, backgroundColor: "#eaffea" }}>
             {netInfo ?
                 <>
                     <StatusBar backgroundColor={"#eaffea"} />
+
                     <View style={{ height: responsiveHeight(8), flexDirection: "row" }}>
                         <TouchableOpacity
                             onPress={() => naviagtion.goBack()}
@@ -288,6 +325,7 @@ const AddCustomer = () => {
                             }}
                             >
                                 <View style={{ flex: 1 }}>
+
                                     <View style={{ marginTop: responsiveWidth(4) }}>
                                         <TextInput
                                             onChangeText={text => setFull_Name(text)}
@@ -322,11 +360,21 @@ const AddCustomer = () => {
                                     </View>
 
                                     {paytmSprintStatus ?
-                                        <View style={{ justifyContent: "center", alignItems: "center", padding: responsiveWidth(4) }}>
+                                        <View style={{
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            padding: responsiveWidth(4),
+                                            paddingTop: responsiveWidth(2)
+                                        }}>
                                             <Text style={{ fontSize: responsiveFontSize(2), color: "green" }}>{msg}</Text>
                                         </View>
                                         :
-                                        <View style={{ justifyContent: "center", alignItems: "center", padding: responsiveWidth(4) }}>
+                                        <View style={{
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            padding: responsiveWidth(4),
+                                            paddingTop: responsiveWidth(2)
+                                        }}>
                                             <Text style={{ fontSize: responsiveFontSize(2), color: "red" }}>{msg}</Text>
                                         </View>
                                     }
@@ -403,6 +451,8 @@ const AddCustomer = () => {
                                             value={pan}
                                             placeholder="Pan No."
                                             autoCapitalize="characters"
+                                            maxLength={10}
+
                                         />
                                     </View>
 
@@ -447,7 +497,7 @@ const AddCustomer = () => {
                                         }}>
                                             {mobileErr}</Text>
                                     }
-                                    
+
                                     <View style={{ marginTop: responsiveWidth(4) }}>
                                         <TextInput
                                             onChangeText={text => setPincode(text)}
@@ -461,6 +511,7 @@ const AddCustomer = () => {
                                             }}
                                             keyboardType="numeric"
                                             value={pincode}
+                                            maxLength={6}
                                             placeholder='Pincode'
                                             placeholderTextColor={"gray"}
                                         />
@@ -482,6 +533,18 @@ const AddCustomer = () => {
                                             placeholderTextColor={"gray"}
                                         />
                                     </View>
+
+                                    {leadGenerationStatus ?
+                                        null :
+                                        <Text style={{
+                                            fontSize: responsiveFontSize(1.8),
+                                            color: "red",
+                                            margin: responsiveWidth(2),
+                                            marginBottom: 0
+                                        }}>
+                                            {msg}</Text>
+                                    }
+
 
                                     <View style={{ marginTop: responsiveWidth(4) }}>
                                         <TextInput
@@ -510,7 +573,6 @@ const AddCustomer = () => {
                                             <Text style={{ fontSize: responsiveFontSize(2), color: "red", alignSelf: "center" }}>{msg}</Text>
                                         </View>
                                     }
-
 
                                     <View style={{ marginLeft: responsiveWidth(5) }}>
                                         <Text style={{ fontSize: responsiveFontSize(1.8), color: "black" }}>
@@ -552,7 +614,9 @@ const AddCustomer = () => {
                                             <Font name="whatsapp" color="#02A208" size={responsiveWidth(5)} />
                                             <Text style={{ fontSize: responsiveFontSize(1.8), color: "black", marginLeft: responsiveWidth(4) }}>We will notify you on WhatsApp </Text>
                                         </View>
+
                                     </View>
+
                                 </View>
                             </>
                         }
@@ -571,10 +635,6 @@ const AddCustomer = () => {
 
 
 }
-
-
-
-
 
 const styles = StyleSheet.create({
     contactCon: {
@@ -648,4 +708,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
+
 export default AddCustomer

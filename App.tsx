@@ -45,6 +45,7 @@ import TrainingVideoScreen from './src/Retailer/TrainingVideoScreen'
 import HelpScreen from './src/Retailer/HelpScreen'
 import ProductTabScreen from './src/Retailer/ProductTabScreen'
 import LeadAddSuccessMesageScreen from './src/OtherScreens/LeadAddSuccessMesageScreen'
+import ScratchCardScreen from './src/OtherScreens/ScratchCard'
 
 
 const Stack = createStackNavigator()
@@ -56,7 +57,7 @@ const App = () => {
         <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
         <NavigationContainer>
           {/* <Stack.Navigator initialRouteName='onboarding'> */}
-          <Stack.Navigator initialRouteName='splash'>
+          <Stack.Navigator initialRouteName='spalsh'>
             <Stack.Screen name="spalsh" options={{ headerShown: false }} component={SpalshScreen} />
             <Stack.Screen name='onboarding' options={{ headerShown: false }} component={OnbordingScreen1} />
             <Stack.Screen name='register' options={{ headerShown: false }} component={RegisterScreen} />
@@ -81,6 +82,7 @@ const App = () => {
             <Stack.Screen name='purchaseInsuarance' options={{ headerShown: false }} component={PurchaseInsuarance} />
             <Stack.Screen name='openWebView' options={{ headerShown: false }} component={WebViewScreen} />
             <Stack.Screen name='leadSuccessMsg' options={{ headerShown: false }} component={LeadAddSuccessMesageScreen} />
+            <Stack.Screen name='scratch' options={{ headerShown: false }} component={ScratchCardScreen} />
 
 
             {/* common screen */}

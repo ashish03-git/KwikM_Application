@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, TextInput, Image, FlatList, StatusBar, StyleSheet } from 'react-native'
+import { View, Text, Linking, TouchableOpacity, StatusBar, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import Font6 from "react-native-vector-icons/FontAwesome6"
@@ -15,6 +15,7 @@ import ActivityLoader from '../OtherScreens/ActivityLoader'
 import { addMyDistibutorList } from '../redux/Slice'
 
 
+
 const HelpScreen = () => {
 
     // variables
@@ -27,6 +28,7 @@ const HelpScreen = () => {
     // const reduxMyDistributorsList = useSelector(state => state.details.myDistributorsList)
     const token = useSelector(state => state.details.login_data.auth_token)
     const [auth_token, setAuth_Token] = useState("")
+
 
 
 
@@ -79,15 +81,15 @@ const HelpScreen = () => {
                     let companyDetails = parsedArray[1].company_details;
                     setUpline_Details(uplineDetails)
                     setCompany_details(companyDetails)
-                 
+
                 } catch (error) {
                     console.error("Error parsing JSON:", error);
                 }
-                
+
             })
     }
 
-    
+
 
     return (
 
@@ -112,160 +114,242 @@ const HelpScreen = () => {
                         </View>
                     </View>
 
-                    <View style={{ alignItems: "center" }}>
+                    <View style={{
+                        flex: 1,
+                        // backgroundColor: "red",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                        <LottieView
+                            source={require("../../assets/support.json")}
+                            style={{ width: responsiveWidth(50), height: responsiveWidth(48) }}
+                            autoPlay
+                        />
+                        <View style={{ justifyContent: "center", alignItems: "center" }}>
+                            <Text style={
+                                {
+                                    fontSize: responsiveFontSize(2.5),
+                                    color: "#A2159C",
+                                    fontWeight: "700"
+                                }}>
+                                How can we help you ?
+                            </Text>
 
-
-                        <Text style={{
-                            fontSize: responsiveFontSize(2.2),
-                            color: "black",
-                            fontWeight: "700",
-                            alignSelf: "flex-start",
-                            marginLeft: responsiveWidth(3)
-                        }}>Upline Details :-</Text>
-
-                        <View style={{
-                            width: responsiveWidth(94),
-                            height: responsiveHeight(6),
-                            backgroundColor: "white",
-                            flexDirection: "row",
-                            borderRadius: responsiveWidth(3),
-                            borderWidth: 1,
-                            borderColor: "#BCB4B4",
-                            marginTop: responsiveWidth(2)
-                        }}>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                <Font5 name="user-alt" size={responsiveWidth(5.5)} color="#535353" />
-                            </View>
-                            <View style={{ flex: 5, justifyContent: "center" }}>
-                                <Text
-                                    style={{ fontSize: responsiveFontSize(2), color: "black" }}
-                                >
-                                    Name : <Text style={{color:'black'}}>{upline_details.name}</Text> 
-                                </Text>
-                            </View>
                         </View>
-
-                        <View style={{
-                            width: responsiveWidth(94),
-                            height: responsiveHeight(6),
-                            backgroundColor: "white",
-                            flexDirection: "row",
-                            borderRadius: responsiveWidth(3),
-                            borderWidth: 1,
-                            borderColor: "#BCB4B4",
-                            marginTop: responsiveWidth(2)
-                        }}>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                <Font5 name="phone-alt" size={responsiveWidth(5.5)} color="#535353" />
-                            </View>
-                            <View style={{ flex: 5, justifyContent: "center" }}>
-                                <Text
-                                    style={{ fontSize: responsiveFontSize(2), color: "black" }}
-                                >
-                                    Phone : {upline_details.phone}
-                                </Text>
-                            </View>
-                        </View>
-
-                        <View style={{
-                            width: responsiveWidth(94),
-                            height: responsiveHeight(6),
-                            backgroundColor: "white",
-                            flexDirection: "row",
-                            borderRadius: responsiveWidth(3),
-                            borderWidth: 1,
-                            borderColor: "#BCB4B4",
-                            marginTop: responsiveWidth(2)
-                        }}>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                <Font name="email" size={responsiveWidth(6)} color="#535353" />
-                            </View>
-                            <View style={{ flex: 5, justifyContent: "center" }}>
-                                <Text
-                                    style={{ fontSize: responsiveFontSize(2), color: "black" }}
-                                >
-                                    Email : {upline_details.email}
-                                </Text>
-                            </View>
-                        </View>
-
                     </View>
 
-                    <View style={{ alignItems: "center", marginTop: responsiveWidth(5) }}>
+                    {/* details */}
+                    <View style={{ flex: 2.2 }}>
 
 
-                        <Text style={{
-                            fontSize: responsiveFontSize(2.2),
-                            color: "black",
-                            fontWeight: "700",
-                            alignSelf: "flex-start",
-                            marginLeft: responsiveWidth(3)
-                        }}>Company Details :-</Text>
+                        {/* upline details */}
+                        <View style={{ flex: 1 }}>
 
-                        <View style={{
-                            width: responsiveWidth(94),
-                            height: responsiveHeight(6),
-                            backgroundColor: "white",
-                            flexDirection: "row",
-                            borderRadius: responsiveWidth(3),
-                            borderWidth: 1,
-                            borderColor: "#BCB4B4",
-                            marginTop: responsiveWidth(2)
-                        }}>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                <Font5 name="user-alt" size={responsiveWidth(5.5)} color="#535353" />
+                            <View style={{ flex: 1, justifyContent: "flex-end" }}>
+                                <Text style={{
+                                    marginLeft: responsiveWidth(2),
+                                    fontSize: responsiveFontSize(2.2),
+                                    color: "black",
+                                    fontWeight: "700"
+                                }}>Upline Details :</Text>
                             </View>
-                            <View style={{ flex: 5, justifyContent: "center" }}>
-                                <Text
-                                    style={{ fontSize: responsiveFontSize(2), color: "black" }}
-                                >
-                                    Name : {company_details.name}
-                                </Text>
+
+                            <View style={{
+                                flex: 4,
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                                flexDirection: "row"
+                            }}
+                            >
+                                <View style={{
+                                    width: responsiveWidth(30),
+                                    height: responsiveHeight(15),
+                                    borderRadius: responsiveWidth(3),
+                                    backgroundColor: "#BFFFDA",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    elevation: 1
+                                }}>
+                                    <View>
+                                        <Font5 name="user-alt" size={responsiveWidth(6)} color="#A2159C" />
+                                    </View>
+                                    <Text
+                                        style={{ fontSize: responsiveFontSize(1.8), color: "black", marginTop: responsiveWidth(4) }}
+                                    >
+                                        <Text style={{ color: 'black', fontWeight: "400" }}>{upline_details.name}</Text>
+                                    </Text>
+                                </View>
+
+                                <TouchableOpacity
+
+                                    onPress={() => {
+                                        const phoneNumber = upline_details.phone;
+                                        if (phoneNumber) {
+                                            const phoneUrl = `tel:${phoneNumber}`;
+                                            Linking.openURL(phoneUrl);
+                                        }
+                                    }}
+
+                                    style={{
+                                        width: responsiveWidth(30),
+                                        height: responsiveHeight(15),
+                                        borderRadius: responsiveWidth(3),
+                                        backgroundColor: "#BFFFDA",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        elevation: 1
+                                    }}>
+                                    <View>
+                                        <Font5 name="phone-alt" size={responsiveWidth(6)} color="#A2159C" />
+                                    </View>
+                                    <Text
+                                        style={{ fontSize: responsiveFontSize(1.8), color: "black", marginTop: responsiveWidth(4) }}
+                                    >
+                                        <Text style={{ color: 'black', fontWeight: "400" }}>{upline_details.phone}</Text>
+                                    </Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        const emailAddress = upline_details.email;
+                                        if (emailAddress) {
+                                            const emailUrl = `mailto:${emailAddress}`;
+                                            Linking.openURL(emailUrl);
+                                        }
+                                    }}
+                                    style={{
+                                        width: responsiveWidth(30),
+                                        height: responsiveHeight(15),
+                                        borderRadius: responsiveWidth(3),
+                                        backgroundColor: "#BFFFDA",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        elevation: 1
+                                    }}>
+                                    <View>
+                                        <Font name="email" size={responsiveWidth(6)} color="#A2159C" />
+                                    </View>
+                                    <Text
+                                        style={{ fontSize: responsiveFontSize(1.8), color: "black", marginTop: responsiveWidth(4) }}
+                                    >
+                                        <Text style={{ color: 'black', fontWeight: "400" }}>{upline_details.email}</Text>
+                                    </Text>
+                                </TouchableOpacity>
+
                             </View>
                         </View>
 
-                        <View style={{
-                            width: responsiveWidth(94),
-                            height: responsiveHeight(6),
-                            backgroundColor: "white",
-                            flexDirection: "row",
-                            borderRadius: responsiveWidth(3),
-                            borderWidth: 1,
-                            borderColor: "#BCB4B4",
-                            marginTop: responsiveWidth(2)
-                        }}>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                <Font5 name="phone-alt" size={responsiveWidth(5.5)} color="#535353" />
+
+
+
+                        {/* company details */}
+                        <View style={{ flex: 1 }}>
+
+                            <View style={{ flex: 1, justifyContent: "flex-end" }}>
+                                <Text style={{
+                                    marginLeft: responsiveWidth(2),
+                                    fontSize: responsiveFontSize(2.2),
+                                    color: "black",
+                                    fontWeight: "700"
+                                }}>Company details:</Text>
                             </View>
-                            <View style={{ flex: 5, justifyContent: "center" }}>
-                                <Text
-                                    style={{ fontSize: responsiveFontSize(2), color: "black" }}
-                                >
-                                    Phone : {company_details.phone}
-                                </Text>
+
+                            <View style={{
+                                flex: 4,
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                                flexDirection: "row"
+                            }}
+                            >
+                                <View style={{
+                                    width: responsiveWidth(30),
+                                    height: responsiveHeight(15),
+                                    borderRadius: responsiveWidth(3),
+                                    backgroundColor: "#BFFFDA",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    elevation: 1
+                                }}>
+                                    <View>
+                                        <Font5 name="user-alt" size={responsiveWidth(6)} color="#A2159C" />
+                                    </View>
+                                    <Text
+                                        style={{ fontSize: responsiveFontSize(1.8), color: "black", marginTop: responsiveWidth(4) }}
+                                    >
+                                        <Text style={{ color: 'black', fontWeight: "400" }}>{company_details.name}</Text>
+                                    </Text>
+                                </View>
+
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        const phoneNumber = company_details.phone;
+                                        if (phoneNumber) {
+                                            const phoneUrl = `tel:${phoneNumber}`;
+                                            Linking.openURL(phoneUrl);
+                                        }
+                                    }}
+                                    style={{
+                                        width: responsiveWidth(30),
+                                        height: responsiveHeight(15),
+                                        borderRadius: responsiveWidth(3),
+                                        backgroundColor: "#BFFFDA",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        elevation: 1
+                                    }}>
+                                    <View>
+                                        <Font5 name="phone-alt" size={responsiveWidth(6)} color="#A2159C" />
+                                    </View>
+                                    <Text
+                                        style={{
+                                            fontSize: responsiveFontSize(1.8),
+                                            color: "black",
+                                            marginTop: responsiveWidth(4)
+                                        }}
+                                    >
+                                        <Text style={{ color: 'black', fontWeight: "400" }}>{company_details.phone}</Text>
+                                    </Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        const emailAddress = company_details.email;
+                                        if (emailAddress) {
+                                            const emailUrl = `mailto:${emailAddress}`;
+                                            Linking.openURL(emailUrl);
+                                        }
+                                    }}
+                                    style={{
+                                        width: responsiveWidth(30),
+                                        height: responsiveHeight(15),
+                                        borderRadius: responsiveWidth(3),
+                                        backgroundColor: "#BFFFDA",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        elevation: 1
+                                    }}>
+                                    <View>
+                                        <Font name="email" size={responsiveWidth(6.8)} color="#A2159C" />
+                                    </View>
+                                    <Text
+                                        style={{
+                                            fontSize: responsiveFontSize(1.8),
+                                            color: "black",
+                                            marginTop: responsiveWidth(4)
+                                        }}
+                                    >
+                                        <Text style={{ color: 'black', fontWeight: "400" }}>{company_details.email}</Text>
+                                    </Text>
+                                </TouchableOpacity>
+
                             </View>
                         </View>
 
-                        <View style={{
-                            width: responsiveWidth(94),
-                            height: responsiveHeight(6),
-                            backgroundColor: "white",
-                            flexDirection: "row",
-                            borderRadius: responsiveWidth(3),
-                            borderWidth: 1,
-                            borderColor: "#BCB4B4",
-                            marginTop: responsiveWidth(2)
-                        }}>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                <Font name="email" size={responsiveWidth(6)} color="#535353" />
-                            </View>
-                            <View style={{ flex: 5, justifyContent: "center" }}>
-                                <Text
-                                    style={{ fontSize: responsiveFontSize(2), color: "black" }}
-                                >
-                                    Email : {company_details.email}
-                                </Text>
-                            </View>
+
+                        {/* view just to manage flex */}
+                        <View style={{ flex: 0.5 }}>
+
+
                         </View>
 
                     </View>

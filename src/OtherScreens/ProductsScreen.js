@@ -36,7 +36,7 @@ const ProductsScreen = () => {
         browse_Category_Products()
     }, [newCategory])
 
-    // console.log("checking category",newCategory)
+
     // fetching products when user click on browse categrory items 
     const browse_Category_Products = () => {
 
@@ -88,10 +88,10 @@ const ProductsScreen = () => {
 
     // searching product based on name 
     const performSearch = (text) => {
-        // console.log("performsearch")
+     
         const txt = text.toLowerCase().trim();
         // Update the filtered products based on the search text
-        if (txt === '') {
+        if (txt== '') {
             setFilteredProducts(apiProducts); // If search is empty, show all products
         } else {
             const searchedItems = apiProducts.filter(

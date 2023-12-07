@@ -14,6 +14,7 @@ import AddCustomer from '../OtherScreens/AddCustomer';
 import ProductsScreen from '../OtherScreens/ProductsScreen';
 import ProductTabScreen from '../Retailer/ProductTabScreen';
 import HelpScreen from '../Retailer/HelpScreen';
+import ScratchCardScreen from '../OtherScreens/ScratchCard';
 
 
 const CustomTabBarIcon = ({ name, size, focused }) => {
@@ -76,8 +77,8 @@ const BottomTab = () => {
                     }}
                 />
                 <Tab.Screen
-                    name='Referrels'
-                    component={ReferrelsScreen}
+                name='referel'
+                    component={ScratchCardScreen}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ focused, color, size }) => (

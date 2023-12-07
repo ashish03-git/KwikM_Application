@@ -205,7 +205,8 @@ const DistributorHome = () => {
                                             <View style={{ flex: 2.5, justifyContent: "center", alignItems: "flex-start", paddingLeft: responsiveWidth(1) }}>
                                                 <Image
                                                     style={{ width: responsiveWidth(30), height: responsiveHeight(4) }}
-                                                    source={{ uri: "https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1701648000&Signature=bZ9LukHMV~ybCMVozJO6N~txDYAtqeqWvFwwJJjx5ZVvEuVWYMk5uJhHAO1uNIfHJO~uqWpB7gjiKXMEv0CCP3BKEc8FAPBH12J2D7Bv8DuCz0adt2YTutdkABPvdHW9GGcgH54I9NwJ-Fm9rWReHvHfBzhgFAG4yJ5w8MvBFnuAnOcna67v4untgydmL7Mf7xubNKIagCPQPYzLe2VOKrG2iTwPTgbSxfHms8ctSIIOyTUY5ZypYbeyd6-zTksnTetRGzx2bviFhMwOEA157L7agTZIz8PWPdc71Qgggvqz-HQo-58yVQ9LKjldU9HVniNNerdnExfnqklH0p98oQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4" }}
+                                                    source={{uri: "https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1702857600&Signature=Av-qbmpOdf1ejuomjhi3AqOFEMXRrIHcAqcseIlcT2zHDT1SbIpUOh0P0d8eCZmU2xjEQmUWe62IKgJX9Mnp6pQlEd1n8CDZcB-ODA89c9dXHkKpWbU-epZOoz79H4uN9H3Ft4a9JIpQAhXZeAkHAZdFvazWRQYYvqQM6n93eMKRG86J5byn8~CoYOm12vPS6foKzmM2R3UYaw6xRvWrSCa3kcD7Npu81DH9Cc~L5whoHClzTlT6y9~8PE6c82kJjH04jajLVVDro7rE~nSCfhKJaOLnLqejZpkVSDNVk23HOmvRpy6xCSFjbWKCvhevd9u5ZxyIdAN9g4XfgMN~Hw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                                                }}
                                                 />
                                             </View>
                                         </View>
