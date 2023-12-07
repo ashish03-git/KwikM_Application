@@ -21,6 +21,15 @@ import ApkSubscripton from './src/OtherScreens/ApkSubscripton'
 import PaytmScreen from './src/OtherScreens/PaytmScreen'
 import PiceOnboarding from './src/OtherScreens/PiceOnboarding'
 import PiceLeadScreen from './src/OtherScreens/PiceLeadScreen'
+import MyLeadRetailer from './src/Retailer/MyLeadRetailer'
+import ProductTabScreen from './src/Retailer/ProductTabScreen'
+import ChangeMpinScreen from './src/ProfileScreens/ChangeMpinScreen'
+import WebViewScreen from './src/OtherScreens/WebViewScreeen'
+import InsuaranceProductsScreens from './src/OtherScreens/InsuaranceProductsScreens'
+import PurchaseInsuarance from './src/OtherScreens/PurchaseInsuarance'
+import AddRetailer from './src/Distributor/AddRetailer'
+import LeadAddSuccessMesageScreen from './src/OtherScreens/LeadAddSuccessMesageScreen'
+import ScratchCardScreen from './src/OtherScreens/ScratchCard'
 
 
 // Distributor screens
@@ -29,23 +38,22 @@ import MyTeamDistributor from './src/Distributor/MyTeamDistributor'
 import EarningDetailsDistributor from './src/Distributor/EarningDetailsDistributor'
 
 
+
 // Corporate Partner
 import CorpBottomTab from './src/navigator/CorpBottomTab'
 import MyTeamCorporate from './src/Corporate/MyTeamCorporate'
 import EarningDetailsCorporate from './src/Corporate/EarningDetailsCorporate'
-import UserProfile from './src/ProfileScreens/UserProfile'
 import AddDistributor from './src/Corporate/AddDistributor'
-import ChangeMpinScreen from './src/ProfileScreens/ChangeMpinScreen'
-import WebViewScreen from './src/OtherScreens/WebViewScreeen'
-import InsuaranceProductsScreens from './src/OtherScreens/InsuaranceProductsScreens'
-import PurchaseInsuarance from './src/OtherScreens/PurchaseInsuarance'
-import AddRetailer from './src/Distributor/AddRetailer'
-import MyLeadRetailer from './src/Retailer/MyLeadRetailer'
+
+
+
+
+// common imports
+import UserProfile from './src/ProfileScreens/UserProfile'
 import TrainingVideoScreen from './src/Retailer/TrainingVideoScreen'
 import HelpScreen from './src/Retailer/HelpScreen'
-import ProductTabScreen from './src/Retailer/ProductTabScreen'
-import LeadAddSuccessMesageScreen from './src/OtherScreens/LeadAddSuccessMesageScreen'
-import ScratchCardScreen from './src/OtherScreens/ScratchCard'
+
+
 
 
 const Stack = createStackNavigator()

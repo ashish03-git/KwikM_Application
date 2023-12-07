@@ -5,10 +5,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import the i
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icons you want to use
 import HomeScreen from '../MainScreens/HomeScreen';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import LeadsScreen from '../MainScreens/LeadsScreen';
 import AddScreen from '../MainScreens/AddScreen';
 import ReferrelsScreen from '../MainScreens/ReferrelsScreen';
-import SupportScreen from '../MainScreens/SupportScreen';
 import MyLeadRetailer from '../Retailer/MyLeadRetailer';
 import AddCustomer from '../OtherScreens/AddCustomer';
 import ProductsScreen from '../OtherScreens/ProductsScreen';

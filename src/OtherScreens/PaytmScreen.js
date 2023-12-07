@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, FlatList, StatusBar } from 'react-native'
+import { View, Text, TouchableOpacity, Image, FlatList, StatusBar,Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { responsiveHeight, responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions'
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native'
@@ -191,7 +191,7 @@ const PaytmScreen = () => {
                                             showsVerticalScrollIndicator={false}
                                             style={{ marginTop: responsiveWidth(2), height: responsiveHeight(40) }}
                                             renderItem={({ item }) => {
-                                                const logo = item.customer_name[0].toUpperCase()
+                                                const logo = item.customer_name[0]
 
                                                 return (
                                                     <View style={{

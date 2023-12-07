@@ -7,7 +7,7 @@ import Font from "react-native-vector-icons/MaterialCommunityIcons"
 
 import LottieView from 'lottie-react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -31,12 +31,13 @@ const HelpScreen = () => {
 
 
 
+    useFocusEffect(
+        React.useCallback(() => {
+            getUserDetails()
+            FetchHelpDetails()
+        })
+    )
 
-    useEffect(() => {
-        // setActivityIndicator(true)
-        getUserDetails()
-        FetchHelpDetails()
-    }, [userId, auth_token])
 
     const getUserDetails = async () => {
         await AsyncStorage.getItem("user_id").then((user_id) => {
@@ -56,7 +57,7 @@ const HelpScreen = () => {
             "user_id": userId,
             "auth_token": auth_token
         }
-        // console.log(ob)
+        console.log(ob)
         await fetch("https://kwikm.in/dev_kwikm/api/get_help.php", {
             method: "POST",
             headers: {
@@ -65,7 +66,7 @@ const HelpScreen = () => {
             body: JSON.stringify(ob)
         }).then(response => response.text())
             .then(data => {
-
+                // console.log(data)
                 // Fix the structure by adding a comma between the two objects
                 let fixedData = data.replace(/}{/, '},{');
 

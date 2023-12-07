@@ -110,7 +110,7 @@ const ProductTabScreen = () => {
                                     style={{
                                         width: responsiveWidth(44),
                                         height: responsiveHeight(24),
-                                        backgroundColor: "white",
+                                        backgroundColor: "#BFFFDA",
                                         borderRadius: responsiveWidth(3),
                                         margin: responsiveWidth(2), // Add margin to create space between items
                                         justifyContent: "center",
@@ -140,7 +140,7 @@ const ProductTabScreen = () => {
                                     style={{
                                         width: responsiveWidth(44),
                                         height: responsiveHeight(24),
-                                        backgroundColor: "white",
+                                        backgroundColor: "#BFFFDA",
                                         borderRadius: responsiveWidth(3),
                                         margin: responsiveWidth(2), // Add margin to create space between items
                                         justifyContent: "center",
@@ -188,7 +188,7 @@ const ProductTabScreen = () => {
                                                     style={{
                                                         width: responsiveWidth(44),
                                                         height: responsiveHeight(24),
-                                                        backgroundColor: "white",
+                                                        backgroundColor: "#BFFFDA",
                                                         borderRadius: responsiveWidth(3),
                                                         margin: responsiveWidth(2), // Add margin to create space between items
                                                         justifyContent: "center",

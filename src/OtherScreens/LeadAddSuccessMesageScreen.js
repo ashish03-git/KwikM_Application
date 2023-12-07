@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Share } from 'react-native'
+import { View, Text, TouchableOpacity, Share, Linking } from 'react-native'
 import React from 'react'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
@@ -24,15 +24,7 @@ const LeadAddSuccessMesageScreen = () => {
 
     const ShareRetailerLeadDetails = async () => {
 
-        const message = `
 
-        KWIK M App
-        Name: ${leadUserDetails.full_name}\n
-        Phone: ${leadUserDetails.mobile_no}\n
-        Email: ${leadUserDetails.email}\n
-        Pan: ${leadUserDetails.pan}\n
-        Lead Code: ${leadData.data.lead_code}\n
-        Campaign URL: ${leadData.data.campaign_url}\n`;
 
         try {
             // Share the message
@@ -69,28 +61,54 @@ const LeadAddSuccessMesageScreen = () => {
         }
     };
 
-    const SharePiceLeadDetails = async () => {
 
+
+    const handleWhatsAppOpenForRetailer = () => {
 
         const message = `
 
         KWIK M App
-        Name: ${name}\n
-        Phone: ${phone}\n
-        Email: ${email}\n
-        Pan: ${pan}\n
-        Lead Code: ${leadCode}\n
-        Campaign URL: ${campaignUrl}\n`;
+        Name: ${leadUserDetails.full_name}\n
+        Phone: ${leadUserDetails.mobile_no}\n
+        Email: ${leadUserDetails.email}\n
+        Pan: ${leadUserDetails.pan}\n
+        Lead Code: ${leadData.data.lead_code}\n
+        Campaign URL: ${leadData.data.campaign_url}\n`;
 
-        try {
-            // Share the message
-            const result = await Share.share({
-                message: message,
+        const whatsappUrl = `whatsapp://send?phone=+91${leadUserDetails.mobile_no}&text=${encodeURIComponent(message)}`;
+        Linking.canOpenURL(whatsappUrl)
+            .then((supported) => {
+                if (!supported) {
+                    return Linking.openURL(whatsappUrl);
+                } else {
 
-            });
-        } catch (error) {
-            console.log(error);
-        }
+                }
+            })
+            .catch((err) => console.error("An error occurred", err));
+    };
+
+    const handleWhatsAppOpenForPaytm = () => {
+
+        const message = `
+
+        KWIK M App
+
+        Name: ${leadUserDetails.customer_name}\n
+        Phone: ${leadUserDetails.customer_mobile}\n
+        Marchant Code: ${leadUserDetails.merchantcode}\n
+        RefId: ${leadUserDetails.refid}\n
+        Campaign URL: ${leadData.data}\n`;
+
+        const whatsappUrl = `whatsapp://send?phone=+91${leadUserDetails.customer_mobile}&text=${encodeURIComponent(message)}`;
+        Linking.canOpenURL(whatsappUrl)
+            .then((supported) => {
+                if (!supported) {
+                    return Linking.openURL(whatsappUrl);
+                } else {
+
+                }
+            })
+            .catch((err) => console.error("An error occurred", err));
     };
 
 
@@ -442,7 +460,7 @@ const LeadAddSuccessMesageScreen = () => {
                                                 marginLeft: responsiveWidth(1)
                                             }}
                                         >
-                                           {leadUserDetails.email}
+                                            {leadUserDetails.email}
                                         </Text>
                                     </View>
 
@@ -481,7 +499,7 @@ const LeadAddSuccessMesageScreen = () => {
                                                 marginLeft: responsiveWidth(1)
                                             }}
                                         >
-                                           {leadData.data.lead_code}
+                                            {leadData.data.lead_code}
                                         </Text>
                                     </View>
 
@@ -777,7 +795,7 @@ const LeadAddSuccessMesageScreen = () => {
 
 
                 <TouchableOpacity
-                    onPress={screenName==="paytm"?SharePaytmLeadDetails:screenName==="retailer"?ShareRetailerLeadDetails:SharePiceLeadDetails}
+                    onPress={screenName === "paytm" ? handleWhatsAppOpenForPaytm : screenName === "retailer" ? handleWhatsAppOpenForRetailer : handleWhatsAppOpenForPaytm}
                     style={{
                         width: responsiveWidth(45),
                         height: responsiveHeight(6),

@@ -177,6 +177,7 @@ const LoginMPINScreen = () => {
                                     <Text style={{ fontSize: responsiveFontSize(2), fontWeight: "400", color: "black", margin: responsiveWidth(5), marginLeft: responsiveWidth(10) }}>Enter MPIN to Login </Text>
                                 </View>
 
+
                                 {/* phone */}
                                 <View style={{
                                     width: responsiveWidth(85),
