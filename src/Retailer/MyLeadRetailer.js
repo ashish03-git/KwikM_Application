@@ -23,12 +23,13 @@ const MyLeadRetailer = () => {
   const [auth_token, setAuth_Token] = useState("");
 
 
-
-  useEffect(() => {
-    setActivityIndicator(true)
-    getUserDetails()
-    FetchRetailerAllLead()
-  }, [userId,auth_token])
+  useFocusEffect(
+    React.useCallback(() => {
+      setActivityIndicator(true)
+      getUserDetails()
+      FetchRetailerAllLead()
+    }, [userId, auth_token])
+  )
 
   const getUserDetails = async () => {
     await AsyncStorage.getItem("user_id").then((user_id) => {
@@ -56,12 +57,15 @@ const MyLeadRetailer = () => {
       let allLeadData = await response.json();
       // console.log(allLeadData)
       if (allLeadData.status) {
-        setActivityIndicator(false);
         setLeadList(allLeadData.data);
       } else {
-        setActivityIndicator(false);
         setLeadList([]);
       }
+
+      setTimeout(() => {
+        setActivityIndicator(false)
+      }, 300);
+      
     } catch (error) {
       console.error("Error fetching leads:", error);
       setLeadList([]);

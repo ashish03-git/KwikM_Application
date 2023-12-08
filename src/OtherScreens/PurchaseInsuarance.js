@@ -57,54 +57,56 @@ const PurchaseInsuarance = () => {
             setButtonStatus(false)
         }
     }
+
+    
     // Insuarance 
-    // const Purchase = async () => {
+    const openInsuaranceSite = async () => {
 
-    //     setActivityIndicator(true)
-    //     const url = "https://partnerapi-staging.insurancedekho.com/iam-pos/api/v1/user/auth/partner";
-    //     const username = "growwell";
-    //     const password = "la9xfvAZAt";
+        setActivityIndicator(true)
+        const url = "https://partnerapi-staging.insurancedekho.com/iam-pos/api/v1/user/auth/partner";
+        const username = "growwell";
+        const password = "la9xfvAZAt";
 
-    //     const base64credentials = encode(`${username}:${password}`);
-    //     // console.log("credential encoded")
-    //     const headers = new Headers();
-    //     headers.append("Content-Type", "application/json");
-    //     headers.append("Authorization", `Basic ${base64credentials}`);
-    //     headers.append("x-api-key", "zwCM1OENMeVYHSHg94QtJ5SsFxYC");
-    //     headers.append("x-correlation-id", "1700025360961");
-    //     // console.log("headers implemented")
+        const base64credentials = encode(`${username}:${password}`); 
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", `Basic ${base64credentials}`);
+        headers.append("x-api-key", "zwCM1OENMeVYHSHg94QtJ5SsFxYC");
+        headers.append("x-correlation-id", "1700025360961");
 
-    //     const ob = {
-    //         "referenceAuthId": 42,
-    //         "mobile": 9730592488
-    //     };
 
-    //     try {
+        const ob = {
+            "referenceAuthId": user_id,
+            "mobile": mobile_nun
+        };
 
-    //         const response = await fetch(url, {
-    //             method: "POST",
-    //             headers: headers,
-    //             body: JSON.stringify(ob)
-    //         })
-    //         if (!response.ok) {
-    //             console.log("Error found");
-    //         }
-    //         const token = response.headers.get("One-Time-Token");
-    //         console.log("token", token);
-    //         if (token) {
-    //             setActivityIndicator(false)
-    //             navigation.navigate("openWebView", { token })
-    //         }
-    //         else {
-    //             console.log("token not found");
-    //             setActivityIndicator(false)
-    //         }
-    //         // const data = await response.json();
-    //         // console.log(data);
-    //     } catch (error) {
-    //         console.log("Catch error: " + error);
-    //     }
-    // };
+        try {
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(ob)
+            })
+            if (!response.ok) {
+                console.log("Error found");
+            }
+            const token = response.headers.get("One-Time-Token");
+            // console.log("token", token);
+            if (token) {
+                setActivityIndicator(false)
+                navigation.navigate("openWebView", { token })
+            }
+            else {
+                console.log("token not found");
+                setActivityIndicator(false)
+            }
+            // const data = await response.json();
+            // console.log(data);
+        } catch (error) {
+            console.log("Catch error: " + error);
+        }
+    };
+
 
     const Purchase = async () => {
         const ob = {
@@ -126,7 +128,7 @@ const PurchaseInsuarance = () => {
             body: JSON.stringify(ob)
         }).then(response => response.json())
             .then(data => {
-                console.log(data)
+                // console.log(data)
                 if (data.status) {
                     setErrorStatus(false)
                     setMsg(data.message)
@@ -134,18 +136,19 @@ const PurchaseInsuarance = () => {
                         setMsg("")
                         setFull_Name("")
                         setMobile_Num("")
-                        navigation.navigate("insuaranceProducts")
-                    }, 2000);
+                        openInsuaranceSite()
+                    },500);
                 }
                 else {
                     setErr(data.error)
                     setTimeout(() => {
                         setErrorStatus(true)
                         setErr("")
-                    }, 2000);
+                    }, 500);
                 }
             })
     }
+    
 
 
     return (

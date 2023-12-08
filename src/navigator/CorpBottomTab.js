@@ -3,16 +3,12 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import the icons you want to use
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icons you want to use
-import HomeScreen from '../MainScreens/HomeScreen';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import LeadsScreen from '../MainScreens/LeadsScreen';
-import AddScreen from '../MainScreens/AddScreen';
 import ReferrelsScreen from '../MainScreens/ReferrelsScreen';
 import CorporateHome from '../Corporate/CorporateHome';
 import MyTeamCorporate from '../Corporate/MyTeamCorporate';
-import EarningDetailsCorporate from '../Corporate/EarningDetailsCorporate';
-import SupportScreen from '../MainScreens/SupportScreen';
 import AddDistributor from '../Corporate/AddDistributor';
+import HelpScreen from '../Retailer/HelpScreen';
 
 
 const CustomTabBarIcon = ({ name, size, focused }) => {
@@ -33,15 +29,15 @@ const Tab = createBottomTabNavigator()
 const CorpBottomTab = () => {
     return (
         <View style={{ flex: 1 }}>
-            <Tab.Navigator 
-            screenOptions={{
-                tabBarStyle:{
-                    height:responsiveHeight(7),
-                },
-                tabBarActiveTintColor:"#0B7E8E",
-                tabBarInactiveTintColor:"#444444",
-                // tabBarShowLabel:false
-            }}
+            <Tab.Navigator
+                screenOptions={{
+                    tabBarStyle: {
+                        height: responsiveHeight(7),
+                    },
+                    tabBarActiveTintColor: "#0B7E8E",
+                    tabBarInactiveTintColor: "#444444",
+                    // tabBarShowLabel:false
+                }}
             >
 
                 <Tab.Screen
@@ -55,7 +51,7 @@ const CorpBottomTab = () => {
                         tabBarLabelStyle: {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
-                            marginBottom:responsiveWidth(1)
+                            marginBottom: responsiveWidth(1)
                         }
                     }}
                 />
@@ -70,7 +66,7 @@ const CorpBottomTab = () => {
                         tabBarLabelStyle: {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
-                            marginBottom:responsiveWidth(1)
+                            marginBottom: responsiveWidth(1)
 
                         }
                     }}
@@ -86,14 +82,14 @@ const CorpBottomTab = () => {
                         tabBarLabelStyle: {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
-                            display:"none"
+                            display: "none"
                         },
                         // tabBarShowLabel:false
-                      
-                        
+
+
                     }}
                 />
-                    <Tab.Screen
+                <Tab.Screen
                     name='Referrels'
                     component={ReferrelsScreen}
                     options={{
@@ -104,14 +100,14 @@ const CorpBottomTab = () => {
                         tabBarLabelStyle: {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
-                            marginBottom:responsiveWidth(1)
+                            marginBottom: responsiveWidth(1)
 
                         }
                     }}
                 />
-                <Tab.Screen 
-                    name='My Team'
-                    component={SupportScreen}
+                <Tab.Screen
+                    name='Support'
+                    component={HelpScreen}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ focused, color, size }) => (
@@ -120,7 +116,7 @@ const CorpBottomTab = () => {
                         tabBarLabelStyle: {
                             fontSize: responsiveFontSize(1.6),
                             fontWeight: "600",
-                            marginBottom:responsiveWidth(1)
+                            marginBottom: responsiveWidth(1)
 
                         }
                     }}

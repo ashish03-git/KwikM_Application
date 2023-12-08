@@ -5,7 +5,7 @@ import Font6 from "react-native-vector-icons/FontAwesome6"
 import Font5 from "react-native-vector-icons/FontAwesome5"
 import Font from "react-native-vector-icons/FontAwesome"
 import Octicons from "react-native-vector-icons/Octicons"
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -26,11 +26,13 @@ const MyTeamDistributor = () => {
     // console.log("my team",reduxMyDistributorsList)
 
 
-    useEffect(() => {
-        setActivityIndicator(true)
-        getUserDetails()
-        FetchMyRetailerList()
-    }, [userId])
+    useFocusEffect(
+        React.useCallback(() => {
+            setActivityIndicator(true)
+            getUserDetails()
+            FetchMyRetailerList()
+        }, [userId])
+    )
 
     const getUserDetails = async () => {
         await AsyncStorage.getItem("user_id").then((user_id) => {
@@ -64,7 +66,7 @@ const MyTeamDistributor = () => {
                     }
                     setTimeout(() => {
                         setActivityIndicator(false)
-                    }, 500);
+                    },300);
                 })
 
         }

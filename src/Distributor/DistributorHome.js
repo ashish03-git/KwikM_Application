@@ -101,7 +101,7 @@ const DistributorHome = () => {
                 // console.log(recentTransactionData)
                 setActivityIndicator(false)
                 setRecentTransactions(recentTransactionData)
-                
+
             }
             else {
                 setRecentTransactions([])
@@ -114,7 +114,7 @@ const DistributorHome = () => {
         }
 
     }
-    
+
     const FetchBalance = async () => {
         try {
             const response = await fetch("https://kwikm.in/dev_kwikm/api/wallet_balance.php", {
@@ -205,8 +205,9 @@ const DistributorHome = () => {
                                             <View style={{ flex: 2.5, justifyContent: "center", alignItems: "flex-start", paddingLeft: responsiveWidth(1) }}>
                                                 <Image
                                                     style={{ width: responsiveWidth(30), height: responsiveHeight(4) }}
-                                                    source={{uri: "https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1702857600&Signature=Av-qbmpOdf1ejuomjhi3AqOFEMXRrIHcAqcseIlcT2zHDT1SbIpUOh0P0d8eCZmU2xjEQmUWe62IKgJX9Mnp6pQlEd1n8CDZcB-ODA89c9dXHkKpWbU-epZOoz79H4uN9H3Ft4a9JIpQAhXZeAkHAZdFvazWRQYYvqQM6n93eMKRG86J5byn8~CoYOm12vPS6foKzmM2R3UYaw6xRvWrSCa3kcD7Npu81DH9Cc~L5whoHClzTlT6y9~8PE6c82kJjH04jajLVVDro7rE~nSCfhKJaOLnLqejZpkVSDNVk23HOmvRpy6xCSFjbWKCvhevd9u5ZxyIdAN9g4XfgMN~Hw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-                                                }}
+                                                    source={{
+                                                        uri: "https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1702857600&Signature=Av-qbmpOdf1ejuomjhi3AqOFEMXRrIHcAqcseIlcT2zHDT1SbIpUOh0P0d8eCZmU2xjEQmUWe62IKgJX9Mnp6pQlEd1n8CDZcB-ODA89c9dXHkKpWbU-epZOoz79H4uN9H3Ft4a9JIpQAhXZeAkHAZdFvazWRQYYvqQM6n93eMKRG86J5byn8~CoYOm12vPS6foKzmM2R3UYaw6xRvWrSCa3kcD7Npu81DH9Cc~L5whoHClzTlT6y9~8PE6c82kJjH04jajLVVDro7rE~nSCfhKJaOLnLqejZpkVSDNVk23HOmvRpy6xCSFjbWKCvhevd9u5ZxyIdAN9g4XfgMN~Hw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                                                    }}
                                                 />
                                             </View>
                                         </View>
@@ -244,8 +245,9 @@ const DistributorHome = () => {
 
                                     <View style={styles.help_details}>
 
-                                        <TouchableOpacity 
-                                        style={styles.help_details_item1}>
+                                        <TouchableOpacity
+                                            onPress={() => navigation.navigate("trainingVideo")}
+                                            style={styles.help_details_item1}>
                                             <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
                                                 <View style={styles.help_details_item_img1}>
                                                     <Font5 name="desktop" size={responsiveWidth(5.2)} color="#065399" />
@@ -257,9 +259,9 @@ const DistributorHome = () => {
                                             </View>
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity 
-                                        onPress={()=>navigation.navigate("myTeamDistributor")}
-                                        style={styles.help_details_item2}>
+                                        <TouchableOpacity
+                                            onPress={() => navigation.navigate("myTeamDistributor")}
+                                            style={styles.help_details_item2}>
                                             <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
                                                 <View style={styles.help_details_item_img2}>
                                                     <Font5 name="user-friends" size={responsiveWidth(5.2)} color="#065399" />
@@ -271,8 +273,9 @@ const DistributorHome = () => {
                                             </View>
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity 
-                                        style={styles.help_details_item3}>
+                                        <TouchableOpacity
+                                         onPress={() => navigation.navigate("help")}
+                                            style={styles.help_details_item3}>
                                             <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
                                                 <View style={styles.help_details_item_img3}>
                                                     <Font5 name="headset" size={responsiveWidth(5.4)} color="#065399" />
@@ -285,7 +288,7 @@ const DistributorHome = () => {
                                         </TouchableOpacity>
                                     </View>
 
-                                    
+
                                 </View>
 
 
@@ -581,7 +584,7 @@ const DistributorHome = () => {
 
 
                             {/* recent transactions */}
-                             {/* recent transactions */}
+                            {/* recent transactions */}
                             <View style={{ flex: 1 }}>
 
                                 <View>
@@ -594,7 +597,7 @@ const DistributorHome = () => {
                                         Recent Transactions
                                     </Text>
                                 </View>
-                                
+
                                 {/* recent transaction ui and api  */}
                                 <View style={{ alignItems: "center", paddingBottom: responsiveWidth(15) }}>
 
@@ -681,7 +684,7 @@ const DistributorHome = () => {
                                                 autoPlay
                                                 loop
                                             />
-                                            <View style={{ height: responsiveHeight(3)}}>
+                                            <View style={{ height: responsiveHeight(3) }}>
                                                 <Text style={{
                                                     color: "black",
                                                     fontSize: responsiveFontSize(2.2),

@@ -46,7 +46,7 @@ const AddRetailer = () => {
         })
         await AsyncStorage.getItem("auth_token").then((token) => {
             setStoredToken(JSON.parse(token))
-            // console.log("check token", token)
+           
         })
     }
 
@@ -69,6 +69,7 @@ const AddRetailer = () => {
             "mpin": mpin.trim(),
             "upline": userId
         }
+        
         try {
             await fetch("https://kwikm.in/dev_kwikm/api/add_distributor.php", {
                 method: "POST",
@@ -146,7 +147,7 @@ const AddRetailer = () => {
                                         fontSize: responsiveFontSize(2.5),
                                         fontWeight: '700', color: "#2C582E"
                                     }}>
-                                        Distributor added successfully, We sent
+                                        Retailer added successfully, We sent
 
                                     </Text>
                                     <Text style={{
@@ -237,6 +238,7 @@ const AddRetailer = () => {
                                                 }}
                                                 keyboardType="numeric"
                                                 value={mobile_nun}
+                                                maxLength={10}
                                                 placeholder='Mobile Number'
                                             />
                                         </View>
@@ -288,6 +290,7 @@ const AddRetailer = () => {
                                                 }}
                                                 keyboardType="numeric"
                                                 value={mpin}
+                                                maxLength={4}
                                                 placeholder='MPIN'
                                                 placeholderTextColor={"gray"}
                                             />
@@ -305,16 +308,14 @@ const AddRetailer = () => {
                                 }}>
                                     {errorStatus ?
                                         <View style={{ height: responsiveHeight(3) }}>
-                                            <Text style={{ color: "red", fontSize: responsiveFontSize(2) }}>{err}</Text>
+                                            <Text style={{ color: "red", fontSize: responsiveFontSize(2),margin:responsiveWidth(2) }}>{err}</Text>
                                         </View>
                                         :
                                         <View style={{ height: responsiveHeight(2) }}>
-                                            <Text style={{ color: "green", fontSize: responsiveFontSize(2) }}>{msg}</Text>
+                                            <Text style={{ color: "green", fontSize: responsiveFontSize(2),margin:responsiveWidth(2)}}>{msg}</Text>
                                         </View>
                                     }
-                                    <View>
-                                        <Text>{msg}</Text>
-                                    </View>
+                               
 
                                     {buttonStatus ?
                                         <TouchableOpacity

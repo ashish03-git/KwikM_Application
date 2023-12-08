@@ -14,7 +14,6 @@ console.log(token)
       <WebView source={{ uri: `https://posstaging.insurancedekho.com/ott-pos/login?one-time-token=${token}` }}
         style={{ flex: 1 }} />
     </>
-
   );
 }
 

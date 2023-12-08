@@ -3,7 +3,6 @@ import React from 'react'
 import RegisterScreen from './src/auth/RegisterScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import BottomTab from './src/navigator/BottomTab'
 import OnbordingScreen1 from './src/onbording/OnbordingScreen1'
 import RegisterOtpScreen from './src/auth/RegisterOtpScreen'

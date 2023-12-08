@@ -3,17 +3,13 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import the icons you want to use
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icons you want to use
-import HomeScreen from '../MainScreens/HomeScreen';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import LeadsScreen from '../MainScreens/LeadsScreen';
-import AddScreen from '../MainScreens/AddScreen';
 import ReferrelsScreen from '../MainScreens/ReferrelsScreen';
 import DistributorHome from '../Distributor/DistributorHome';
-import EarningDetailsCorporate from '../Corporate/EarningDetailsCorporate';
-import EarningDetailsDistributor from '../Distributor/EarningDetailsDistributor';
 import SupportScreen from '../MainScreens/SupportScreen';
 import MyTeamDistributor from '../Distributor/MyTeamDistributor';
 import AddRetailer from '../Distributor/AddRetailer';
+import HelpScreen from '../Retailer/HelpScreen';
 
 
 
@@ -100,8 +96,8 @@ const DistributorBottomTab = () => {
                     }}
                 />
                 <Tab.Screen 
-                    name='My Team'
-                    component={SupportScreen}
+                    name='Support'
+                    component={HelpScreen}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ focused, color, size }) => (

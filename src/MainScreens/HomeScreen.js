@@ -24,7 +24,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import LottieView from 'lottie-react-native'
 import NoConnection from '../OtherScreens/NoConnection'
 import useNetInfo from '../OtherScreens/useNetInfo'
-import { addCategoryId } from '../redux/Slice'
+import { addCategoryId,addProductId } from '../redux/Slice'
 import { encode } from 'base-64';
 
 
@@ -428,6 +428,10 @@ const HomeScreen = () => {
                                     // style={{ height: responsiveHeight(6.5) }}
                                     renderItem={({ item }) => (
                                         <TouchableOpacity
+                                        onPress={() => {
+                                            dispatch(addProductId(item))
+                                            navigation.navigate("productDetails")
+                                        }}
                                             style={{
                                                 marginLeft: responsiveWidth(3),
                                                 marginRight: responsiveWidth(2),

@@ -29,6 +29,7 @@ const UserProfile = () => {
     const [phone, setPhone] = useState(null)
     const [userId, setUserId] = useState(null)
 
+
     useEffect(() => {
         getUserDetails()
     }, [])
@@ -73,7 +74,7 @@ const UserProfile = () => {
                         AsyncStorage.removeItem("role")
                         AsyncStorage.removeItem("user_number")
                         navigation.navigate("loginMPIN"),
-                            BackHandler.exitApp();
+                        BackHandler.exitApp();
 
                     }
                 }

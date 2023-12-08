@@ -35,7 +35,7 @@ const HelpScreen = () => {
         React.useCallback(() => {
             getUserDetails()
             FetchHelpDetails()
-        })
+        }, [userId, auth_token])
     )
 
 
@@ -57,34 +57,18 @@ const HelpScreen = () => {
             "user_id": userId,
             "auth_token": auth_token
         }
-        console.log(ob)
+        // console.log(ob)
         await fetch("https://kwikm.in/dev_kwikm/api/get_help.php", {
             method: "POST",
             headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify(ob)
-        }).then(response => response.text())
+        }).then(response => response.json())
             .then(data => {
-                // console.log(data)
-                // Fix the structure by adding a comma between the two objects
-                let fixedData = data.replace(/}{/, '},{');
-
-                // Wrap the entire data in square brackets to make it an array of objects
-                let jsonArray = '[' + fixedData + ']';
-
-                // Parse the JSON array
-                try {
-                    let parsedArray = JSON.parse(jsonArray);
-
-                    // Extract individual objects
-                    let uplineDetails = parsedArray[0].upline_details;
-                    let companyDetails = parsedArray[1].company_details;
-                    setUpline_Details(uplineDetails)
-                    setCompany_details(companyDetails)
-
-                } catch (error) {
-                    console.error("Error parsing JSON:", error);
+                if (data.status) {
+                    setCompany_details(data.company_details)
+                    setUpline_Details(data.upline_details)
                 }
 
             })
@@ -177,7 +161,7 @@ const HelpScreen = () => {
                                     <Text
                                         style={{ fontSize: responsiveFontSize(1.8), color: "black", marginTop: responsiveWidth(4) }}
                                     >
-                                        <Text style={{ color: 'black', fontWeight: "400" }}>{upline_details.name}</Text>
+                                        <Text style={{ color: 'black', fontWeight: "400" }}>{upline_details.name ? upline_details.name : "Not Available"}</Text>
                                     </Text>
                                 </View>
 
@@ -206,7 +190,12 @@ const HelpScreen = () => {
                                     <Text
                                         style={{ fontSize: responsiveFontSize(1.8), color: "black", marginTop: responsiveWidth(4) }}
                                     >
-                                        <Text style={{ color: 'black', fontWeight: "400" }}>{upline_details.phone}</Text>
+                                        <Text style={{
+                                            color: 'black',
+                                            fontWeight: "400"
+                                        }}>
+                                            {upline_details.phone ? upline_details.phone : "Not Available"}
+                                        </Text>
                                     </Text>
                                 </TouchableOpacity>
 
@@ -228,12 +217,17 @@ const HelpScreen = () => {
                                         elevation: 1
                                     }}>
                                     <View>
-                                        <Font name="email" size={responsiveWidth(6)} color="#A2159C" />
+                                        <Font name="email" size={responsiveWidth(6.8)} color="#A2159C" />
                                     </View>
                                     <Text
                                         style={{ fontSize: responsiveFontSize(1.8), color: "black", marginTop: responsiveWidth(4) }}
                                     >
-                                        <Text style={{ color: 'black', fontWeight: "400" }}>{upline_details.email}</Text>
+                                        <Text style={{
+                                            color: 'black',
+                                            fontWeight: "400"
+                                        }}>
+                                            {upline_details.email ? upline_details.email : "Not Available"}
+                                        </Text>
                                     </Text>
                                 </TouchableOpacity>
 
@@ -277,7 +271,12 @@ const HelpScreen = () => {
                                     <Text
                                         style={{ fontSize: responsiveFontSize(1.8), color: "black", marginTop: responsiveWidth(4) }}
                                     >
-                                        <Text style={{ color: 'black', fontWeight: "400" }}>{company_details.name}</Text>
+                                        <Text style={{
+                                            color: 'black',
+                                            fontWeight: "400"
+                                        }}>
+                                            {company_details.name ? company_details.name : "Not Available"}
+                                        </Text>
                                     </Text>
                                 </View>
 
@@ -308,7 +307,12 @@ const HelpScreen = () => {
                                             marginTop: responsiveWidth(4)
                                         }}
                                     >
-                                        <Text style={{ color: 'black', fontWeight: "400" }}>{company_details.phone}</Text>
+                                        <Text style={{
+                                            color: 'black',
+                                            fontWeight: "400"
+                                        }}>
+                                            {company_details.phone ? company_details.phone : "Not Available"}
+                                        </Text>
                                     </Text>
                                 </TouchableOpacity>
 
@@ -339,7 +343,12 @@ const HelpScreen = () => {
                                             marginTop: responsiveWidth(4)
                                         }}
                                     >
-                                        <Text style={{ color: 'black', fontWeight: "400" }}>{company_details.email}</Text>
+                                        <Text style={{
+                                            color: 'black',
+                                            fontWeight: "400"
+                                        }}>
+                                            {company_details.email ? company_details.email : "Not Available"}
+                                        </Text>
                                     </Text>
                                 </TouchableOpacity>
 

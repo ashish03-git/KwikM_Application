@@ -237,6 +237,7 @@ const AddDistributor = () => {
                                                 }}
                                                 keyboardType="numeric"
                                                 value={mobile_nun}
+                                                maxLength={10}
                                                 placeholder='Mobile Number'
                                             />
                                         </View>
@@ -289,6 +290,7 @@ const AddDistributor = () => {
                                                 keyboardType="numeric"
                                                 value={mpin}
                                                 placeholder='MPIN'
+                                                maxLength={4}
                                                 placeholderTextColor={"gray"}
                                             />
                                         </View>
