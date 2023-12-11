@@ -29,6 +29,8 @@ import PurchaseInsuarance from './src/OtherScreens/PurchaseInsuarance'
 import AddRetailer from './src/Distributor/AddRetailer'
 import LeadAddSuccessMesageScreen from './src/OtherScreens/LeadAddSuccessMesageScreen'
 import ScratchCardScreen from './src/OtherScreens/ScratchCard'
+import RewardsScreen from './src/ProfileScreens/RewardsScreen'
+
 
 
 // Distributor screens
@@ -90,6 +92,7 @@ const App = () => {
             <Stack.Screen name='openWebView' options={{ headerShown: false }} component={WebViewScreen} />
             <Stack.Screen name='leadSuccessMsg' options={{ headerShown: false }} component={LeadAddSuccessMesageScreen} />
             <Stack.Screen name='scratch' options={{ headerShown: false }} component={ScratchCardScreen} />
+            <Stack.Screen name='rewards' options={{ headerShown: false }} component={RewardsScreen} />
 
 
             {/* common screen */}

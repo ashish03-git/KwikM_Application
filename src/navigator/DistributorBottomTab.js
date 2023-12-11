@@ -29,7 +29,6 @@ const DistributorBottomTab = () => {
                 // tabBarShowLabel:false
             }}
             >
-
                 <Tab.Screen
                     name="Home"
                     component={DistributorHome}

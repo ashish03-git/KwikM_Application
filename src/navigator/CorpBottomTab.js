@@ -22,8 +22,6 @@ const CustomTabBarIcon = ({ name, size, focused }) => {
     );
 };
 
-
-
 const Tab = createBottomTabNavigator()
 
 const CorpBottomTab = () => {
@@ -125,5 +123,6 @@ const CorpBottomTab = () => {
         </View>
     );
 };
+
 
 export default CorpBottomTab;
