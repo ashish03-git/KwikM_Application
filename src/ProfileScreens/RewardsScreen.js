@@ -10,6 +10,7 @@ import {
   Image,
   Modal,
   ImageBackground,
+  TouchableHighlight,
 } from 'react-native';
 import {
   responsiveWidth,
@@ -59,6 +60,7 @@ const RewardsScreen = () => {
     })
       .then(response => response.json())
       .then(data => {
+        // console.log(data);
         if (data.status) {
           setTotalCard(data.rewards);
         } else {
@@ -79,12 +81,11 @@ const RewardsScreen = () => {
     });
   };
 
-  const handleCardPress = async id => {
+  const handleCardPress = async data => {
     setModalVisible(true);
-    setSelectedCard(id);
-
+    // setSelectedCard(id);
     // Assuming cards is an array of objects with an 'id' property
-    const activeCard = totalCard.filter(card => card.id === id);
+    const activeCard = totalCard.filter(card => card.id === data.id);
     // console.log("matching card", activeCard[0].amount);
     setRewardAmount(activeCard[0].amount);
   };
@@ -171,23 +172,129 @@ const RewardsScreen = () => {
                   </View>
                 </View>
               ) : (
-                <TouchableOpacity
-                  onPress={() => handleCardPress(totalCard[0].id)}
-                  style={{
-                    alignItems: 'flex-start',
-                    marginLeft: responsiveWidth(3),
-                    borderRadius: responsiveWidth(3),
-                  }}>
-                  <View style={styles.scratchArea}>
-                    <Image
-                      source={require('../../assets/gift-box.png')}
+                <>
+                  {totalCard[0].status === 0 ? (
+                    <TouchableHighlight
+                      onPress={() => handleCardPress(totalCard[0])}
                       style={{
-                        width: responsiveWidth(22),
-                        height: responsiveWidth(22),
-                      }}
-                    />
-                  </View>
-                </TouchableOpacity>
+                        width: 180,
+                        height: 180,
+                        marginLeft: responsiveWidth(3),
+                        borderRadius: responsiveWidth(3),
+                      }}>
+                      <View style={styles.openScratchCard}>
+                        {/* image */}
+                        <View
+                          style={{
+                            flex: 1.5,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <Image
+                            source={require('../../assets/gift-box.png')}
+                            style={{
+                              width: responsiveWidth(20),
+                              height: responsiveWidth(20),
+                              resizeMode: 'cover',
+                            }}
+                          />
+                        </View>
+                        {/* text */}
+                        <View
+                          style={{
+                            flex: 1,
+                          }}>
+                          <View
+                            style={{
+                              flex: 1,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <Text
+                              style={{
+                                fontSize: responsiveFontSize(2.5),
+                                color: 'gray',
+                              }}>
+                              You Won
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 2,
+                              flexDirection: 'row',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <Font5
+                              name="rupee-sign"
+                              size={responsiveFontSize(2.2)}
+                              color="gray"
+                            />
+                            <Text
+                              style={{
+                                fontSize: responsiveFontSize(4.5),
+                                color: 'gray',
+                                fontWeight: '700',
+                                marginLeft: responsiveWidth(1),
+                                marginBottom: responsiveWidth(1),
+                              }}>
+                              {totalCard[0].amount}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    </TouchableHighlight>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => handleCardPress(totalCard[0].id)}
+                      style={{
+                        // alignItems: 'flex-start',
+                        marginLeft: responsiveWidth(3),
+                        borderRadius: responsiveWidth(3),
+                      }}>
+                      {totalCard[0].status === 0 ? (
+                        <View style={styles.openScratchCard}>
+                          <View
+                            style={{
+                              width: '100%',
+                              height: responsiveHeight(5),
+                              backgroundColor: ' #7a7a7a',
+                              position: 'absolute',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              zIndex: 999,
+                            }}>
+                            <Text
+                              style={{
+                                fontSize: responsiveFontSize(4),
+                                color: 'white',
+                              }}>
+                              Claimed
+                            </Text>
+                          </View>
+                          <Image
+                            source={require('../../assets/gift-box.png')}
+                            style={{
+                              width: responsiveWidth(22),
+                              height: responsiveWidth(22),
+                              resizeMode: 'cover',
+                            }}
+                          />
+                        </View>
+                      ) : (
+                        <View style={styles.notOpenScratchCard}>
+                          <Image
+                            source={require('../../assets/gift-box.png')}
+                            style={{
+                              width: responsiveWidth(22),
+                              height: responsiveWidth(22),
+                            }}
+                          />
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  )}
+                </>
               )}
             </View>
           ) : (
@@ -196,26 +303,28 @@ const RewardsScreen = () => {
                 data={totalCard}
                 showsVerticalScrollIndicator={false}
                 numColumns={2}
-                renderItem={({item, index}) => {
+                renderItem={({item}) => {
                   return (
-                    <TouchableOpacity
-                      onPress={() => handleCardPress(item.id)}
-                      style={{
-                        alignItems: 'center',
-                        margin: responsiveWidth(1.5),
-                        borderRadius: responsiveWidth(3),
-                        backgroundColor: '#3768f3',
-                      }}>
-                      <View style={styles.scratchArea}>
-                        <Image
-                          source={require('../../assets/gift-box.png')}
-                          style={{
-                            width: responsiveWidth(22),
-                            height: responsiveWidth(22),
-                          }}
-                        />
-                      </View>
-                    </TouchableOpacity>
+                    <>
+                      <TouchableOpacity
+                        onPress={() => handleCardPress(item.id)}
+                        style={{
+                          alignItems: 'center',
+                          margin: responsiveWidth(1.5),
+                          borderRadius: responsiveWidth(3),
+                          backgroundColor: '#3768f3',
+                        }}>
+                        <View style={styles.notOpenScratchCard}>
+                          <Image
+                            source={require('../../assets/gift-box.png')}
+                            style={{
+                              width: responsiveWidth(22),
+                              height: responsiveWidth(22),
+                            }}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    </>
                   );
                 }}
               />
@@ -229,6 +338,8 @@ const RewardsScreen = () => {
             visible={isModalVisible}
             onRequestClose={closeModal}>
             <View style={styles.modalContainer}>
+              <StatusBar backgroundColor={'rgba(0,0,0,0.6)'} />
+
               <View
                 style={{
                   flexDirection: 'row',
@@ -250,6 +361,14 @@ const RewardsScreen = () => {
                   {rewardAmount}
                 </Text>
               </View>
+
+              <View>
+                <Text
+                  style={{fontSize: responsiveFontSize(2.5), color: 'white'}}>
+                  This amount will be added to your wallet.
+                </Text>
+              </View>
+
               <LottieView
                 source={require('../../assets/rewards.json')}
                 autoPlay={true}
@@ -277,7 +396,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EAFFEA',
   },
-  scratchArea: {
+  openScratchCard: {
+    width: 180,
+    height: 180,
+    backgroundColor: 'white',
+    elevation: 2,
+    borderRadius: responsiveWidth(3),
+    // borderra
+  },
+  notOpenScratchCard: {
     width: 180,
     height: 180,
     backgroundColor: '#f2bc0d',
