@@ -1,219 +1,327 @@
-import { View, Text, ScrollView, TouchableOpacity, TextInput, Image, FlatList, StatusBar } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
-import Font6 from "react-native-vector-icons/FontAwesome6"
-import Font5 from "react-native-vector-icons/FontAwesome5"
-import Font from "react-native-vector-icons/FontAwesome"
-import LottieView from 'lottie-react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  FlatList,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
+import React, {useEffect, useId, useState} from 'react';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from 'react-native-responsive-dimensions';
+import Font6 from 'react-native-vector-icons/FontAwesome6';
+import Font5 from 'react-native-vector-icons/FontAwesome5';
+import Font from 'react-native-vector-icons/FontAwesome';
+import LottieView from 'lottie-react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import ActivityLoader from '../OtherScreens/ActivityLoader'
-import { addMyDistibutorList } from '../redux/Slice'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ActivityLoader from '../OtherScreens/ActivityLoader';
+import {addMyDistibutorList} from '../redux/Slice';
 
 const MyTeamCorporate = () => {
+  // variables
+  const navigation = useNavigation();
+  const netinfo = useNetInfo();
+  const [userId, setUserId] = useState(null);
+  const [activityIndicator, setActivityIndicator] = useState(false);
+  const [myDistributorsList, setMyDistributorsList] = useState([]);
+  const reduxMyDistributorsList = useSelector(
+    state => state.details.myDistributorsList,
+  );
+  // console.log("my team",reduxMyDistributorsList)
 
-    // variables
-    const navigation = useNavigation()
-    const netinfo = useNetInfo()
-    const [userId, setUserId] = useState(null)
-    const [activityIndicator, setActivityIndicator] = useState(false)
-    const [myDistributorsList, setMyDistributorsList] = useState([])
-    const reduxMyDistributorsList = useSelector(state => state.details.myDistributorsList)
-    // console.log("my team",reduxMyDistributorsList)
+  useFocusEffect(
+    React.useCallback(() => {
+      setActivityIndicator(true);
+      getUserDetails();
+      FetchMyDistrubutorsList();
+    }, [userId]),
+  );
 
+  const getUserDetails = async () => {
+    await AsyncStorage.getItem('user_id').then(user_id => {
+      setUserId(JSON.parse(user_id));
+      // console.log("check user id",user_id)
+      // console.log("user id found")
+    });
+  };
 
-    useEffect(() => {
-        setActivityIndicator(true)
-        getUserDetails()
-        FetchMyDistrubutorsList()
-    }, [userId])
-
-    const getUserDetails = async () => {
-        await AsyncStorage.getItem("user_id").then((user_id) => {
-            setUserId(JSON.parse(user_id))
-            // console.log("check user id",user_id)
-            // console.log("user id found")
-        })
+  const FetchMyDistrubutorsList = async () => {
+    const ob = {
+      user_id: userId,
+    };
+    try {
+      await fetch('https://kwikm.in/dev_kwikm/api/my_downline.php', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          iv: 'cW0rMzBoS1VwM08xY1JpSXM3OWx6dz09',
+          'x-api-key':
+            'SW1MNk5lTERieEI4emQvaE43U0tvK1ZyVUs5V2RQMkdVZEZYay9POCswZlo2bk9yN1BTa0hYZnU0NU9ORG42WQ==',
+        },
+        body: JSON.stringify(ob),
+      })
+        .then(response => response.json())
+        .then(myDistributorsListData => {
+          // console.log(myDistributorsListData)
+          if (myDistributorsListData.length > 0) {
+            // dispatch(addMyDistibutorList(myDistributorsListData))
+            setMyDistributorsList(myDistributorsListData);
+          } else {
+            setMyDistributorsList([]);
+          }
+          setTimeout(() => {
+            setActivityIndicator(false);
+          }, 500);
+        });
+    } catch (error) {
+      console.log('Failed to fetch recent transactions', error);
     }
+  };
 
-
-    const FetchMyDistrubutorsList = async () => {
-        const ob = {
-            "user_id": userId
-        }
-        try {
-            await fetch("https://kwikm.in/dev_kwikm/api/my_downline.php", {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json",
-                    "iv": "cW0rMzBoS1VwM08xY1JpSXM3OWx6dz09",
-                    "x-api-key": "SW1MNk5lTERieEI4emQvaE43U0tvK1ZyVUs5V2RQMkdVZEZYay9POCswZlo2bk9yN1BTa0hYZnU0NU9ORG42WQ==",
-                },
-                body: JSON.stringify(ob)
-            }).then(response => response.json())
-                .then(myDistributorsListData => {
-                    // console.log(myDistributorsListData)
-                    if (myDistributorsListData.length > 0) {
-                        // dispatch(addMyDistibutorList(myDistributorsListData))
-                        setMyDistributorsList(myDistributorsListData)
-                    }
-                    else {
-                        setMyDistributorsList([])
-                    }
-                    setTimeout(() => {
-                        setActivityIndicator(false)
-                    }, 500);
-                })
-
-        }
-        catch (error) {
-            console.log("Failed to fetch recent transactions", error)
-        }
-
-
-    }
-
-
-
-    return (
-
+  return (
+    <>
+      {activityIndicator ? (
+        <View style={{flex: 1, backgroundColor: '#eaffea'}}>
+          <ActivityLoader />
+        </View>
+      ) : (
         <>
-            {activityIndicator ?
-                <View style={{ flex: 1, backgroundColor: "#eaffea" }}>
-                    <ActivityLoader />
+          {netinfo ? (
+            <View style={{flex: 1, backgroundColor: '#EAFFEA'}}>
+              <StatusBar backgroundColor="#EAFFEA" />
+
+              <View style={{height: responsiveHeight(8), flexDirection: 'row'}}>
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={styles.headerArrowIcone}>
+                  <Font5
+                    name="arrow-left"
+                    color="black"
+                    size={responsiveWidth(6)}
+                  />
+                </TouchableOpacity>
+
+                <View style={styles.headerTxtContainer}>
+                  <View>
+                    <Text style={styles.headerTxt}>My Distributors</Text>
+                  </View>
                 </View>
-                :
-                <>
-                    {netinfo ?
-                        <View
-                            style={{ flex: 1, backgroundColor: "#EAFFEA" }}
-                        >
-                            <StatusBar backgroundColor="#EAFFEA" />
-                            <View style={{ height: responsiveHeight(8), flexDirection: "row" }}>
-                                <TouchableOpacity
-                                    onPress={() => navigation.goBack()}
-                                    style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                                    <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
-                                </TouchableOpacity>
-                                <View style={{ flex: 4, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
-                                    <View>
-                                        <Text style={{ fontSize: responsiveFontSize(2.5), color: "black", fontWeight: "700" }}>My Distributors</Text>
-                                    </View>
+              </View>
+
+              <View style={{flex: 1}}>
+                {myDistributorsList.length > 0 ? (
+                  <View>
+                    <FlatList
+                      data={myDistributorsList}
+                      style={{marginBottom: responsiveWidth(2)}}
+                      renderItem={({item}) => {
+                        const logo = item.logo
+                          ? 'https://s3-alpha-sig.figma.com/img/84db/5113/c2841571834c3cd25628689742a5efea?Expires=1701648000&Signature=ifwqttdhyo9FKMnEZeOP8JRhFFrpmoQYcNQ1vbuYsG4E2lr9UeHo0hFSyG39XMs6TEXJcP8v-pVtmUhoMRtYgFhZfsAJduV9P8j4d9GJuwQoyjG2~9~WiYSCT8LdrY6I848LkiA7GwhcGN5FIhh-AGzWsv0DtFDOdnrBhdQ-5zVJbEnY9gx8uZht582ySIIGUCj0wYoGEfNSgTN8MhDWsFzaKb--k8ovAjWK7xoNSW~M1HGtBki4a-x3t7uSm7iPWl0gbZ7yTGnC1hMkIT5EhsMrAq0BT1VumaMbVNMjl~kwudws77IhRtTlhWHoWTFsMVT-rWbUlfnd5gUc3fr~GQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'
+                          : item.name.length > 0
+                          ? item.name[0].toUpperCase()
+                          : '?';
+                        const distributor_id = item.id;
+                        const distributor_name = item.name;
+                        const distributor_balance = item.balance;
+
+                        return (
+                          <TouchableOpacity
+                            onPress={() =>
+                              navigation.navigate('earingDetailsCorporate', {
+                                distributor_id,
+                                distributor_name,
+                                distributor_balance,
+                                logo,
+                              })
+                            }
+                            style={{alignItems: 'center'}}>
+                            <View style={styles.listItemContainer}>
+                              <View style={styles.listItemLogoContainer}>
+                                {logo.length > 1 ? (
+                                  <Image
+                                    source={{uri: logo}}
+                                    style={styles.listItemLogoImg}
+                                  />
+                                ) : (
+                                  <View
+                                    style={styles.listItemLogoNameTxtContainer}>
+                                    <Text style={styles.listItemLogoNameTxt}>
+                                      {logo}
+                                    </Text>
+                                  </View>
+                                )}
+                              </View>
+
+                              <View style={{flex: 3, justifyContent: 'center'}}>
+                                <Text style={styles.listItemDistri_name_txt}>
+                                  {item.name}
+                                </Text>
+                                <Text style={styles.listItemDistri_id_txt}>
+                                  ID: {item.id}
+                                </Text>
+                              </View>
+
+                              <View style={styles.listItem_balance_container}>
+                                <Text style={styles.listItem_balance_txt}>
+                                  Balance
+                                </Text>
+
+                                <View
+                                  style={
+                                    styles.listItem_balance_amount_container
+                                  }>
+                                  <Font5 name="rupee-sign" color="#0D950A" />
+                                  <Text
+                                    style={styles.listItem_balance_amount_txt}>
+                                    {item.balance}.00
+                                  </Text>
                                 </View>
+                              </View>
                             </View>
-
-                            <View style={{ flex: 1 }}>
-
-                                {myDistributorsList.length > 0 ?
-                                    <View>
-                                        <FlatList
-                                            data={myDistributorsList}
-                                            style={{ marginBottom: responsiveWidth(2) }}
-                                            renderItem={({ item }) => {
-                                                const logo = item.logo ?
-                                                    "https://s3-alpha-sig.figma.com/img/84db/5113/c2841571834c3cd25628689742a5efea?Expires=1701648000&Signature=ifwqttdhyo9FKMnEZeOP8JRhFFrpmoQYcNQ1vbuYsG4E2lr9UeHo0hFSyG39XMs6TEXJcP8v-pVtmUhoMRtYgFhZfsAJduV9P8j4d9GJuwQoyjG2~9~WiYSCT8LdrY6I848LkiA7GwhcGN5FIhh-AGzWsv0DtFDOdnrBhdQ-5zVJbEnY9gx8uZht582ySIIGUCj0wYoGEfNSgTN8MhDWsFzaKb--k8ovAjWK7xoNSW~M1HGtBki4a-x3t7uSm7iPWl0gbZ7yTGnC1hMkIT5EhsMrAq0BT1VumaMbVNMjl~kwudws77IhRtTlhWHoWTFsMVT-rWbUlfnd5gUc3fr~GQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-                                                    :
-                                                    item.name.length > 0 ? item.name[0].toUpperCase() : "?"
-                                                const distributor_id = item.id
-                                                const distributor_name = item.name
-                                                const distributor_balance = item.balance
-
-
-                                                return (
-                                                    <TouchableOpacity
-                                                        onPress={() => navigation.navigate("earingDetailsCorporate", { distributor_id, distributor_name, distributor_balance, logo })}
-                                                        style={{ alignItems: "center" }}>
-                                                        <View style={{
-                                                            width: responsiveWidth(94),
-                                                            height: responsiveHeight(8),
-                                                            backgroundColor: "white",
-                                                            borderRadius: responsiveWidth(3),
-                                                            flexDirection: 'row',
-                                                            margin: responsiveWidth(1.5),
-                                                            borderWidth: 1,
-                                                            borderRadius: responsiveWidth(3),
-                                                            borderColor: "#DADADA",
-                                                        }}>
-                                                            <View style={{ flex: 1.2, justifyContent: "center", alignItems: "center" }}>
-                                                                {logo.length > 1 ?
-                                                                    <Image source={{ uri: logo }}
-                                                                        style={{ width: responsiveWidth(12), height: responsiveWidth(12), borderRadius: responsiveWidth(6), resizeMode: "cover" }} />
-                                                                    :
-                                                                    <View style={{
-                                                                        width: responsiveWidth(14),
-                                                                        height: responsiveWidth(14),
-                                                                        borderRadius: responsiveWidth(7),
-                                                                        justifyContent: "center",
-                                                                        alignItems: "center",
-                                                                        backgroundColor: "#7BD7FF"
-                                                                    }}
-                                                                    >
-                                                                        <Text style={{
-                                                                            fontSize: responsiveFontSize(4.2),
-                                                                            color: 'black', fontWeight: "700"
-                                                                        }}>
-                                                                            {logo}
-                                                                        </Text>
-                                                                    </View>
-                                                                }
-
-                                                            </View>
-                                                            <View style={{ flex: 3, justifyContent: "center" }}>
-                                                                <Text style={{ fontSize: responsiveFontSize(1.8), color: "black", fontWeight: "700" }}>{item.name}</Text>
-                                                                <Text style={{ fontSize: responsiveFontSize(1.7), color: "black", fontWeight: "400" }}>ID: {item.id}</Text>
-                                                            </View>
-                                                            <View style={{ flex: 1.2, justifyContent: "center", alignItems: "center" }}>
-                                                                <Text style={{ fontSize: responsiveFontSize(1.6), color: "black", fontWeight: "400" }} >Balance</Text>
-                                                                <View style={{ flexDirection: 'row', justifyContent: "center", alignItems: "center" }}>
-                                                                    <Font5 name="rupee-sign" color="#0D950A" />
-                                                                    <Text style={{ fontSize: responsiveFontSize(1.7), color: "#0D950A", fontWeight: "700" }}> {item.balance}.00</Text>
-                                                                </View>
-                                                            </View>
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                )
-                                            }}
-                                        />
-
-                                    </View>
-                                    :
-                                    <View style={{
-                                        height: responsiveHeight(80),
-                                        justifyContent: "center",
-                                        alignItems: "center"
-                                    }}>
-                                        <View>
-                                            <LottieView
-                                                source={require("../../assets/noDataFound.json")}
-                                                style={{ width: responsiveWidth(80), height: responsiveHeight(45) }}
-                                                autoPlay
-                                                loop
-                                            />
-                                        </View>
-
-                                        <View style={{ height: responsiveHeight(5) }}>
-                                            <Text style={{ color: "black", fontSize: responsiveFontSize(2.2), fontWeight: "700" }}>No Distributor Found. . .</Text>
-                                        </View>
-                                    </View>
-
-                                }
-
-                            </View>
-
-                        </View>
-                        :
-                        <NoConnection />
-                    }
-                </>
-            }
-
+                          </TouchableOpacity>
+                        );
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <View style={styles.no_data_container}>
+                    <View>
+                      <LottieView
+                        source={require('../../assets/noDataFound.json')}
+                        style={styles.no_data_animation}
+                        autoPlay
+                        loop
+                      />
+                    </View>
+                    <View style={{height: responsiveHeight(5)}}>
+                      <Text style={styles.no_data_txt}>
+                        No Distributor Found. . .
+                      </Text>
+                    </View>
+                  </View>
+                )}
+              </View>
+              
+            </View>
+          ) : (
+            <NoConnection />
+          )}
         </>
+      )}
+    </>
+  );
+};
 
-    )
-}
+const styles = StyleSheet.create({
+  headerArrowIcone: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerTxtContainer: {
+    flex: 6,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  headerTxt: {
+    fontSize: responsiveFontSize(2.5),
+    color: 'black',
+    fontWeight: '700',
+  },
+  listItemContainer: {
+    width: responsiveWidth(94),
+    height: responsiveHeight(8),
+    backgroundColor: 'white',
+    borderRadius: responsiveWidth(3),
+    flexDirection: 'row',
+    margin: responsiveWidth(1.5),
+    borderWidth: 1,
+    borderRadius: responsiveWidth(3),
+    borderColor: '#DADADA',
+  },
+  listItemLogoContainer: {
+    flex: 1.2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listItemLogoImg: {
+    width: responsiveWidth(12),
+    height: responsiveWidth(12),
+    borderRadius: responsiveWidth(6),
+    resizeMode: 'cover',
+  },
+  listItemLogoNameTxtContainer: {
+    width: responsiveWidth(14),
+    height: responsiveWidth(14),
+    borderRadius: responsiveWidth(7),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#7BD7FF',
+  },
+  listItemLogoNameTxt: {
+    fontSize: responsiveFontSize(4.2),
+    color: 'black',
+    fontWeight: '700',
+  },
+  listItemDistri_name_txt: {
+    fontSize: responsiveFontSize(1.8),
+    color: 'black',
+    fontWeight: '700',
+  },
+  listItemDistri_id_txt: {
+    fontSize: responsiveFontSize(1.7),
+    color: 'black',
+  },
+  listItem_balance_container: {
+    flex: 1.2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listItem_balance_txt: {
+    fontSize: responsiveFontSize(1.6),
+    color: 'black',
+    fontWeight: '400',
+  },
+  listItem_balance_amount_container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listItem_balance_amount_txt: {
+    fontSize: responsiveFontSize(1.7),
+    color: '#0D950A',
+    fontWeight: '700',
+  },
+  no_data_container: {
+    height: responsiveHeight(80),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  no_data_animation: {
+    height: responsiveHeight(80),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  no_data_txt: {
+    color: 'black',
+    fontSize: responsiveFontSize(2.2),
+    fontWeight: '700',
+  },
+});
 
-export default MyTeamCorporate
+export default MyTeamCorporate;

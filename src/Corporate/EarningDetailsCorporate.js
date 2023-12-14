@@ -24,9 +24,6 @@ const EarningDetailsCorporate = () => {
     const distributor_balance = route.params.distributor_balance
     const distributor_logo = route.params.logo
 
-    console.log(distributor_balance)
-
-
     useEffect(() => {
         setActivityIndicator(true)
         FethchTransactions()
@@ -79,13 +76,14 @@ const EarningDetailsCorporate = () => {
                             style={{ flex: 1, backgroundColor: "#EAFFEA" }}
                         >
                             <StatusBar backgroundColor="#EAFFEA" />
+
                             <View style={{ height: responsiveHeight(8), flexDirection: "row" }}>
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
                                     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                     <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
                                 </TouchableOpacity>
-                                <View style={{ flex: 4, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+                                <View style={{ flex: 6, justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
                                     <View>
                                         <Text style={{ fontSize: responsiveFontSize(2.5), color: "black", fontWeight: "700" }}>Earning Details</Text>
                                     </View>
@@ -102,7 +100,6 @@ const EarningDetailsCorporate = () => {
                                         backgroundColor: "white",
                                         borderRadius: responsiveWidth(3),
                                         flexDirection: 'row',
-                                        // margin: responsiveWidth(2)
                                     }}>
                                         <View style={{ flex: 1.2, justifyContent: "center", alignItems: "center" }}>
                                             {distributor_logo.length > 1 ?

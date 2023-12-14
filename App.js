@@ -80,6 +80,7 @@ const App = () => {
                 options={{headerShown: false}}
                 component={RegisterOtpScreen}
               />
+              
               <Stack.Screen
                 name="registerMPIN"
                 options={{headerShown: false}}
