@@ -48,7 +48,7 @@ const AddDistributor = () => {
   const [activityIndicator, setActivityIndicator] = useState(false);
   const [choose, setChoose] = useState(false);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState('defaultDistributorId');
   const [distributorList, setDistributorList] = useState([]);
   // const [nextScreen, setNextScreen] = useState(false)
 
@@ -60,6 +60,7 @@ const AddDistributor = () => {
       setTimeout(() => {
         setActivityIndicator(false);
       }, 250);
+      setValue('Choose a distributor');
     }, [userId, storedToken]),
   );
 
@@ -70,7 +71,7 @@ const AddDistributor = () => {
   const getUserDetails = async () => {
     await AsyncStorage.getItem('user_id').then(user_id => {
       setUserId(JSON.parse(user_id));
-      //   console.log("check user id",user_id)
+      // console.log("check user id",user_id)
     });
     await AsyncStorage.getItem('auth_token').then(token => {
       setStoredToken(JSON.parse(token));
@@ -98,7 +99,7 @@ const AddDistributor = () => {
       phone: mobile_nun.trim(),
       email: email.trim(),
       mpin: mpin.trim(),
-      upline: addRetailer ? value : userId,
+      upline: userId,
     };
     // console.log(ob)
     try {
@@ -128,6 +129,58 @@ const AddDistributor = () => {
           } else if (addDistributorStatus.error) {
             // console.log(addDistributorStatus.error)
             setErr(addDistributorStatus.error);
+            setErrorStatus(true);
+            setTimeout(() => {
+              setNextScreenStatus(false);
+              setErr('');
+            }, 1000);
+          }
+        });
+    } catch (error) {
+      console.log('Catch Error: ', error);
+    }
+  };
+
+  const AddRetailer = async () => {
+    // console.log("hiiii")
+    const ob = {
+      user_id: userId,
+      name: full_name.trim(),
+      phone: mobile_nun.trim(),
+      email: email.trim(),
+      mpin: mpin.trim(),
+      upline: value,
+      auth_token: storedToken,
+    };
+    // console.log(storedToken)
+    try {
+      await fetch('https://kwikm.in/dev_kwikm/api/add_retailer.php', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          // auth_token: storedToken,
+        },
+        body: JSON.stringify(ob),
+      })
+        .then(response => response.json())
+        .then(addRetailerStatus => {
+          // console.log(addRetailerStatus);
+          if (addRetailerStatus.message) {
+            setErrorStatus(false);
+            // setNextScreenStatus(true);
+            setMsg(addRetailerStatus.message);
+            setTimeout(() => {
+              setNextScreenStatus(true);
+              setAddRetailer(false);
+              setMsg('');
+              setEmail('');
+              setFull_Name('');
+              setMobile_Num('');
+              setMpin('');
+            }, 1000);
+          } else if (addRetailerStatus.error) {
+            // console.log(addDistributorStatus.error)
+            setErr(addRetailerStatus.error);
             setErrorStatus(true);
             setTimeout(() => {
               setNextScreenStatus(false);
@@ -281,9 +334,16 @@ const AddDistributor = () => {
                     {nextScreenStatus ? (
                       <>
                         <View style={styles.nextScreenTxtContainer}>
-                          <Text style={styles.nextScreenTxt}>
-                            Distributor added successfully, We sent
-                          </Text>
+                          {addRetailer ? (
+                            <Text style={styles.nextScreenTxt}>
+                              Retailer added successfully, We sent
+                            </Text>
+                          ) : (
+                            <Text style={styles.nextScreenTxt}>
+                              Distributor added successfully, We sent
+                            </Text>
+                          )}
+
                           <Text style={styles.nextScreenTxt}>
                             Whatsapp message with link.
                           </Text>
@@ -400,6 +460,7 @@ const AddDistributor = () => {
                                 fontSize: responsiveFontSize(2),
                                 color: 'black',
                               }}
+                              defaultValue={'defaultDistributorId'}
                             />
                           ) : null}
                         </View>
@@ -448,7 +509,9 @@ const AddDistributor = () => {
 
                           {buttonStatus ? (
                             <TouchableOpacity
-                              onPress={AddDistributor}
+                              onPress={
+                                addRetailer ? AddRetailer : AddDistributor
+                              }
                               style={{
                                 width: responsiveWidth(80),
                                 height: responsiveHeight(6),

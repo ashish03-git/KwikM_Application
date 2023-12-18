@@ -2,23 +2,16 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   TextInput,
-  Modal,
-  FlatList,
   StatusBar,
   StyleSheet,
-  Share,
-  Linking,
-  Platform,
 } from 'react-native';
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   responsiveHeight,
   responsiveFontSize,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import Font6 from 'react-native-vector-icons/FontAwesome6';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 import Font from 'react-native-vector-icons/FontAwesome';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -26,7 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
 import {useSelector, useDispatch} from 'react-redux';
-import {add_lead_Details, add_paytm_lead_details} from '../redux/Slice';
+import {add_lead_Details } from '../redux/Slice';
 
 const AddCustomer = () => {
   // variables
@@ -39,12 +32,12 @@ const AddCustomer = () => {
   const [pincode, setPincode] = useState('');
   const [email, setEmail] = useState('');
   const [paytmSprintStatus, setPaytmSprintStatus] = useState();
-  const [leadGenerationStatus, setLeadGenerationStatus] = useState(true);
+  const [leadGenerationStatus, setLeadGenerationStatus] = useState(false);
   const [screenName, setScreenName] = useState(route.params.screenName);
   const product_id = useSelector(state => state.details.product_id.product_id);
   // console.log("add customer product id ",product_id)
   const category_id = useSelector(state => state.details.category_id);
-  // console.log("add customer customer id ",category_id                                                                                  )
+  // console.log("add customer customer id ",category_id)
   const [required_amount, setRequired_Amount] = useState('0');
   const netInfo = useNetInfo();
   const [msg, setMsg] = useState('');
@@ -53,7 +46,7 @@ const AddCustomer = () => {
   const [mobileErr, setMobileErr] = useState('');
   const [panErr, setPanErr] = useState('');
   const [panErrStatus, setPanErrStatus] = useState(true);
-  const [mobileErrStatus, setMobileErrStatus] = useState(true);
+  const [mobileErrStatus, setMobileErrStatus] = useState(false);
 
   useEffect(() => {
     getUserId();
@@ -65,6 +58,7 @@ const AddCustomer = () => {
   }, [full_name, mobile_nun, pan, pincode, email, required_amount]);
 
   const RetailerValidation = () => {
+    // console.log("hiii")
     if (
       full_name.length >= 2 &&
       mobile_nun.length == 10 &&
@@ -262,12 +256,12 @@ const AddCustomer = () => {
           // console.log(data)
           if (data.status) {
             dispatch(add_lead_Details([data, ob]));
-            setLeadGenerationStatus(data.status);
+            setLeadGenerationStatus(true);
             setMsg(data.message);
             setTimeout(() => {
               naviagtion.navigate('leadSuccessMsg', {screen: 'retailer'});
               setMsg('');
-            }, 400);
+            }, 1000);
           } else {
             setLeadGenerationStatus(false);
             setMsg(data.message);
@@ -287,74 +281,45 @@ const AddCustomer = () => {
         <>
           <StatusBar backgroundColor={'#eaffea'} />
 
+          {/* header */}
           <View style={{height: responsiveHeight(8), flexDirection: 'row'}}>
             <TouchableOpacity
               onPress={() => naviagtion.goBack()}
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              style={styles.headerIcone}>
               <Font5
                 name="arrow-left"
                 color="black"
                 size={responsiveWidth(6)}
               />
             </TouchableOpacity>
-            <View
-              style={{
-                flex: 5,
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}>
+
+            <View style={styles.headerTitleContainer}>
               <View>
-                <Text
-                  style={{
-                    fontSize: responsiveFontSize(2.5),
-                    color: 'black',
-                    fontWeight: '700',
-                  }}>
-                  Add Customer
-                </Text>
+                <Text style={styles.headerTitleTxt}>Add Customer</Text>
               </View>
             </View>
           </View>
 
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+
+          <View style={styles.formContainer}>
             {/* condition based form showing if user is comming from patym screen the this screen will show */}
             {screenName === 'paytm' ? (
-              <View
-                style={{
-                  width: responsiveWidth(95),
-                  height: responsiveHeight(45),
-                  backgroundColor: 'white',
-                  padding: responsiveWidth(5),
-                  borderRadius: responsiveWidth(3),
-                }}>
+              <View style={styles.paytmFormContainer}>
                 <View style={{flex: 1}}>
                   <View style={{marginTop: responsiveWidth(4)}}>
                     <TextInput
                       onChangeText={text => setFull_Name(text)}
-                      style={{
-                        fontSize: responsiveFontSize(2),
-                        paddingLeft: responsiveWidth(8),
-                        borderWidth: 1,
-                        borderRadius: responsiveWidth(3),
-                        borderColor: '#DADADA',
-                        color: 'black',
-                      }}
+                      style={styles.formField}
                       value={full_name}
                       placeholder="Full Name"
                       placeholderTextColor={'gray'}
                     />
                   </View>
+
                   <View style={{marginTop: responsiveWidth(4)}}>
                     <TextInput
                       onChangeText={text => setMobile_Num(text)}
-                      style={{
-                        fontSize: responsiveFontSize(2),
-                        paddingLeft: responsiveWidth(8),
-                        borderWidth: 1,
-                        borderRadius: responsiveWidth(3),
-                        borderColor: '#DADADA',
-                      }}
+                      style={styles.formField}
                       value={mobile_nun}
                       maxLength={10}
                       placeholder="Customer Mobile Number"
@@ -363,108 +328,46 @@ const AddCustomer = () => {
                   </View>
 
                   {paytmSprintStatus ? (
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: responsiveWidth(4),
-                        paddingTop: responsiveWidth(2),
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(2),
-                          color: 'green',
-                        }}>
-                        {msg}
-                      </Text>
+                    <View style={styles.errorContainer}>
+                      <Text style={styles.errorTxt}>{msg}</Text>
                     </View>
                   ) : (
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: responsiveWidth(4),
-                        paddingTop: responsiveWidth(2),
-                      }}>
-                      <Text
-                        style={{fontSize: responsiveFontSize(2), color: 'red'}}>
-                        {msg}
-                      </Text>
+                    <View style={styles.errorContainer}>
+                      <Text style={styles.errorTxt}>{msg}</Text>
                     </View>
                   )}
                 </View>
 
                 <View style={{flex: 1, justifyContent: 'center'}}>
                   <View style={{margin: responsiveWidth(4), marginTop: 0}}>
-                    <Text
-                      style={{
-                        fontSize: responsiveFontSize(1.8),
-                        color: 'black',
-                      }}>
+                    <Text style={styles.privacyLable}>
                       By continuing you agree
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(1.8),
-                          color: '#9B19A6',
-                          fontWeight: '600',
-                        }}>
+                      <Text style={styles.privacyHighlightedLable}>
                         {' '}
                         Terms & Conditions{' '}
                       </Text>
                       and
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(1.8),
-                          color: '#9B19A6',
-                          fontWeight: '600',
-                        }}>
+                      <Text style={styles.privacyHighlightedLable}>
                         {' '}
                         Privacy Policy
                       </Text>
                     </Text>
                   </View>
-                  <View
-                    style={{
-                      margin: responsiveWidth(4),
-                      marginTop: responsiveWidth(0),
-                    }}>
+
+                  <View style={styles.buttonContainer}>
                     <TouchableOpacity
                       onPress={VarifyPaytmDetails}
-                      style={{
-                        height: responsiveHeight(6),
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: '#A2159C',
-                        borderRadius: responsiveWidth(10),
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(2),
-                          color: 'white',
-                          fontWeight: '700',
-                        }}>
-                        Continue
-                      </Text>
+                      style={styles.submitBtn}>
+                      <Text style={styles.submitBtnTxt}>Continue</Text>
                     </TouchableOpacity>
 
-                    <View
-                      style={{
-                        marginTop: responsiveWidth(3),
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                      }}>
+                    <View style={styles.whatsAppMessage}>
                       <Font
                         name="whatsapp"
                         color="#02A208"
                         size={responsiveWidth(5)}
                       />
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(1.8),
-                          color: 'black',
-                          marginLeft: responsiveWidth(4),
-                        }}>
+                      <Text style={styles.whatsAppMessageTxt}>
                         We will notify you on WhatsApp{' '}
                       </Text>
                     </View>
@@ -473,25 +376,12 @@ const AddCustomer = () => {
               </View>
             ) : (
               <>
-                <View
-                  style={{
-                    width: responsiveWidth(95),
-                    backgroundColor: 'white',
-                    padding: responsiveWidth(5),
-                    borderRadius: responsiveWidth(3),
-                  }}>
+                <View style={styles.retailerFormContainer}>
                   <View style={{marginTop: responsiveWidth(4)}}>
                     <TextInput
                       onChangeText={text => setFull_Name(text)}
                       placeholderTextColor={'gray'}
-                      style={{
-                        fontSize: responsiveFontSize(2),
-                        paddingLeft: responsiveWidth(8),
-                        borderWidth: 1,
-                        borderRadius: responsiveWidth(3),
-                        borderColor: '#DADADA',
-                        color: 'black',
-                      }}
+                      style={styles.formField}
                       value={full_name}
                       placeholder="Full Name"
                     />
@@ -501,14 +391,7 @@ const AddCustomer = () => {
                     <TextInput
                       onChangeText={text => setPan(text)}
                       placeholderTextColor={'gray'}
-                      style={{
-                        fontSize: responsiveFontSize(2),
-                        paddingLeft: responsiveWidth(8),
-                        borderWidth: 1,
-                        borderRadius: responsiveWidth(3),
-                        borderColor: '#DADADA',
-                        color: 'black',
-                      }}
+                      style={styles.formField}
                       value={pan}
                       placeholder="Pan No."
                       autoCapitalize="characters"
@@ -517,14 +400,8 @@ const AddCustomer = () => {
                   </View>
 
                   {panErrStatus ? null : (
-                    <Text
-                      style={{
-                        fontSize: responsiveFontSize(1.8),
-                        color: 'red',
-                        margin: responsiveWidth(2),
-                        marginBottom: 0,
-                      }}>
-                      {panErr}
+                    <Text style={styles.errorTxt}>
+                      Enter valid pancard details
                     </Text>
                   )}
 
@@ -532,14 +409,7 @@ const AddCustomer = () => {
                     <TextInput
                       onChangeText={text => setMobile_Num(text)}
                       placeholderTextColor={'gray'}
-                      style={{
-                        fontSize: responsiveFontSize(2),
-                        paddingLeft: responsiveWidth(8),
-                        borderWidth: 1,
-                        borderRadius: responsiveWidth(3),
-                        borderColor: '#DADADA',
-                        color: 'black',
-                      }}
+                      style={styles.formField}
                       keyboardType="numeric"
                       maxLength={10}
                       value={mobile_nun}
@@ -547,7 +417,7 @@ const AddCustomer = () => {
                     />
                   </View>
 
-                  {mobileErrStatus ? null : (
+                  {mobileErrStatus ? (
                     <Text
                       style={{
                         fontSize: responsiveFontSize(1.8),
@@ -557,19 +427,12 @@ const AddCustomer = () => {
                       }}>
                       {mobileErr}
                     </Text>
-                  )}
+                  ) : null}
 
                   <View style={{marginTop: responsiveWidth(4)}}>
                     <TextInput
                       onChangeText={text => setPincode(text)}
-                      style={{
-                        fontSize: responsiveFontSize(2),
-                        paddingLeft: responsiveWidth(8),
-                        borderWidth: 1,
-                        borderRadius: responsiveWidth(3),
-                        borderColor: '#DADADA',
-                        color: 'black',
-                      }}
+                      style={styles.formField}
                       keyboardType="numeric"
                       value={pincode}
                       maxLength={6}
@@ -581,14 +444,7 @@ const AddCustomer = () => {
                   <View style={{marginTop: responsiveWidth(4)}}>
                     <TextInput
                       onChangeText={text => setEmail(text)}
-                      style={{
-                        fontSize: responsiveFontSize(2),
-                        paddingLeft: responsiveWidth(8),
-                        borderWidth: 1,
-                        borderRadius: responsiveWidth(3),
-                        borderColor: '#DADADA',
-                        color: 'black',
-                      }}
+                      style={styles.formField}
                       value={email}
                       placeholder="Email Address"
                       placeholderTextColor={'gray'}
@@ -598,14 +454,7 @@ const AddCustomer = () => {
                   <View style={{marginTop: responsiveWidth(4)}}>
                     <TextInput
                       onChangeText={text => setRequired_Amount(text)}
-                      style={{
-                        fontSize: responsiveFontSize(2),
-                        paddingLeft: responsiveWidth(8),
-                        borderWidth: 1,
-                        borderRadius: responsiveWidth(3),
-                        borderColor: '#DADADA',
-                        color: 'black',
-                      }}
+                      style={styles.formField}
                       keyboardType="numeric"
                       value={required_amount}
                       placeholder="Required amount"
@@ -622,10 +471,10 @@ const AddCustomer = () => {
                       <Text
                         style={{
                           fontSize: responsiveFontSize(2),
-                          color: 'red',
+                          color: 'green',
                           alignSelf: 'center',
                         }}>
-                        {null}
+                        {msg}
                       </Text>
                     </View>
                   ) : (
@@ -646,28 +495,14 @@ const AddCustomer = () => {
                   )}
 
                   <View style={{marginLeft: responsiveWidth(5)}}>
-                    <Text
-                      style={{
-                        fontSize: responsiveFontSize(1.8),
-                        color: 'black',
-                      }}>
+                    <Text style={styles.privacyLable}>
                       By continuing you agree
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(1.8),
-                          color: '#9B19A6',
-                          fontWeight: '600',
-                        }}>
+                      <Text style={styles.privacyHighlightedLable}>
                         {' '}
                         Terms & Conditions{' '}
                       </Text>
                       and
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(1.8),
-                          color: '#9B19A6',
-                          fontWeight: '600',
-                        }}>
+                      <Text style={styles.privacyHighlightedLable}>
                         {' '}
                         Privacy Policy
                       </Text>
@@ -682,13 +517,7 @@ const AddCustomer = () => {
                     {buttonStatus ? (
                       <TouchableOpacity
                         onPress={VerifyDetails}
-                        style={{
-                          height: responsiveHeight(6),
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backgroundColor: '#A2159C',
-                          borderRadius: responsiveWidth(10),
-                        }}>
+                        style={styles.activeSubmitBtn}>
                         <Text
                           style={{
                             fontSize: responsiveFontSize(2),
@@ -699,23 +528,8 @@ const AddCustomer = () => {
                         </Text>
                       </TouchableOpacity>
                     ) : (
-                      <TouchableOpacity
-                        disabled
-                        style={{
-                          height: responsiveHeight(6),
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backgroundColor: 'gray',
-                          borderRadius: responsiveWidth(10),
-                        }}>
-                        <Text
-                          style={{
-                            fontSize: responsiveFontSize(2),
-                            color: 'white',
-                            fontWeight: '700',
-                          }}>
-                          Continue
-                        </Text>
+                      <TouchableOpacity disabled style={styles.disabledBtn}>
+                        <Text style={styles.submitBtnTxt}>Continue</Text>
                       </TouchableOpacity>
                     )}
 
@@ -745,6 +559,7 @@ const AddCustomer = () => {
               </>
             )}
           </View>
+
         </>
       ) : (
         <NoConnection />
@@ -823,6 +638,104 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'red',
     textAlign: 'center',
+  },
+  headerIcone: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerTitleContainer: {
+    flex: 6,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  headerTitleTxt: {
+    fontSize: responsiveFontSize(2.5),
+    color: 'black',
+    fontWeight: '700',
+  },
+  formContainer: {justifyContent: 'center', alignItems: 'center'},
+  paytmFormContainer: {
+    width: responsiveWidth(95),
+    height: responsiveHeight(45),
+    backgroundColor: 'white',
+    padding: responsiveWidth(5),
+    borderRadius: responsiveWidth(3),
+  },
+  formField: {
+    fontSize: responsiveFontSize(2),
+    paddingLeft: responsiveWidth(8),
+    borderWidth: 1,
+    borderRadius: responsiveWidth(3),
+    borderColor: '#DADADA',
+    color: 'black',
+  },
+  errorContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: responsiveWidth(4),
+    paddingTop: responsiveWidth(2),
+  },
+  errorTxt: {
+    fontSize: responsiveFontSize(2),
+    color: 'green',
+  },
+  privacyLable: {
+    fontSize: responsiveFontSize(1.8),
+    color: 'black',
+  },
+  privacyHighlightedLable: {
+    fontSize: responsiveFontSize(1.8),
+    color: '#9B19A6',
+    fontWeight: '600',
+  },
+  buttonContainer: {
+    margin: responsiveWidth(4),
+    marginTop: responsiveWidth(0),
+  },
+  submitBtn: {
+    height: responsiveHeight(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#A2159C',
+    borderRadius: responsiveWidth(10),
+  },
+  whatsAppMessage: {
+    marginTop: responsiveWidth(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  whatsAppMessageTxt: {
+    fontSize: responsiveFontSize(1.8),
+    color: 'black',
+    marginLeft: responsiveWidth(4),
+  },
+  retailerFormContainer: {
+    width: responsiveWidth(95),
+    backgroundColor: 'white',
+    padding: responsiveWidth(5),
+    borderRadius: responsiveWidth(3),
+  },
+  activeSubmitBtn: {
+    height: responsiveHeight(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#A2159C',
+    borderRadius: responsiveWidth(10),
+  },
+  disabledBtn: {
+    height: responsiveHeight(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'gray',
+    borderRadius: responsiveWidth(10),
+  },
+  submitBtnTxt: {
+    fontSize: responsiveFontSize(2),
+    color: 'white',
+    fontWeight: '700',
   },
 });
 

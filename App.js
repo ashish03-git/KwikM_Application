@@ -48,6 +48,9 @@ import UserProfile from './src/ProfileScreens/UserProfile';
 import TrainingVideoScreen from './src/Retailer/TrainingVideoScreen';
 import HelpScreen from './src/Retailer/HelpScreen';
 import NoConnection from './src/OtherScreens/NoConnection';
+import PrivacyPolicyScreen from './src/ProfileScreens/PrivacyPolicyScreen';
+import TermsConditionScreen from './src/ProfileScreens/TermsConditionScreen';
+import PaymentSettingScreen from './src/ProfileScreens/PaymentSettingScreen';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -80,7 +83,6 @@ const App = () => {
                 options={{headerShown: false}}
                 component={RegisterOtpScreen}
               />
-              
               <Stack.Screen
                 name="registerMPIN"
                 options={{headerShown: false}}
@@ -198,11 +200,29 @@ const App = () => {
                 options={{headerShown: false}}
                 component={UserProfile}
               />
-              {/* <Stack.Screen name="profileDetails" options={{ headerShown: false }} component={ProfileDetailsScreen} /> */}
+
               <Stack.Screen
                 name="changeMpin"
                 options={{headerShown: false}}
                 component={ChangeMpinScreen}
+              />
+
+              <Stack.Screen
+                name="privacyPolicy"
+                options={{headerShown: false}}
+                component={PrivacyPolicyScreen}
+              />
+
+              <Stack.Screen
+                name="termsConditions"
+                options={{headerShown: false}}
+                component={TermsConditionScreen}
+              />
+
+              <Stack.Screen
+                name="paymentSetting"
+                options={{headerShown: false}}
+                component={PaymentSettingScreen}
               />
 
               {/* Distributor screens */}

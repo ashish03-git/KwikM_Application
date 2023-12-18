@@ -8,8 +8,9 @@ import {
   Share,
   Image,
   BackHandler,
+  Modal,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   responsiveHeight,
   responsiveFontSize,
@@ -22,6 +23,7 @@ import Font5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImagePicker from 'react-native-image-crop-picker';
+import BottomSheet from 'react-native-simple-bottom-sheet';
 
 const UserProfile = () => {
   const navigation = useNavigation();
@@ -29,6 +31,18 @@ const UserProfile = () => {
   const [name, setName] = useState(null);
   const [phone, setPhone] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [authToken, setAuthToken] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [error, setError] = useState(false);
+  const [msg, setMsg] = useState('');
+
+  const openBottomSheet = () => {
+    setShowDeleteModal(!showDeleteModal);
+  };
+
+  const closeBottomSheet = () => {
+    setShowDeleteModal(false);
+  };
 
   useEffect(() => {
     getUserDetails();
@@ -47,6 +61,9 @@ const UserProfile = () => {
       await AsyncStorage.getItem('user_id').then(id => {
         // console.log(JSON.parse(user_name))
         setUserId(JSON.parse(id));
+      });
+      await AsyncStorage.getItem('auth_token').then(token => {
+        setAuthToken(JSON.parse(token));
       });
     } catch (error) {
       console.log(error);
@@ -114,6 +131,39 @@ const UserProfile = () => {
     }
   };
 
+  const DeleteAccount = async () => {
+    let ob = {
+      user_id: userId,
+      auth_token: authToken,
+    };
+    // console.log(ob);
+    await fetch('https://kwikm.in/dev_kwikm/api/delete_user.php', {
+      method: 'POST',
+      // body:JSON.stringify(ob)
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status) {
+          setError(true);
+          AsyncStorage.removeItem('name');
+          AsyncStorage.removeItem('user_id');
+          AsyncStorage.removeItem('role');
+          AsyncStorage.removeItem('user_number');
+          setTimeout(() => {
+            setMsg('');
+            navigation.navigate('loginMPIN');
+          }, 2000);
+        } else {
+          setError(false);
+          setMsg(data.error);
+          setTimeout(() => {
+            setMsg('');
+            // navigation.navigate('loginMPIN');
+          }, 2000);
+        }
+      });
+  };
+
   return (
     <>
       <StatusBar backgroundColor="white" />
@@ -122,25 +172,12 @@ const UserProfile = () => {
         <View style={{height: responsiveHeight(8), flexDirection: 'row'}}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            style={styles.headerIcone}>
             <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
           </TouchableOpacity>
-          <View
-            style={{
-              flex: 5,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}>
+          <View style={styles.headerTitleContainer}>
             <View>
-              <Text
-                style={{
-                  fontSize: responsiveFontSize(2.5),
-                  color: 'black',
-                  fontWeight: '700',
-                }}>
-                My Profile
-              </Text>
+              <Text style={styles.headerTitleTxt}>My Profile</Text>
             </View>
           </View>
         </View>
@@ -273,21 +310,10 @@ const UserProfile = () => {
         </View>
 
         <View style={{flex: 1, marginTop: responsiveWidth(3)}}>
-          {/* <TouchableOpacity
-                        onPress={() => navigation.navigate("profileDetails")}
-                        style={styles.userDetailsContainer}>
-                        <View style={styles.userDetailsContainerIconeLeft}>
-                            <Font5 name="user-alt" color="#046218" size={responsiveWidth(4.8)} />
-                        </View>
-                        <View style={styles.userDetailsContainerTitle}>
-                            <Text style={styles.userDetailsContainerTitleText}>Personal Details</Text>
-                        </View>
-                        <View style={styles.userDetailsContainerIconeRight}>
-                            <Font5 name="chevron-circle-right" color="#046218" size={responsiveWidth(4.5)} />
-                        </View>
-                    </TouchableOpacity> */}
-
-          <TouchableOpacity style={styles.userDetailsContainer}>
+          
+          <TouchableOpacity
+            onPress={() => navigation.navigate('paymentSetting')}
+            style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
               <Font5
                 name="credit-card"
@@ -428,7 +454,9 @@ const UserProfile = () => {
             <View style={styles.userDetailsContainerIconeRight}></View>
           </View>
 
-          <TouchableOpacity style={styles.userDetailsContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('privacyPolicy')}
+            style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
               <Font5
                 name="shield-alt"
@@ -444,7 +472,9 @@ const UserProfile = () => {
             <View style={styles.userDetailsContainerIconeRight}></View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.userDetailsContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('termsConditions')}
+            style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
               <Font5
                 name="shield-alt"
@@ -474,7 +504,9 @@ const UserProfile = () => {
             <View style={styles.userDetailsContainerIconeRight}></View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.userDetailsContainer}>
+          <TouchableOpacity
+            onPress={openBottomSheet}
+            style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
               <MaterialCommunity
                 name="delete"
@@ -505,6 +537,101 @@ const UserProfile = () => {
             </View>
             <View style={styles.userDetailsContainerIconeRight}></View>
           </TouchableOpacity>
+
+          {showDeleteModal ? (
+            <BottomSheet isOpen>
+              <View
+                style={{
+                  height: responsiveHeight(33),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <MaterialCommunity
+                  name="delete-alert"
+                  size={responsiveFontSize(10)}
+                  color="red"
+                />
+
+                <Text
+                  style={{fontSize: responsiveFontSize(2.5), color: 'black'}}>
+                  Are you sure you want to
+                </Text>
+
+                <Text
+                  style={{fontSize: responsiveFontSize(2.5), color: 'black'}}>
+                  delete this account ?
+                </Text>
+
+                {error ? (
+                  <Text
+                    style={{
+                      fontSize: responsiveFontSize(1.8),
+                      marginTop: responsiveWidth(2),
+                      color: 'green',
+                    }}>
+                    {msg}
+                  </Text>
+                ) : (
+                  <Text
+                    style={{
+                      fontSize: responsiveFontSize(1.8),
+                      marginTop: responsiveWidth(2),
+                      color: 'red',
+                    }}>
+                    {msg}
+                  </Text>
+                )}
+
+                <View
+                  style={{
+                    width: responsiveWidth(100),
+                    flexDirection: 'row',
+                    height: responsiveHeight(8),
+                    marginTop: responsiveWidth(4),
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                  }}>
+                  <TouchableOpacity
+                    onPress={closeBottomSheet}
+                    style={{
+                      width: responsiveWidth(40),
+                      height: responsiveHeight(5),
+                      borderRadius: responsiveWidth(10),
+                      backgroundColor: '#CDCDCD',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: responsiveFontSize(2),
+                        color: 'black',
+                      }}>
+                      Cancle
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={DeleteAccount}
+                    style={{
+                      width: responsiveWidth(40),
+                      height: responsiveHeight(5),
+                      borderRadius: responsiveWidth(10),
+                      backgroundColor: '#CB01CF',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: responsiveFontSize(2),
+                        color: 'white',
+                      }}>
+                      Delete
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </BottomSheet>
+          ) : null}
         </View>
       </View>
     </>
@@ -512,6 +639,22 @@ const UserProfile = () => {
 };
 
 const styles = StyleSheet.create({
+  headerIcone: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerTitleContainer: {
+    flex: 6,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  headerTitleTxt: {
+    fontSize: responsiveFontSize(2.5),
+    color: 'black',
+    fontWeight: '700',
+  },
   userDetailsContainer: {
     flexDirection: 'row',
     height: responsiveHeight(4),
@@ -545,4 +688,5 @@ const styles = StyleSheet.create({
     marginLeft: responsiveWidth(2),
   },
 });
+
 export default UserProfile;
