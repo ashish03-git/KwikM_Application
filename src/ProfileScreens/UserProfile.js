@@ -83,11 +83,12 @@ const UserProfile = () => {
         {
           text: 'Yes',
           onPress: () => {
-            AsyncStorage.removeItem('login');
-            AsyncStorage.removeItem('name');
-            AsyncStorage.removeItem('user_id');
-            AsyncStorage.removeItem('role');
-            AsyncStorage.removeItem('user_number');
+            // AsyncStorage.removeItem('login');
+            // AsyncStorage.removeItem('name');
+            // AsyncStorage.removeItem('user_id');
+            // AsyncStorage.removeItem('role');
+            // AsyncStorage.removeItem('user_number');
+            AsyncStorage.clear();
             navigation.navigate('loginMPIN'), BackHandler.exitApp();
           },
         },
@@ -310,7 +311,6 @@ const UserProfile = () => {
         </View>
 
         <View style={{flex: 1, marginTop: responsiveWidth(3)}}>
-          
           <TouchableOpacity
             onPress={() => navigation.navigate('paymentSetting')}
             style={styles.userDetailsContainer}>
@@ -335,7 +335,7 @@ const UserProfile = () => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.userDetailsContainer}>
+          {/* <TouchableOpacity style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
               <Font5
                 name="user-tie"
@@ -355,7 +355,7 @@ const UserProfile = () => {
                 size={responsiveWidth(4.5)}
               />
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
             onPress={() => navigation.navigate('rewards')}
@@ -375,7 +375,9 @@ const UserProfile = () => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.userDetailsContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('kycDetails')}
+            style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
               <Font5
                 name="file-pdf"
@@ -397,7 +399,9 @@ const UserProfile = () => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.userDetailsContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('educationDetails')}
+            style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
               <Font5
                 name="book-reader"
@@ -442,7 +446,7 @@ const UserProfile = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={{flex: 1.2}}>
+        <View style={{flex: 1.5}}>
           <View style={styles.userDetailsContainer}>
             <View style={{flex: 3, alignItems: 'center'}}>
               <Text

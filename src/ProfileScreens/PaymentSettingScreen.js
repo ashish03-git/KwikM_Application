@@ -9,8 +9,9 @@ import {
   ActivityIndicator,
   StatusBar,
   TextInput,
+  FlatList,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {
   responsiveWidth,
   responsiveHeight,
@@ -27,6 +28,7 @@ import BottomSheet from 'react-native-simple-bottom-sheet';
 import {CheckBox} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ActivityLoader from '../OtherScreens/ActivityLoader';
 
 const PaymentSettingScreen = () => {
   const navigation = useNavigation();
@@ -46,10 +48,20 @@ const PaymentSettingScreen = () => {
   const [msg, setMsg] = useState(null);
   const [error, setError] = useState(null);
   const [buttonStatus, setButtonStatus] = useState(false);
+  const [availableBankList, setAvailableBankList] = useState([]);
+  const [activityIndicator, setActivityIndicator] = useState(false);
 
   useEffect(() => {
     getUserDetails();
+    // FetchAvailableBankAccounts();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setActivityIndicator(true);
+      FetchAvailableBankAccounts();
+    }, [userId, authToken]),
+  );
 
   useEffect(() => {
     Validations();
@@ -83,6 +95,30 @@ const PaymentSettingScreen = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const FetchAvailableBankAccounts = async () => {
+    let ob = {
+      user_id: userId,
+      auth_token: authToken,
+    };
+    // console.log(ob)
+    let availbleBank = await fetch(
+      'https://kwikm.in/dev_kwikm/api/fetch_bank_details.php',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(ob),
+      },
+    );
+    // console.log(ob);
+    const data = await availbleBank.json();
+    setAvailableBankList(data);
+    setTimeout(() => {
+      setActivityIndicator(false);
+    }, 500);
   };
 
   const handleSavingAccountPress = () => {
@@ -139,7 +175,7 @@ const PaymentSettingScreen = () => {
     }
   };
 
-  const handleDisableBtn = () => {
+  const hndleDisableBtn = () => {
     setError('all fields required.');
     setTimeout(() => {
       setError('');
@@ -261,56 +297,212 @@ const PaymentSettingScreen = () => {
             </View>
 
             <View style={styles.noBankFound}>
-              <LottieView
-                source={require('../../assets/noDataFound')}
-                style={{
-                  width: responsiveWidth(70),
-                  height: responsiveHeight(35),
-                }}
-                loop
-              />
+              {activityIndicator ? (
+                <ActivityLoader />
+              ) : (
+                <>
+                  {availableBankList.length > 0 ? (
+                    <View style={styles.bankListContainer}>
+                      <FlatList
+                        data={availableBankList}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({item}) => {
+                          return (
+                            <View style={styles.bankDetailesContainer}>
+                              <View style={{flex: 2}}>
+                                <View
+                                  style={{flex: 2, justifyContent: 'center'}}>
+                                  <Text style={styles.bankDetailes_bankName}>
+                                    {item.bank_name}
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    flex: 2,
+                                    flexDirection: 'row',
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontSize: responsiveFontSize(1.8),
+                                        color: 'black',
+                                        fontWeight: '500',
+                                      }}>
+                                      A/C No : {item.ac_number}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: responsiveFontSize(1.8),
+                                        color: 'skyblue',
+                                        fontWeight: '500',
+                                      }}>
+                                      {item.ac_name}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontSize: responsiveFontSize(1.8),
+                                        color: 'black',
+                                        fontWeight: '500',
+                                      }}>
+                                      IFSC : {item.ifsc_code}
+                                    </Text>
+                                    {item.account_type === 1 ? (
+                                      <Text
+                                        style={{
+                                          fontSize: responsiveFontSize(1.8),
+                                          color: 'skyblue',
+                                          fontWeight: '500',
+                                        }}>
+                                        Saving Account
+                                      </Text>
+                                    ) : (
+                                      <Text
+                                        style={{
+                                          fontSize: responsiveFontSize(1.8),
+                                          color: 'skyblue',
+                                          fontWeight: '500',
+                                        }}>
+                                        Current Account
+                                      </Text>
+                                    )}
+                                  </View>
+                                </View>
+                              </View>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  borderWidth: 1,
+                                  borderColor: '#C9C9C9',
+                                  borderBottomEndRadius: responsiveWidth(3),
+                                  borderBottomStartRadius: responsiveWidth(3),
+                                  flexDirection: 'row',
+                                }}>
+                                <View
+                                  style={{
+                                    flex: 1,
+                                    // backgroundColor: 'red',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                  }}>
+                                  <Font5
+                                    name="check-square"
+                                    size={responsiveWidth(5)}
+                                    color="green"
+                                  />
+                                  <Text
+                                    style={{
+                                      fontSize: responsiveFontSize(2),
+                                      color: 'green',
+                                      fontWeight: '700',
+                                      marginLeft: responsiveWidth(2),
+                                    }}>
+                                    Set As Primary
+                                  </Text>
+                                </View>
+                                {/* <View
+                              style={{
+                                width: responsiveWidth(0.1),
+                                backgroundColor: 'gray',
+                              }}
+                            /> */}
+                                <View
+                                  style={{
+                                    flex: 1,
+                                    // backgroundColor: 'red',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                  }}>
+                                  <Entypo
+                                    name="squared-cross"
+                                    size={responsiveWidth(5)}
+                                    color="red"
+                                  />
+                                  <Text
+                                    style={{
+                                      fontSize: responsiveFontSize(2),
+                                      color: 'red',
+                                      fontWeight: '400',
+                                      marginLeft: responsiveWidth(2),
+                                    }}>
+                                    Remove Account
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                          );
+                        }}
+                      />
+                    </View>
+                  ) : (
+                    <>
+                      <LottieView
+                        source={require('../../assets/noDataFound')}
+                        style={{
+                          width: responsiveWidth(70),
+                          height: responsiveHeight(35),
+                        }}
+                        loop
+                      />
 
-              <Text
-                style={{
-                  fontSize: responsiveFontSize(2.5),
-                  color: 'black',
-                  fontWeight: '700',
-                }}>
-                No Bank Found...
-              </Text>
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2.5),
+                          color: 'black',
+                          fontWeight: '700',
+                        }}>
+                        No Bank Found...
+                      </Text>
 
-              <Text
-                style={{
-                  fontSize: responsiveFontSize(2),
-                  color: 'black',
-                  fontWeight: '400',
-                }}>
-                you have not added any bank account.
-              </Text>
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'black',
+                          fontWeight: '400',
+                        }}>
+                        you have not added any bank account.
+                      </Text>
 
-              <Text
-                style={{
-                  fontSize: responsiveFontSize(2),
-                  color: 'black',
-                  fontWeight: '400',
-                }}>
-                Please add a bank account.
-              </Text>
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'black',
+                          fontWeight: '400',
+                        }}>
+                        Please add a bank account.
+                      </Text>
 
-              <View style={{marginTop: responsiveWidth(5)}}>
-                <TouchableOpacity
-                  onPress={() => setBottomSheet(!showBottomSheet)}
-                  style={styles.noBankFOundBtn}>
-                  <Text
-                    style={{
-                      fontSize: responsiveFontSize(2),
-                      color: 'white',
-                      fontWeight: '700',
-                    }}>
-                    Add Bank Account
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                      <View style={{marginTop: responsiveWidth(5)}}>
+                        <TouchableOpacity
+                          onPress={() => setBottomSheet(!showBottomSheet)}
+                          style={styles.noBankFOundBtn}>
+                          <Text
+                            style={{
+                              fontSize: responsiveFontSize(2),
+                              color: 'white',
+                              fontWeight: '700',
+                            }}>
+                            Add Bank Account
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </>
+                  )}
+                </>
+              )}
             </View>
 
             {showBottomSheet ? (
@@ -550,7 +742,8 @@ const PaymentSettingScreen = () => {
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
-                        onPress={handleDisableBtn}
+                        disabled
+                        // onPress={handleDisableBtn}
                         style={styles.saveDisabledBtn}>
                         <Text
                           style={{
@@ -677,6 +870,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'gray',
     borderRadius: responsiveWidth(10),
+  },
+  bankDetailesContainer: {
+    width: responsiveWidth(96),
+    height: responsiveHeight(20),
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: '#C9C9C9',
+    borderRadius: responsiveWidth(3),
+    marginVertical: responsiveWidth(2),
+  },
+  bankListContainer: {
+    // flex: 1,
+    width: responsiveWidth(100),
+    height: responsiveHeight(70),
+    // justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: responsiveWidth(5),
+  },
+  bankDetailes_bankName: {
+    fontSize: responsiveFontSize(2.2),
+    color: 'black',
+    fontWeight: '700',
+    marginLeft: responsiveWidth(5),
   },
 });
 

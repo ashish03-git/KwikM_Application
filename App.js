@@ -51,6 +51,9 @@ import NoConnection from './src/OtherScreens/NoConnection';
 import PrivacyPolicyScreen from './src/ProfileScreens/PrivacyPolicyScreen';
 import TermsConditionScreen from './src/ProfileScreens/TermsConditionScreen';
 import PaymentSettingScreen from './src/ProfileScreens/PaymentSettingScreen';
+import KycDetailsScreen from './src/ProfileScreens/KycDetailsScreen';
+import EducationDetailsScreen from './src/ProfileScreens/EducationDetailsScreen';
+import KwikmRegistration from './src/Retailer/KwikmRegistration';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -223,6 +226,24 @@ const App = () => {
                 name="paymentSetting"
                 options={{headerShown: false}}
                 component={PaymentSettingScreen}
+              />
+
+              <Stack.Screen
+                name="kycDetails"
+                options={{headerShown: false}}
+                component={KycDetailsScreen}
+              />
+
+              <Stack.Screen
+                name="educationDetails"
+                options={{headerShown: false}}
+                component={EducationDetailsScreen}
+              />
+
+              <Stack.Screen
+                name="kwikmRegistration"
+                options={{headerShown: false}}
+                component={KwikmRegistration}
               />
 
               {/* Distributor screens */}

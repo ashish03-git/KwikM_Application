@@ -235,8 +235,6 @@ const HelpScreen = () => {
                         </View>
 
 
-
-
                         {/* company details */}
                         <View style={{ flex: 1 }}>
 
