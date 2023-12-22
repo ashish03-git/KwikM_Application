@@ -182,7 +182,7 @@ const KycDetailsScreen = () => {
             <View style={styles.doucmentCardContainer}>
               <Image
                 source={require('../../assets/aadhar.png')}
-                style={styles.pancardImg}
+                style={styles.cardImg}
               />
               <Text style={styles.cardName}>Aadhar Card</Text>
 
@@ -201,11 +201,10 @@ const KycDetailsScreen = () => {
                   style={styles.documentUploadBtn}>
                   <Text
                     style={{fontSize: responsiveFontSize(1.8), color: 'white'}}>
-                    Upload
+                    Select Document
                   </Text>
                 </TouchableOpacity>
               )}
-
             </View>
 
             <View style={styles.doucmentCardContainer}>
@@ -213,6 +212,7 @@ const KycDetailsScreen = () => {
                 source={require('../../assets/pancard.png')}
                 style={styles.pancardImg}
               />
+
               <Text style={styles.cardName}>Pan Card</Text>
 
               {isPanAvailble ? (
@@ -230,7 +230,7 @@ const KycDetailsScreen = () => {
                   style={styles.documentUploadBtn}>
                   <Text
                     style={{fontSize: responsiveFontSize(1.8), color: 'white'}}>
-                    Upload
+                    Select Document
                   </Text>
                 </TouchableOpacity>
               )}
@@ -255,7 +255,7 @@ const KycDetailsScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-      ) : (
+      ) : (                                                  
         <NoConnection />
       )}
     </>
@@ -270,13 +270,14 @@ const styles = StyleSheet.create({
   },
   documentContainer: {
     width: responsiveWidth(100),
-    height: responsiveHeight(45),
-    justifyContent: 'space-evenly',
-    flexDirection: 'row',
+    height: responsiveHeight(65),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // backgroundColor: 'red',
   },
   doucmentCardContainer: {
-    width: responsiveWidth(40),
-    height: responsiveHeight(20),
+    width: responsiveWidth(90),
+    height: responsiveHeight(32),
     borderRadius: responsiveWidth(3),
     backgroundColor: 'white',
     justifyContent: 'center',
@@ -284,42 +285,43 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   cardImg: {
-    width: responsiveWidth(25),
-    height: responsiveHeight(7),
+    width: responsiveWidth(60),
+    height: responsiveHeight(18),
     resizeMode: 'cover',
   },
   pancardImg: {
-    width: responsiveWidth(25),
-    height: responsiveHeight(7),
+    width: responsiveWidth(60),
+    height: responsiveHeight(18),
     resizeMode: 'cover',
   },
   cardName: {
-    fontSize: responsiveFontSize(2),
+    fontSize: responsiveFontSize(2.2),
     color: 'black',
     fontWeight: '500',
-    marginVertical: responsiveWidth(2),
+    marginVertical: responsiveWidth(2.5),
   },
   documentUploadBtn: {
-    width: responsiveWidth(25),
-    height: responsiveHeight(4),
+    width: responsiveWidth(60),
+    height: responsiveHeight(5),
     borderRadius: responsiveWidth(10),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#CB01CF',
   },
   documentSelectedBtn: {
-    width: responsiveWidth(25),
-    height: responsiveHeight(4),
+    width: responsiveWidth(60),
+    height: responsiveHeight(5),
     borderRadius: responsiveWidth(10),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'green',
   },
   submitButtonContainer: {
-    width: responsiveWidth(90),
-    height: responsiveHeight(45),
+    width: responsiveWidth(100),
+    height: responsiveHeight(25),
     alignItems: 'center',
     justifyContent: 'flex-end',
+    // backgroundColor: 'yellow',
   },
   submitButton: {
     width: responsiveWidth(90),
@@ -354,7 +356,6 @@ const styles = StyleSheet.create({
     marginBottom: responsiveWidth(5),
     fontWeight: '500',
   },
- 
 });
 
 export default KycDetailsScreen;

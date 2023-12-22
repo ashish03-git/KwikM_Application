@@ -38,10 +38,10 @@ const PaymentSettingScreen = () => {
   const [accountNumber, setAccountNumber] = useState('');
   const [confirmAccountNumber, setConfirmAccountNumber] = useState('');
   const [ifsc, setIfsc] = useState('');
-  const [savingAccount, setSavingAccount] = useState('');
-  const [savingAccountValue, setSavingAccountValue] = useState('');
-  const [currentAccount, setCurrentAccount] = useState('');
-  const [currentAccountValue, setCurrentAccountValue] = useState('');
+  const [savingAccount, setSavingAccount] = useState(null);
+  const [savingAccountValue, setSavingAccountValue] = useState(null);
+  const [currentAccount, setCurrentAccount] = useState(null);
+  const [currentAccountValue, setCurrentAccountValue] = useState(null);
   const [showBottomSheet, setBottomSheet] = useState(false);
   const [userId, setUserId] = useState(null);
   const [authToken, setAuthToken] = useState(null);
@@ -51,14 +51,10 @@ const PaymentSettingScreen = () => {
   const [availableBankList, setAvailableBankList] = useState([]);
   const [activityIndicator, setActivityIndicator] = useState(false);
 
-  useEffect(() => {
-    getUserDetails();
-    // FetchAvailableBankAccounts();
-  }, []);
-
   useFocusEffect(
     React.useCallback(() => {
       setActivityIndicator(true);
+      getUserDetails();
       FetchAvailableBankAccounts();
     }, [userId, authToken]),
   );
@@ -115,6 +111,7 @@ const PaymentSettingScreen = () => {
     );
     // console.log(ob);
     const data = await availbleBank.json();
+    // console.log(data);
     setAvailableBankList(data);
     setTimeout(() => {
       setActivityIndicator(false);
@@ -149,7 +146,7 @@ const PaymentSettingScreen = () => {
       ac_number: accountNumber,
       ifsc_code: ifsc,
     };
-
+    // console.log(ob);
     const response = await fetch(
       'https://kwikm.in/dev_kwikm/api/add_bank_details.php',
       {
@@ -164,6 +161,7 @@ const PaymentSettingScreen = () => {
     const data = await response.json();
     if (data.message) {
       setMsg(data.message);
+      FetchAvailableBankAccounts();
       setTimeout(() => {
         setMsg('');
       }, 3000);
@@ -358,7 +356,8 @@ const PaymentSettingScreen = () => {
                                       }}>
                                       IFSC : {item.ifsc_code}
                                     </Text>
-                                    {item.account_type === 1 ? (
+
+                                    {item.account_type == 1 ? (
                                       <Text
                                         style={{
                                           fontSize: responsiveFontSize(1.8),
@@ -377,6 +376,7 @@ const PaymentSettingScreen = () => {
                                         Current Account
                                       </Text>
                                     )}
+                                    
                                   </View>
                                 </View>
                               </View>
@@ -446,6 +446,28 @@ const PaymentSettingScreen = () => {
                           );
                         }}
                       />
+                      <TouchableOpacity
+                        onPress={() => setBottomSheet(!showBottomSheet)}
+                        style={{
+                          width: responsiveWidth(16),
+                          height: responsiveWidth(16),
+                          borderRadius: responsiveWidth(8),
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: '#A2159C',
+                          position: 'absolute',
+                          zIndex: 1,
+                          top: responsiveHeight(55),
+                          left: responsiveWidth(75), // Adjusted left position
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: responsiveFontSize(6),
+                            color: 'white',
+                          }}>
+                          +
+                        </Text>
+                      </TouchableOpacity>
                     </View>
                   ) : (
                     <>
@@ -848,16 +870,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   cancleBtn: {
-    width: responsiveWidth(40),
-    paddingVertical: responsiveWidth(3),
+    width: responsiveWidth(43),
+    paddingVertical: responsiveWidth(4),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#CDCDCD',
     borderRadius: responsiveWidth(10),
   },
   saveBtn: {
-    width: responsiveWidth(40),
-    paddingVertical: responsiveWidth(3),
+    width: responsiveWidth(43),
+    paddingVertical: responsiveWidth(4),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#CB01CF',

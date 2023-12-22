@@ -67,7 +67,7 @@ const SplashScreen = () => {
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
             <Animated.View entering={ZoomIn.duration(1500).easing(Easing.ease)}  >
                 <Image
-                    source={{uri: "https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1702857600&Signature=Av-qbmpOdf1ejuomjhi3AqOFEMXRrIHcAqcseIlcT2zHDT1SbIpUOh0P0d8eCZmU2xjEQmUWe62IKgJX9Mnp6pQlEd1n8CDZcB-ODA89c9dXHkKpWbU-epZOoz79H4uN9H3Ft4a9JIpQAhXZeAkHAZdFvazWRQYYvqQM6n93eMKRG86J5byn8~CoYOm12vPS6foKzmM2R3UYaw6xRvWrSCa3kcD7Npu81DH9Cc~L5whoHClzTlT6y9~8PE6c82kJjH04jajLVVDro7rE~nSCfhKJaOLnLqejZpkVSDNVk23HOmvRpy6xCSFjbWKCvhevd9u5ZxyIdAN9g4XfgMN~Hw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                    source={{uri: "https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1704067200&Signature=GsWU2Fi7~7trotpbLAk7HlSQt9X1LMW~f8~Eomx5srzmJx9QqyjA66UhfjTIeOONoyh-x6ynHa--mqesRZYts~MvxC7D9Co8r7~pENNxT3nRrrlDAzQfFvsrrYW22Pwz4A~MQRt7xZ08rBEIb6u9gl9bYdhjo4wlli7V5ILsAKkIx86pG5xVJN4IlUavs5Bg7uqvcL3~tHzSE4-8iX-W7W2vgioOacMNtCsiL1pQBbKf2Ub0y~ouM2BNrlZwHNz5iJpz8Q1F~Q6RM3oSK-IyEmDkPtqvoc17cD6xUKAo9XUm243yBm8ZcOujBECjXxaQ5wMeIHVpr4RB69ULQYQLbw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
                 }}
                     style={{
                         width: responsiveWidth(50),

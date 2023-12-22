@@ -335,28 +335,6 @@ const UserProfile = () => {
             </View>
           </TouchableOpacity>
 
-          {/* <TouchableOpacity style={styles.userDetailsContainer}>
-            <View style={styles.userDetailsContainerIconeLeft}>
-              <Font5
-                name="user-tie"
-                color="#046218"
-                size={responsiveWidth(4.8)}
-              />
-            </View>
-            <View style={styles.userDetailsContainerTitle}>
-              <Text style={styles.userDetailsContainerTitleText}>
-                Professional Details
-              </Text>
-            </View>
-            <View style={styles.userDetailsContainerIconeRight}>
-              <Font5
-                name="chevron-circle-right"
-                color="#046218"
-                size={responsiveWidth(4.5)}
-              />
-            </View>
-          </TouchableOpacity> */}
-
           <TouchableOpacity
             onPress={() => navigation.navigate('rewards')}
             style={styles.userDetailsContainer}>

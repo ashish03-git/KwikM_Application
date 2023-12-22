@@ -9,7 +9,7 @@ import RegisterOtpScreen from './src/auth/RegisterOtpScreen';
 import LoginOtpScreen from './src/auth/LoginOtpScreen';
 import store from './src/redux/Store';
 import {Provider} from 'react-redux';
-import RegisterMPINScreen from './src/auth/RegisterMPINScreen.js.js';
+import RegisterMPINScreen from './src/auth/RegisterMPINScreen.js';
 import LoginWithNumber from './src/auth/LoginWithNumber';
 import LoginMPINScreen from './src/auth/LoginMPINScreen';
 import ProductsScreen from './src/OtherScreens/ProductsScreen';

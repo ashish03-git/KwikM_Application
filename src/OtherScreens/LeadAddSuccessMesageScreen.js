@@ -20,6 +20,7 @@ import Font5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcone from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const LeadAddSuccessMesageScreen = () => {
+
   const leadDetails = useSelector(state => state.details.lead_details);
   const route = useRoute();
   const screenName = route.params.screen;
@@ -105,6 +106,7 @@ const LeadAddSuccessMesageScreen = () => {
       })
       .catch(err => console.error('An error occurred', err));
   };
+  
 
   return (
     
@@ -821,7 +823,7 @@ const LeadAddSuccessMesageScreen = () => {
               ? handleWhatsAppOpenForPaytm
               : screenName === 'retailer'
               ? handleWhatsAppOpenForRetailer
-              : handleWhatsAppOpenForPaytm
+              : null
           }
           style={{
             width: responsiveWidth(45),

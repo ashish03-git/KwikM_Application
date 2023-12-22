@@ -5,6 +5,7 @@ import {
   TextInput,
   StatusBar,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -19,7 +20,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
 import {useSelector, useDispatch} from 'react-redux';
-import {add_lead_Details } from '../redux/Slice';
+import {add_lead_Details} from '../redux/Slice';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 const AddCustomer = () => {
   // variables
@@ -32,15 +34,14 @@ const AddCustomer = () => {
   const [pincode, setPincode] = useState('');
   const [email, setEmail] = useState('');
   const [paytmSprintStatus, setPaytmSprintStatus] = useState();
-  const [leadGenerationStatus, setLeadGenerationStatus] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [screenName, setScreenName] = useState(route.params.screenName);
   const product_id = useSelector(state => state.details.product_id.product_id);
-  // console.log("add customer product id ",product_id)
   const category_id = useSelector(state => state.details.category_id);
-  // console.log("add customer customer id ",category_id)
   const [required_amount, setRequired_Amount] = useState('0');
   const netInfo = useNetInfo();
   const [msg, setMsg] = useState('');
+  const [err, setErr] = useState('');
   const [user_id, setUser_Id] = useState(null);
   const [buttonStatus, setButtonStatus] = useState(true);
   const [mobileErr, setMobileErr] = useState('');
@@ -110,16 +111,13 @@ const AddCustomer = () => {
       })
         .then(response => response.json())
         .then(data => {
-          // console.log(data)
           if (data.status === 'Success') {
             PaytmSprint(data);
           }
           if (data.status === 'Failure') {
             setPaytmSprintStatus(false);
-            setMsg(data.message);
-            setTimeout(() => {
-              setMsg('');
-            }, 1000);
+            setShowAlert(true);
+            setErr(data.message);
           }
         });
     } catch (error) {
@@ -160,10 +158,8 @@ const AddCustomer = () => {
             naviagtion.navigate('leadSuccessMsg', {screen: 'paytm'});
           }, 1000);
         } else {
-          setMsg(paySprintData.message);
-          setTimeout(() => {
-            setMsg('');
-          }, 1000);
+          setShowAlert(true);
+          setErr(paySprintData.message);
         }
       });
   };
@@ -253,21 +249,16 @@ const AddCustomer = () => {
       })
         .then(response => response.json())
         .then(data => {
-          // console.log(data)
           if (data.status) {
             dispatch(add_lead_Details([data, ob]));
-            setLeadGenerationStatus(true);
             setMsg(data.message);
             setTimeout(() => {
               naviagtion.navigate('leadSuccessMsg', {screen: 'retailer'});
               setMsg('');
             }, 1000);
           } else {
-            setLeadGenerationStatus(false);
-            setMsg(data.message);
-            setTimeout(() => {
-              setMsg('');
-            }, 1000);
+            setShowAlert(true);
+            setErr(data.message);
           }
         });
     } catch (error) {
@@ -300,8 +291,8 @@ const AddCustomer = () => {
             </View>
           </View>
 
-
           <View style={styles.formContainer}>
+            
             {/* condition based form showing if user is comming from patym screen the this screen will show */}
             {screenName === 'paytm' ? (
               <View style={styles.paytmFormContainer}>
@@ -327,15 +318,23 @@ const AddCustomer = () => {
                     />
                   </View>
 
-                  {paytmSprintStatus ? (
-                    <View style={styles.errorContainer}>
-                      <Text style={styles.errorTxt}>{msg}</Text>
-                    </View>
-                  ) : (
-                    <View style={styles.errorContainer}>
-                      <Text style={styles.errorTxt}>{msg}</Text>
-                    </View>
-                  )}
+                  <View
+                    style={{
+                      // backgroundColor: 'red',
+                      height: responsiveHeight(5),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {showAlert ? null : (
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'green',
+                        }}>
+                        {msg}
+                      </Text>
+                    )}
+                  </View>
                 </View>
 
                 <View style={{flex: 1, justifyContent: 'center'}}>
@@ -462,39 +461,25 @@ const AddCustomer = () => {
                     />
                   </View>
 
-                  {leadGenerationStatus ? (
-                    <View
-                      style={{
-                        marginBottom: responsiveWidth(4),
-                        marginTop: responsiveWidth(4),
-                      }}>
+                  <View
+                    style={{
+                      // backgroundColor: 'red',
+                      height: responsiveHeight(5),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {showAlert ? null : (
                       <Text
                         style={{
                           fontSize: responsiveFontSize(2),
                           color: 'green',
-                          alignSelf: 'center',
                         }}>
                         {msg}
                       </Text>
-                    </View>
-                  ) : (
-                    <View
-                      style={{
-                        marginBottom: responsiveWidth(4),
-                        marginTop: responsiveWidth(4),
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(2),
-                          color: 'red',
-                          alignSelf: 'center',
-                        }}>
-                        {msg}
-                      </Text>
-                    </View>
-                  )}
+                    )}
+                  </View>
 
-                  <View style={{marginLeft: responsiveWidth(5)}}>
+                  <View style={{margin: responsiveWidth(6), marginBottom: 0}}>
                     <Text style={styles.privacyLable}>
                       By continuing you agree
                       <Text style={styles.privacyHighlightedLable}>
@@ -560,6 +545,35 @@ const AddCustomer = () => {
             )}
           </View>
 
+          <AwesomeAlert
+            show={showAlert}
+            title="Failed to create lead"
+            message={`${err}`}
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={true}
+            showConfirmButton={true}
+            confirmText="Ok"
+            titleStyle={{
+              fontSize: responsiveFontSize(2.2),
+              fontWeight: 'bold',
+              color: 'red',
+            }}
+            messageStyle={{fontSize: responsiveFontSize(2), color: 'black'}}
+            confirmButtonStyle={{
+              backgroundColor: '#DD6B55',
+              width: responsiveWidth(30),
+              height: responsiveHeight(5),
+              borderRadius: responsiveWidth(10),
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            confirmButtonTextStyle={{fontSize: 16, color: 'white'}}
+            onConfirmPressed={() => {
+              setShowAlert(false);
+            }}
+          />
+
+        
         </>
       ) : (
         <NoConnection />
@@ -678,8 +692,9 @@ const styles = StyleSheet.create({
     paddingTop: responsiveWidth(2),
   },
   errorTxt: {
+    marginTop: responsiveWidth(2),
     fontSize: responsiveFontSize(2),
-    color: 'green',
+    color: 'red',
   },
   privacyLable: {
     fontSize: responsiveFontSize(1.8),

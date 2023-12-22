@@ -104,6 +104,7 @@ const KwikmRegistration = () => {
       {netInfo ? (
         <>
           <View style={{flex: 1, backgroundColor: '#eaffea'}}>
+            
             {/* screen title */}
             <View style={{height: responsiveHeight(7), flexDirection: 'row'}}>
               <TouchableOpacity
@@ -121,7 +122,7 @@ const KwikmRegistration = () => {
               </TouchableOpacity>
               <View
                 style={{
-                  flex: 5,
+                  flex: 6,
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   flexDirection: 'row',
@@ -323,165 +324,7 @@ const KwikmRegistration = () => {
                 </TouchableOpacity>
               </View>
             </View>
-            {/* 
-            <View
-              style={{flex: 2, justifyContent: 'center', alignItems: 'center'}}>
-              <View
-                style={{
-                  width: responsiveWidth(94),
-                  height: responsiveHeight(6),
-                  backgroundColor: 'white',
-                  flexDirection: 'row',
-                  borderRadius: responsiveWidth(3),
-                  borderWidth: 1,
-                  borderColor: '#BCB4B4',
-                }}>
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Font5
-                    name="user-alt"
-                    size={responsiveWidth(5.5)}
-                    color="#535353"
-                  />
-                </View>
-                <View style={{flex: 5, justifyContent: 'center'}}>
-                  <TextInput
-                    placeholder="Full Name"
-                    placeholderTextColor={'gray'}
-                    onChangeText={txt => setName(txt)}
-                    value={name}
-                    style={{
-                      fontSize: responsiveFontSize(2),
-                      color: 'black',
-                    }}
-                  />
-                </View>
-              </View>
-
-              <View
-                style={{
-                  width: responsiveWidth(94),
-                  height: responsiveHeight(6),
-                  backgroundColor: 'white',
-                  flexDirection: 'row',
-                  borderRadius: responsiveWidth(3),
-                  // marginTop: responsiveWidth(3),
-                  borderWidth: 1,
-                  borderColor: '#BCB4B4',
-                }}>
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Font5
-                    name="phone-alt"
-                    size={responsiveWidth(5.5)}
-                    color="#535353"
-                  />
-                </View>
-                <View style={{flex: 5, justifyContent: 'center'}}>
-                  <TextInput
-                    placeholder="Mobile Number"
-                    placeholderTextColor={'gray'}
-                    keyboardType="numeric"
-                    value={mobile_num}
-                    maxLength={10}
-                    onChangeText={txt => setMobile_Num(txt)}
-                    style={{
-                      fontSize: responsiveFontSize(2),
-                      color: 'black',
-                    }}
-                  />
-                </View>
-              </View>
-
-              <View
-                style={{
-                  width: responsiveWidth(94),
-                  height: responsiveHeight(6),
-                  backgroundColor: 'white',
-                  flexDirection: 'row',
-                  borderRadius: responsiveWidth(3),
-                  // marginTop: responsiveWidth(3),
-                  borderWidth: 1,
-                  borderColor: '#BCB4B4',
-                }}>
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Font5
-                    name="address-card"
-                    size={responsiveWidth(5.8)}
-                    color="#535353"
-                  />
-                </View>
-                <View style={{flex: 5, justifyContent: 'center'}}>
-                  <TextInput
-                    placeholder="PAN Card "
-                    placeholderTextColor={'gray'}
-                    value={pan}
-                    onChangeText={txt => setPan(txt)}
-                    autoCapitalize="characters"
-                    style={{
-                      fontSize: responsiveFontSize(2),
-                      color: 'black',
-                    }}
-                  />
-                </View>
-              </View>
-
-              {status ? (
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: responsiveWidth(3),
-                    paddingBottom: 0,
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: responsiveFontSize(2),
-                      color: 'green',
-                    }}>
-                    {msg}
-                  </Text>
-                </View>
-              ) : (
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: responsiveWidth(3),
-                    paddingBottom: 0,
-                  }}>
-                  <Text style={{fontSize: responsiveFontSize(2), color: 'red'}}>
-                    {msg}
-                  </Text>
-                </View>
-              )}
-
-              <View
-                style={{
-                  width: responsiveWidth(100),
-                  flexDirection: 'row',
-                  justifyContent: 'space-evenly',
-                  alignItems: 'center',
-                  marginTop: responsiveWidth(5),
-                  paddingBottom: responsiveWidth(8),
-                }}>
-               
-              
-              </View>
-            </View> */}
+ 
           </View>
         </>
       ) : (
