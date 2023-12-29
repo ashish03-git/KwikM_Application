@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Linking,
+  Alert,
 } from 'react-native';
 import {
   responsiveWidth,
@@ -177,7 +178,7 @@ const MyStats = () => {
               alignItems: 'center',
             }}>
             {leadList.length > 0 ? (
-              <>
+              <View style={{flex:1}}>
                 <FlatList
                   data={leadList}
                   showsVerticalScrollIndicator={false}
@@ -225,6 +226,7 @@ const MyStats = () => {
                               </Text>
                             </View>
                           </View>
+
                           <View style={{flex: 4, flexDirection: 'row'}}>
                             <View style={{flex: 3, justifyContent: 'center'}}>
                               <Text
@@ -301,6 +303,7 @@ const MyStats = () => {
                               </View>
                             </View>
                           </View>
+
                         </View>
                         <View
                           style={{
@@ -379,9 +382,11 @@ const MyStats = () => {
                     );
                   }}
                 />
+
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('addcustomer', {screenName: 'product'})
+                    navigation.navigate("subscriptionScreen")
+                    // navigation.navigate('addcustomer', {screenName: 'product'})
                   }
                   style={{
                     width: responsiveWidth(16),
@@ -392,7 +397,7 @@ const MyStats = () => {
                     backgroundColor: '#A2159C',
                     position: 'absolute',
                     zIndex: 1,
-                    top: responsiveHeight(65),
+                    top: responsiveHeight(60),
                     left: responsiveWidth(75), // Adjusted left position
                   }}>
                   <Text
@@ -403,7 +408,8 @@ const MyStats = () => {
                     +
                   </Text>
                 </TouchableOpacity>
-              </>
+
+              </View>
             ) : (
               <>
                 <View style={listItemStyle}>

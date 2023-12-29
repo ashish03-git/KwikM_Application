@@ -54,6 +54,7 @@ import PaymentSettingScreen from './src/ProfileScreens/PaymentSettingScreen';
 import KycDetailsScreen from './src/ProfileScreens/KycDetailsScreen';
 import EducationDetailsScreen from './src/ProfileScreens/EducationDetailsScreen';
 import KwikmRegistration from './src/Retailer/KwikmRegistration';
+import SubcriptionScreen from './src/OtherScreens/SubcriptionScreen';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -244,6 +245,11 @@ const App = () => {
                 name="kwikmRegistration"
                 options={{headerShown: false}}
                 component={KwikmRegistration}
+              />
+              <Stack.Screen
+                name="subscriptionScreen"
+                options={{headerShown: false}}
+                component={SubcriptionScreen}
               />
 
               {/* Distributor screens */}
