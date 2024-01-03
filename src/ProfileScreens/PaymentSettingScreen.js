@@ -10,6 +10,7 @@ import {
   StatusBar,
   TextInput,
   FlatList,
+  Alert,
 } from 'react-native';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {
@@ -29,6 +30,8 @@ import {CheckBox} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
+import {useDispatch, useSelector} from 'react-redux';
+import {add_edit_bank_account_details} from '../redux/Slice';
 
 const PaymentSettingScreen = () => {
   const navigation = useNavigation();
@@ -39,7 +42,7 @@ const PaymentSettingScreen = () => {
   const [confirmAccountNumber, setConfirmAccountNumber] = useState('');
   const [ifsc, setIfsc] = useState('');
   const [savingAccount, setSavingAccount] = useState(null);
-  const [savingAccountValue, setSavingAccountValue] = useState(null);
+  const [savingAccountValue, setSavingAccountValue] = useState(1);
   const [currentAccount, setCurrentAccount] = useState(null);
   const [currentAccountValue, setCurrentAccountValue] = useState(null);
   const [showBottomSheet, setBottomSheet] = useState(false);
@@ -50,6 +53,9 @@ const PaymentSettingScreen = () => {
   const [buttonStatus, setButtonStatus] = useState(false);
   const [availableBankList, setAvailableBankList] = useState([]);
   const [activityIndicator, setActivityIndicator] = useState(false);
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  const dispatch = useDispatch();
+  const editBankDetails = useSelector(state => state.details.edit_bank_account);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -163,8 +169,9 @@ const PaymentSettingScreen = () => {
       setMsg(data.message);
       FetchAvailableBankAccounts();
       setTimeout(() => {
+        setBottomSheet(false);
         setMsg('');
-      }, 3000);
+      }, 1000);
     } else {
       setError(data.error);
       setTimeout(() => {
@@ -173,11 +180,93 @@ const PaymentSettingScreen = () => {
     }
   };
 
-  const hndleDisableBtn = () => {
-    setError('all fields required.');
-    setTimeout(() => {
-      setError('');
-    }, 3000);
+  const handleRemoveBankAccount = id => {
+    const RemoveBankAccount = async () => {
+      let payload = {
+        user_id: userId,
+        auth_token: authToken,
+        id: id,
+      };
+
+      let response = await fetch(
+        'https://kwikm.in/dev_kwikm/api/remove_account.php',
+        {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      let apiResponse = await response.json();
+      console.log(apiResponse);
+    };
+
+    Alert.alert('Remove Bank Account', 'Do you want to remove bank account ?', [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          RemoveBankAccount(id);
+          FetchAvailableBankAccounts();
+        },
+      },
+    ]);
+  };
+
+  const handleSetPrimaryBankAccount = async () => {};
+
+  const handleEditBankAccount = async () => {
+    setBankName(editBankDetails.bank_name);
+    setName(editBankDetails.ac_name);
+    setAccountNumber(editBankDetails.ac_number);
+    setConfirmAccountNumber(editBankDetails.ac_number);
+    setIfsc(editBankDetails.ifsc_code);
+
+    let ob = {
+      user_id: userId,
+      auth_token: authToken,
+      account_type: savingAccountValue
+        ? savingAccountValue
+        : currentAccountValue,
+      bank_name: bankName,
+      ac_name: name,
+      ac_number: accountNumber,
+      ifsc_code: ifsc,
+      status: editBankDetails.status,
+      id: editBankDetails.id,
+    };
+    // console.log(ob);
+    const response = await fetch(
+      'https://kwikm.in/dev_kwikm/api/edit_account.php',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(ob),
+      },
+    );
+
+    const data = await response.json();
+    // console.log(data);
+    if (data.message) {
+      FetchAvailableBankAccounts();
+      setMsg(data.message);
+      setTimeout(() => {
+        setMsg('');
+        setIsEditClicked(false);
+      }, 1000);
+    } else {
+      setError(data.error);
+      setTimeout(() => {
+        setError('');
+      }, 2000);
+    }
   };
 
   return (
@@ -309,10 +398,30 @@ const PaymentSettingScreen = () => {
                             <View style={styles.bankDetailesContainer}>
                               <View style={{flex: 2}}>
                                 <View
-                                  style={{flex: 2, justifyContent: 'center'}}>
+                                  style={{
+                                    flex: 2,
+                                    justifyContent: 'space-between',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    paddingRight: responsiveWidth(3),
+                                  }}>
                                   <Text style={styles.bankDetailes_bankName}>
                                     {item.bank_name}
                                   </Text>
+
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      dispatch(
+                                        add_edit_bank_account_details(item),
+                                      );
+                                      setIsEditClicked(!isEditClicked);
+                                    }}>
+                                    <Font5
+                                      name="edit"
+                                      size={responsiveWidth(5)}
+                                      color="black"
+                                    />
+                                  </TouchableOpacity>
                                 </View>
                                 <View
                                   style={{
@@ -376,7 +485,6 @@ const PaymentSettingScreen = () => {
                                         Current Account
                                       </Text>
                                     )}
-                                    
                                   </View>
                                 </View>
                               </View>
@@ -389,7 +497,8 @@ const PaymentSettingScreen = () => {
                                   borderBottomStartRadius: responsiveWidth(3),
                                   flexDirection: 'row',
                                 }}>
-                                <View
+                                <TouchableOpacity
+                                  onPress={handleSetPrimaryBankAccount}
                                   style={{
                                     flex: 1,
                                     // backgroundColor: 'red',
@@ -411,14 +520,12 @@ const PaymentSettingScreen = () => {
                                     }}>
                                     Set As Primary
                                   </Text>
-                                </View>
-                                {/* <View
-                              style={{
-                                width: responsiveWidth(0.1),
-                                backgroundColor: 'gray',
-                              }}
-                            /> */}
-                                <View
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    handleRemoveBankAccount(item.id)
+                                  }
                                   style={{
                                     flex: 1,
                                     // backgroundColor: 'red',
@@ -440,7 +547,7 @@ const PaymentSettingScreen = () => {
                                     }}>
                                     Remove Account
                                   </Text>
-                                </View>
+                                </TouchableOpacity>
                               </View>
                             </View>
                           );
@@ -457,7 +564,7 @@ const PaymentSettingScreen = () => {
                           backgroundColor: '#A2159C',
                           position: 'absolute',
                           zIndex: 1,
-                          top: responsiveHeight(55),
+                          top: responsiveHeight(50),
                           left: responsiveWidth(75), // Adjusted left position
                         }}>
                         <Text
@@ -535,9 +642,15 @@ const PaymentSettingScreen = () => {
                 snapPoints={[0, responsiveHeight(90)]}>
                 <View style={styles.addBankFormContainer}>
                   <View style={styles.addBankFormTitle}>
-                    <Text style={styles.addBankFormTitleTxt}>
-                      Add Bank Account
-                    </Text>
+                    {isEditClicked ? (
+                      <Text style={styles.addBankFormTitleTxt}>
+                        Edit Bank Account
+                      </Text>
+                    ) : (
+                      <Text style={styles.addBankFormTitleTxt}>
+                        Add Bank Account
+                      </Text>
+                    )}
                   </View>
 
                   <View style={styles.addBankFormSubTitle}>
@@ -751,7 +864,266 @@ const PaymentSettingScreen = () => {
 
                     {buttonStatus ? (
                       <TouchableOpacity
-                        onPress={handleAddBankAccount}
+                        onPress={
+                          isEditClicked
+                            ? handleEditBankAccount
+                            : handleAddBankAccount
+                        }
+                        style={styles.saveBtn}>
+                        <Text
+                          style={{
+                            fontSize: responsiveFontSize(2),
+                            color: 'white',
+                            fontWeight: '700',
+                          }}>
+                          Save
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        disabled
+                        // onPress={handleDisableBtn}
+                        style={styles.saveDisabledBtn}>
+                        <Text
+                          style={{
+                            fontSize: responsiveFontSize(2),
+                            color: 'white',
+                            fontWeight: '700',
+                          }}>
+                          Save
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              </BottomSheet>
+            ) : null}
+
+            {isEditClicked ? (
+              <BottomSheet
+                isOpen
+                sliderMaxHeight={responsiveHeight(90)}
+                initialSnap={0} // 0 indicates the closed position
+                snapPoints={[0, responsiveHeight(90)]}>
+                <View style={styles.addBankFormContainer}>
+                  <View style={styles.addBankFormTitle}>
+                    <Text style={styles.addBankFormTitleTxt}>
+                      Edit Bank Account
+                    </Text>
+                  </View>
+
+                  <View style={styles.addBankFormSubTitle}>
+                    <Text style={styles.addBankFormSubTitleTxt}>
+                      Name should be same as in PAN card
+                    </Text>
+                    <Text style={styles.addBankFormSubTitleTxt}>
+                      and bank account.
+                    </Text>
+                  </View>
+
+                  {/* form field */}
+                  <View
+                    style={{
+                      flex: 2,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <View style={styles.checkBoxContainer}>
+                      <CheckBox
+                        style={{backgroundColor: 'white', borderWidth: 0}}
+                        title="Saving account"
+                        checked={savingAccount}
+                        onPress={handleSavingAccountPress}
+                      />
+                      <CheckBox
+                        title="Current Account"
+                        checked={currentAccount}
+                        onPress={handleCurrentAccountPress}
+                      />
+                    </View>
+
+                    <View style={styles.inputFieldContainer}>
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Font
+                          name="institution"
+                          size={responsiveWidth(5.5)}
+                          color="#535353"
+                        />
+                      </View>
+
+                      <View style={{flex: 5, justifyContent: 'center'}}>
+                        <TextInput
+                          placeholder="Enter Bank Name"
+                          placeholderTextColor={'gray'}
+                          onChangeText={txt => setBankName(txt)}
+                          value={bankName}
+                          style={{
+                            fontSize: responsiveFontSize(2),
+                            color: 'black',
+                          }}
+                        />
+                      </View>
+                    </View>
+
+                    <View style={styles.inputFieldContainer}>
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Font5
+                          name="address-card"
+                          size={responsiveWidth(5.5)}
+                          color="#535353"
+                        />
+                      </View>
+
+                      <View style={{flex: 5, justifyContent: 'center'}}>
+                        <TextInput
+                          placeholder="Name As Per Aadhar Card"
+                          placeholderTextColor={'gray'}
+                          value={name}
+                          //   maxLength={10}
+                          onChangeText={txt => setName(txt)}
+                          style={{
+                            fontSize: responsiveFontSize(2),
+                            color: 'black',
+                          }}
+                        />
+                      </View>
+                    </View>
+
+                    <View style={styles.inputFieldContainer}>
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <MaterialCommunity
+                          name="bank"
+                          size={responsiveWidth(6)}
+                          color="#535353"
+                        />
+                      </View>
+                      <View style={{flex: 5, justifyContent: 'center'}}>
+                        <TextInput
+                          placeholder="Account Number "
+                          placeholderTextColor={'gray'}
+                          value={accountNumber}
+                          keyboardType="numeric"
+                          onChangeText={txt => setAccountNumber(txt)}
+                          //   autoCapitalize="characters"
+                          style={{
+                            fontSize: responsiveFontSize(2),
+                            color: 'black',
+                          }}
+                        />
+                      </View>
+                    </View>
+
+                    <View style={styles.inputFieldContainer}>
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <MaterialCommunity
+                          name="bank-check"
+                          size={responsiveWidth(6)}
+                          color="#535353"
+                        />
+                      </View>
+                      <View style={{flex: 5, justifyContent: 'center'}}>
+                        <TextInput
+                          placeholder="Confirm Account Number"
+                          placeholderTextColor={'gray'}
+                          keyboardType="numeric"
+                          value={confirmAccountNumber}
+                          onChangeText={txt => setConfirmAccountNumber(txt)}
+                          //   autoCapitalize="characters"
+                          style={{
+                            fontSize: responsiveFontSize(2),
+                            color: 'black',
+                          }}
+                        />
+                      </View>
+                    </View>
+
+                    <View style={styles.inputFieldContainer}>
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Entypo
+                          name="code"
+                          size={responsiveWidth(5.8)}
+                          color="#535353"
+                        />
+                      </View>
+                      <View style={{flex: 5, justifyContent: 'center'}}>
+                        <TextInput
+                          placeholder="IFSC Code"
+                          placeholderTextColor={'gray'}
+                          autoCapitalize="characters"
+                          value={ifsc}
+                          onChangeText={txt => setIfsc(txt)}
+                          style={{
+                            fontSize: responsiveFontSize(2),
+                            color: 'black',
+                          }}
+                        />
+                      </View>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      height: responsiveWidth(10),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {msg ? (
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'green',
+                        }}>
+                        {msg}
+                      </Text>
+                    ) : (
+                      <Text
+                        style={{fontSize: responsiveFontSize(2), color: 'red'}}>
+                        {error}
+                      </Text>
+                    )}
+                  </View>
+
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      onPress={() => setIsEditClicked(false)}
+                      style={styles.cancleBtn}>
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'black',
+                        }}>
+                        Cancel
+                      </Text>
+                    </TouchableOpacity>
+
+                    {buttonStatus ? (
+                      <TouchableOpacity
+                        onPress={handleEditBankAccount}
                         style={styles.saveBtn}>
                         <Text
                           style={{
@@ -886,8 +1258,8 @@ const styles = StyleSheet.create({
     borderRadius: responsiveWidth(10),
   },
   saveDisabledBtn: {
-    width: responsiveWidth(40),
-    paddingVertical: responsiveWidth(3),
+    width: responsiveWidth(43),
+    paddingVertical: responsiveWidth(4),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'gray',

@@ -83,11 +83,6 @@ const UserProfile = () => {
         {
           text: 'Yes',
           onPress: () => {
-            // AsyncStorage.removeItem('login');
-            // AsyncStorage.removeItem('name');
-            // AsyncStorage.removeItem('user_id');
-            // AsyncStorage.removeItem('role');
-            // AsyncStorage.removeItem('user_number');
             AsyncStorage.clear();
             navigation.navigate('loginMPIN'), BackHandler.exitApp();
           },

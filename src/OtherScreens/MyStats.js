@@ -19,47 +19,53 @@ import Font5 from 'react-native-vector-icons/FontAwesome5';
 import Font from 'react-native-vector-icons/FontAwesome';
 import ActivityLoader from './ActivityLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {add_check_payment_status} from '../redux/Slice';
+// import { useDispatch,useSelector} from 'react-redux';
 
 const MyStats = () => {
   const navigation = useNavigation();
   const [leadList, setLeadList] = useState([]);
   const [activityIndicator, setActivityIndicator] = useState(false);
-  const [user_Id, setUser_Id] = useState(null);
+  const [authToken, setAuthToken] = useState(null);
+  const [details, setDetails] = useState(0);
+  const [userId, setUserId] = useState(null);
   const ProductDetails = useSelector(state => state.details.product_id);
-  // console.log("category id from my stats before add custormer", data[0], data[1], data[2])
-  // const screen_name = data[2]
-  // console.log(ProductDetails)
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setActivityIndicator(true);
-    fetchData();
+    getValueFromStorage();
     setTimeout(() => {
       setActivityIndicator(false);
     }, 1000);
   }, []);
 
+  useEffect(() => {
+    CheckSubscriptionsStatus();
+    FethchLeadStatus();
+  }, [userId, authToken]);
+
   useFocusEffect(
     React.useCallback(() => {
-      fetchData();
+      getValueFromStorage();
     }, []),
   );
 
-  const fetchData = async () => {
-    // console.log("hiii")
+  const getValueFromStorage = async () => {
     try {
-      const userId = await AsyncStorage.getItem('user_id');
-      setUser_Id(JSON.parse(userId));
-      // console.log(userId)
-      if (userId) {
-        await FethchLeadStatus(userId);
-      }
+      const id = await AsyncStorage.getItem('user_id');
+      const auth = await AsyncStorage.getItem('auth_token');
+
+      setAuthToken(JSON.parse(auth));
+      setUserId(JSON.parse(id));
     } catch (error) {
-      console.log(error);
+      // Handle errors
+      console.error(error);
     }
   };
 
-  const FethchLeadStatus = async userId => {
+  const FethchLeadStatus = async () => {
     const ob = {
       user_id: userId,
       product_id: ProductDetails.product_id,
@@ -75,7 +81,6 @@ const MyStats = () => {
         .then(response => response.json())
         .then(apiData => {
           if (apiData.lead_list) {
-            // console.log("hiii")
             setLeadList(apiData.lead_list);
           } else {
             setLeadList([]);
@@ -86,9 +91,30 @@ const MyStats = () => {
     }
   };
 
-  const handleLeadShare = ob => {
-    // console.log(ob);
+  const CheckSubscriptionsStatus = async () => {
+    let payload = {
+      user_id: userId,
+      auth_token: authToken,
+    };
+    // console.log(payload);
+    let response = await fetch(
+      'https://kwikm.in/dev_kwikm/api/check_susbs.php',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      },
+    );
 
+    let apiResponse = await response.json();
+    // console.log(apiResponse)
+    dispatch(add_check_payment_status(apiResponse));
+    setDetails(apiResponse);
+  };
+
+  const handleLeadShare = ob => {
     const message = `
 
         Lead Details :
@@ -127,7 +153,6 @@ const MyStats = () => {
       .catch(err => console.error('An error occurred', err));
   };
 
-  // console.log("checking data available in lead liset",leadList)
   const listItemStyle = useMemo(
     () => ({
       width: responsiveWidth(92),
@@ -178,7 +203,7 @@ const MyStats = () => {
               alignItems: 'center',
             }}>
             {leadList.length > 0 ? (
-              <View style={{flex:1}}>
+              <View style={{flex: 1}}>
                 <FlatList
                   data={leadList}
                   showsVerticalScrollIndicator={false}
@@ -303,7 +328,6 @@ const MyStats = () => {
                               </View>
                             </View>
                           </View>
-
                         </View>
                         <View
                           style={{
@@ -385,8 +409,16 @@ const MyStats = () => {
 
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate("subscriptionScreen")
-                    // navigation.navigate('addcustomer', {screenName: 'product'})
+                    // details.subscription == 0
+                    //   ? navigation.navigate('subscriptionScreen')
+                    //   : navigation.navigate('addcustomer', {
+                    //       screenName: 'product',
+                    //     })
+                    details.success
+                      ? navigation.navigate('addcustomer', {
+                          screenName: 'product',
+                        })
+                      : navigation.navigate('subscriptionScreen')
                   }
                   style={{
                     width: responsiveWidth(16),
@@ -408,7 +440,6 @@ const MyStats = () => {
                     +
                   </Text>
                 </TouchableOpacity>
-
               </View>
             ) : (
               <>
@@ -497,9 +528,16 @@ const MyStats = () => {
                     }}>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate('addcustomer', {
-                          screenName: 'product',
-                        })
+                        // details.subscription == 0
+                        //   ? navigation.navigate('subscriptionScreen')
+                        //   : navigation.navigate('addcustomer', {
+                        //       screenName: 'product',
+                        //     })
+                        details.success
+                          ? navigation.navigate('addcustomer', {
+                              screenName: 'product',
+                            })
+                          : navigation.navigate('subscriptionScreen')
                       }
                       style={buttonStyle}>
                       <Text

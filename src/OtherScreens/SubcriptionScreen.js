@@ -1,15 +1,12 @@
 import React, {useState, useEffect, useRef, useId} from 'react';
 import {
-  ScrollView,
   View,
   Text,
   StyleSheet,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
   StatusBar,
-  TextInput,
-  Alert,
+  Linking,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -22,15 +19,10 @@ import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 import Font from 'react-native-vector-icons/FontAwesome';
-import {createHmac} from 'react-native-crypto';
-import {WebView} from 'react-native-webview';
-import {HmacSHA256, Hex, enc} from 'crypto-js';
-import RNUpiPayment from 'react-native-upi-payment';
-import BottomSheet from 'react-native-simple-bottom-sheet';
-import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {createHash} from 'react-native-crypto';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {initiateTransaction} from 'rn-upi-pay';
+import {useSelector} from 'react-redux';
+
 // import PhonePe from 'react-native-phonepe';
 
 const SubcriptionScreen = () => {
@@ -40,19 +32,14 @@ const SubcriptionScreen = () => {
   const netInfo = useNetInfo();
   const [details, setDetails] = useState(0);
   const [showBottomSheet, setShowBottomSheet] = useState(false);
-  const [upiId, setUpiId] = useState('');
-  const [PayeeName, setPayeeName] = useState('');
-  const [recipientUpiId, setRecipientUpiId] = useState(null);
+  const PaymentStatusDetails = useSelector(
+    state => state.details.check_payment_status,
+  );
 
   useEffect(() => {
     getValueFromStorage();
-  });
-
-  useEffect(() => {
     CheckSubscriptionsStatus();
-    fetchRecipientUpiId();
   }, [userId, authToken]);
-
 
   // extracting id stored in registerOTPScreen from async storage
   const getValueFromStorage = async () => {
@@ -61,76 +48,11 @@ const SubcriptionScreen = () => {
       const auth = await AsyncStorage.getItem('auth_token');
 
       setAuthToken(JSON.parse(auth));
-      setUserId(id);
+      setUserId(JSON.parse(id));
     } catch (error) {
       // Handle errors
       console.error(error);
     }
-  };
-
-  // fetching recipient upi id.
-  const fetchRecipientUpiId = async () => {
-    const payload = {
-      user_id: userId,
-      auth_token: authToken,
-    };
-    const response = await fetch(
-      'https://kwikm.in/dev_kwikm/api/fetch_upi.php',
-      {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      },
-    );
-
-    const apiResponse = await response.json();
-    setRecipientUpiId(apiResponse.upi_id);
-  };
-
-  const handUpiPayment = async () => {
-    initiateTransaction({
-      payeeName: 'umar', // Required
-      upi: '9696470700@ybl', // Required
-      transactionId: `${details.order_id}`, // Required
-      currency: 'INR', //(Required)
-      merchantCategoryCode: '123445656', // (Required)
-      amount: '1', // Required
-      note: 'test', // (Optional)
-
-    })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(e => {
-        console.log("error",e)
-        console.log(e);
-      });
-  };
-
-
-  const updatePaymentStatus = async () => {
-    let payload = {
-      user_id: userId,
-      auth_token: authToken,
-      order_id: details.order_id,
-      amount: details.amount,
-    };
-    console.log('payment status update', payload);
-    let response = await fetch(
-      'https://kwikm.in/dev_kwikm/api/update_order_id.php',
-      {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      },
-    );
-
-    let apiResponse = response.json();
-    console.log(response);
   };
 
   const CheckSubscriptionsStatus = async () => {
@@ -138,7 +60,7 @@ const SubcriptionScreen = () => {
       user_id: userId,
       auth_token: authToken,
     };
-    // console.log(payload);
+
     let response = await fetch(
       'https://kwikm.in/dev_kwikm/api/check_susbs.php',
       {
@@ -151,16 +73,24 @@ const SubcriptionScreen = () => {
     );
 
     let apiResponse = await response.json();
-    // console.log(apiResponse)
+    console.log(apiResponse);
     setDetails(apiResponse);
   };
 
-  const openBottomSheet = () => {
-    setShowBottomSheet(!showBottomSheet);
-  };
+  const handUpiPayment = async () => {
+    const apiUrl = 'https://kwikm.in/live/payment.php';
+    const queryString = Object.keys(details)
+      .map(key => `${key}=${encodeURIComponent(details[key])}`)
+      .join('&');
+    const fullUrl = `${apiUrl}?${queryString}`;
+    // console.log("url: " + fullUrl);
 
-  const closeBottomSheet = () => {
-    setShowBottomSheet(false);
+    Linking.openURL(fullUrl).catch(error => {
+      console.error('error in opening url: ' + error);
+    });
+
+    // console.log("check status function is called last time")
+    CheckSubscriptionsStatus();
   };
 
   return (
@@ -226,7 +156,9 @@ const SubcriptionScreen = () => {
               {/* Subscription Details */}
               <View style={styles.subscriptionDetails}>
                 {/* <Text style={styles.planName}>Premium Plan</Text> */}
-                <Text style={styles.planPrice}>{details.amount}Rs.</Text>
+                <Text style={styles.planPrice}>
+                  {PaymentStatusDetails.amount / 100} Rs.
+                </Text>
               </View>
 
               {/* Purchase Button */}
@@ -252,105 +184,6 @@ const SubcriptionScreen = () => {
               </View>
             </View>
           </View>
-
-          {/* {showBottomSheet ? (
-            <BottomSheet isOpen sliderMaxHeight={responsiveHeight(40)}>
-              <View style={styles.addBankFormContainer}>
-                <View style={{flex: 1}}>
-                  <Text
-                    style={{fontSize: responsiveFontSize(2), color: 'black'}}>
-                    Enter upi id eg. john@yble/123456789@ybl
-                  </Text>
-                </View>
-                <View style={{flex: 1}}>
-                  <View style={styles.inputFieldContainer}>
-                    <View
-                      style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Font5
-                        name="user-alt"
-                        size={responsiveWidth(6)}
-                        color="#535353"
-                      />
-                    </View>
-                    <View style={{flex: 5, justifyContent: 'center'}}>
-                      <TextInput
-                        placeholder="Enter Your Name"
-                        placeholderTextColor={'gray'}
-                        // autoCapitalize="characters"
-                        value={PayeeName}
-                        onChangeText={txt => setPayeeName(txt)}
-                        style={{
-                          fontSize: responsiveFontSize(2),
-                          color: 'black',
-                        }}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <View style={{flex: 1}}>
-                  <View style={styles.inputFieldContainer}>
-                    <View
-                      style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Font5
-                        name="id-card-alt"
-                        size={responsiveWidth(6)}
-                        color="#535353"
-                      />
-                    </View>
-                    <View style={{flex: 5, justifyContent: 'center'}}>
-                      <TextInput
-                        placeholder="Enter Your Upi Id Number"
-                        placeholderTextColor={'gray'}
-                        // autoCapitalize="characters"
-                        value={upiId}
-                        onChangeText={txt => setUpiId(txt)}
-                        style={{
-                          fontSize: responsiveFontSize(2),
-                          color: 'black',
-                        }}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <View style={{flex: 1}}>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      onPress={closeBottomSheet}
-                      style={styles.cancleBtn}>
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(2),
-                          color: 'black',
-                        }}>
-                        cancel
-                      </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      onPress={handUpiPayment}
-                      style={styles.saveBtn}>
-                      <Text
-                        style={{
-                          fontSize: responsiveFontSize(2),
-                          color: 'white',
-                          fontWeight: '700',
-                        }}>
-                        Pay Now
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </BottomSheet>
-          ) : null} */}
         </View>
       ) : (
         <NoConnection />
@@ -467,79 +300,6 @@ const styles = StyleSheet.create({
     color: 'red',
     fontWeight: '400',
     marginLeft: responsiveWidth(2),
-  },
-  addBankFormContainer: {
-    flex: 1,
-    // alignItems: 'center',
-    // backgroundColor: 'yellow',
-  },
-
-  inputFieldContainer: {
-    width: responsiveWidth(90),
-    height: responsiveHeight(6),
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    borderRadius: responsiveWidth(3),
-    marginVertical: responsiveWidth(3),
-    borderWidth: 1,
-    borderColor: '#BCB4B4',
-  },
-
-  buttonContainer: {
-    height: responsiveHeight(8),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    // backgroundColor:"red"
-  },
-
-  cancleBtn: {
-    width: responsiveWidth(40),
-    paddingVertical: responsiveWidth(4),
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#CDCDCD',
-    borderRadius: responsiveWidth(10),
-  },
-
-  saveBtn: {
-    width: responsiveWidth(40),
-    paddingVertical: responsiveWidth(4),
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#CB01CF',
-    borderRadius: responsiveWidth(10),
-  },
-  saveDisabledBtn: {
-    width: responsiveWidth(40),
-    paddingVertical: responsiveWidth(3),
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'gray',
-    borderRadius: responsiveWidth(10),
-  },
-  bankDetailesContainer: {
-    width: responsiveWidth(96),
-    height: responsiveHeight(20),
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: '#C9C9C9',
-    borderRadius: responsiveWidth(3),
-    marginVertical: responsiveWidth(2),
-  },
-  bankListContainer: {
-    // flex: 1,
-    width: responsiveWidth(100),
-    height: responsiveHeight(70),
-    // justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: responsiveWidth(5),
-  },
-  bankDetailes_bankName: {
-    fontSize: responsiveFontSize(2.2),
-    color: 'black',
-    fontWeight: '700',
-    marginLeft: responsiveWidth(5),
   },
 });
 
