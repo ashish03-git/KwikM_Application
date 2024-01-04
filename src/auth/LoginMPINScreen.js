@@ -107,7 +107,7 @@ const LoginMPINScreen = () => {
     })
       .then(response => response.json())
       .then(data => {
-        // console.log(data)
+        // console.log('data',data) 
         dispatch(addLogin_data(data));
         if (data.status) {
           AsyncStorage.setItem('name', JSON.stringify(data.name));
@@ -115,8 +115,19 @@ const LoginMPINScreen = () => {
           AsyncStorage.setItem('role', JSON.stringify(data.role));
           AsyncStorage.setItem('auth_token', JSON.stringify(data.auth_token));
           AsyncStorage.setItem('user_mpin', MPIN);
-          // console.log(phone)
           AsyncStorage.setItem('user_number', phone);
+
+          const user_details = {
+            name: data.name,
+            user_id: data.user_id,
+            role: data.role,
+            auth_token: data.auth_token,
+            user_mpin: MPIN,
+            user_number: phone,
+          };
+          // console.log("before storing",user_details);
+          AsyncStorage.setItem('user_details',JSON.stringify(user_details));
+
           setTimeout(() => {
             setMPIN(' ');
             setButttonIndicator(false);

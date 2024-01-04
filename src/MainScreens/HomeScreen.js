@@ -32,7 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LottieView from 'lottie-react-native';
 import NoConnection from '../OtherScreens/NoConnection';
 import useNetInfo from '../OtherScreens/useNetInfo';
-import {addCategoryId, addProductId} from '../redux/Slice';
+import {addCategoryId, addProductId,addLogin_data} from '../redux/Slice';
 import {encode} from 'base-64';
 
 const HomeScreen = () => {
@@ -55,23 +55,28 @@ const HomeScreen = () => {
   useEffect(() => {
     AsyncStorage.setItem('login', JSON.stringify(true));
     setActivityIndicator(true);
+
     getUserDetails();
     FetchBalance();
     SellDataFun();
     HighEarningFun();
     BannerImg();
+
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     return () => {
-      // Remove the custom back button handler when the component unmounts
       BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
     };
   }, [highEarningCategory, lead_balance]);
 
   const getUserDetails = async () => {
     try {
-      await AsyncStorage.getItem('name').then(user_name =>
-        setName(JSON.parse(user_name)),
-      );
+      await AsyncStorage.getItem('user_details').then((details)=>{
+        dispatch(addLogin_data(JSON.parse(details)))
+      })
+      await AsyncStorage.getItem('name').then(user_name => {
+        const user = JSON.parse(user_name);
+        setName(user.split(' ')[0]);
+      });
       await AsyncStorage.getItem('user_id').then(user_id =>
         setUserId(JSON.parse(user_id)),
       );
@@ -85,6 +90,7 @@ const HomeScreen = () => {
       console.log(error);
     }
   };
+
 
   const BannerImg = async () => {
     await fetch('https://kwikm.in/dev_kwikm/api/app_banner.php', {
@@ -267,7 +273,7 @@ const HomeScreen = () => {
                             height: responsiveHeight(4),
                           }}
                           source={{
-                            uri: 'https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1704067200&Signature=GsWU2Fi7~7trotpbLAk7HlSQt9X1LMW~f8~Eomx5srzmJx9QqyjA66UhfjTIeOONoyh-x6ynHa--mqesRZYts~MvxC7D9Co8r7~pENNxT3nRrrlDAzQfFvsrrYW22Pwz4A~MQRt7xZ08rBEIb6u9gl9bYdhjo4wlli7V5ILsAKkIx86pG5xVJN4IlUavs5Bg7uqvcL3~tHzSE4-8iX-W7W2vgioOacMNtCsiL1pQBbKf2Ub0y~ouM2BNrlZwHNz5iJpz8Q1F~Q6RM3oSK-IyEmDkPtqvoc17cD6xUKAo9XUm243yBm8ZcOujBECjXxaQ5wMeIHVpr4RB69ULQYQLbw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
+                            uri: 'https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1705276800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=py44HMVai82BD44sP42arUXBwsgd7FTQImGk2Xn9-Uqjlo3Jrwp1~YmcvDry8i8mYNhTAJnksXThIEEL6TjUBH49DAJlv~xr3QpacTZdSl4eNtDAwSMY7mf4xBslgNhadJzQMQ3n1R6RjMTsTI5~RETE1u~Szlq86EXTlMFpDnTleoLX6EuPkFiIihAsiCss8H94-xYgjZW1htOEbAjd2LFavqMTftBFiLkXZxJdAQNfBkryIfjjlr75cCufKP5p6YbF9qPX57EJ8~LPLuCk~vezAk68bkL2u0YhSl96stm2bEP81VWEMZwScYp9XcQF4VMpey3KpNAF8Om4pq8D1g__',
                           }}
                         />
                       </View>

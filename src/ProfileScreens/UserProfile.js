@@ -610,6 +610,7 @@ const UserProfile = () => {
             </BottomSheet>
           ) : null}
         </View>
+        
       </View>
     </>
   );

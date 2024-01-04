@@ -3,10 +3,10 @@ import {createSlice} from '@reduxjs/toolkit';
 const slice = createSlice({
   name: 'details',
   initialState: {
-    values: [], // Change "register" to "values"
-    number: [], // Change "register" to "values"
-    category_id: [], // Change "register" to "values"
-    product_id: [], // Change "register" to "values"
+    values: [],
+    number: [],
+    category_id: [],
+    product_id: [],
     login_data: [],
     lead_details: [],
     paytm_lead_details: [],
@@ -17,6 +17,7 @@ const slice = createSlice({
     recentTransactions: [],
     myDistributorsList: [],
   },
+
   reducers: {
     addDetails: (state, action) => {
       // console.log(action.payload)

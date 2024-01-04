@@ -56,11 +56,12 @@ const PaymentSettingScreen = () => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const dispatch = useDispatch();
   const editBankDetails = useSelector(state => state.details.edit_bank_account);
+  const storedUserDetailes = useSelector(state => state.details.login_data);
 
   useFocusEffect(
     React.useCallback(() => {
       setActivityIndicator(true);
-      getUserDetails();
+      // getUserDetails();
       FetchAvailableBankAccounts();
     }, [userId, authToken]),
   );
@@ -85,24 +86,10 @@ const PaymentSettingScreen = () => {
     }
   };
 
-  const getUserDetails = async () => {
-    try {
-      await AsyncStorage.getItem('user_id').then(id => {
-        // console.log(JSON.parse(user_name))
-        setUserId(JSON.parse(id));
-      });
-      await AsyncStorage.getItem('auth_token').then(token => {
-        setAuthToken(JSON.parse(token));
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const FetchAvailableBankAccounts = async () => {
     let ob = {
-      user_id: userId,
-      auth_token: authToken,
+      user_id: storedUserDetailes.user_id,
+      auth_token: storedUserDetailes.auth_token,
     };
     // console.log(ob)
     let availbleBank = await fetch(
@@ -121,7 +108,7 @@ const PaymentSettingScreen = () => {
     setAvailableBankList(data);
     setTimeout(() => {
       setActivityIndicator(false);
-    }, 500);
+    }, 300);
   };
 
   const handleSavingAccountPress = () => {
@@ -142,8 +129,8 @@ const PaymentSettingScreen = () => {
 
   const handleAddBankAccount = async () => {
     let ob = {
-      user_id: userId,
-      auth_token: authToken,
+      user_id: storedUserDetailes.user_id,
+      auth_token: storedUserDetailes.auth_token,
       account_type: savingAccountValue
         ? savingAccountValue
         : currentAccountValue,
@@ -183,8 +170,8 @@ const PaymentSettingScreen = () => {
   const handleRemoveBankAccount = id => {
     const RemoveBankAccount = async () => {
       let payload = {
-        user_id: userId,
-        auth_token: authToken,
+        user_id: storedUserDetailes.user_id,
+        auth_token: storedUserDetailes.auth_token,
         id: id,
       };
 
@@ -200,7 +187,7 @@ const PaymentSettingScreen = () => {
       );
 
       let apiResponse = await response.json();
-      console.log(apiResponse);
+      // console.log(apiResponse);
     };
 
     Alert.alert('Remove Bank Account', 'Do you want to remove bank account ?', [
@@ -228,8 +215,8 @@ const PaymentSettingScreen = () => {
     setIfsc(editBankDetails.ifsc_code);
 
     let ob = {
-      user_id: userId,
-      auth_token: authToken,
+      user_id: storedUserDetailes.user_id,
+      auth_token: storedUserDetailes.auth_token,
       account_type: savingAccountValue
         ? savingAccountValue
         : currentAccountValue,
@@ -240,7 +227,7 @@ const PaymentSettingScreen = () => {
       status: editBankDetails.status,
       id: editBankDetails.id,
     };
-    // console.log(ob);
+  
     const response = await fetch(
       'https://kwikm.in/dev_kwikm/api/edit_account.php',
       {
@@ -634,6 +621,7 @@ const PaymentSettingScreen = () => {
               )}
             </View>
 
+
             {showBottomSheet ? (
               <BottomSheet
                 isOpen
@@ -899,6 +887,7 @@ const PaymentSettingScreen = () => {
               </BottomSheet>
             ) : null}
 
+
             {isEditClicked ? (
               <BottomSheet
                 isOpen
@@ -1153,6 +1142,8 @@ const PaymentSettingScreen = () => {
                 </View>
               </BottomSheet>
             ) : null}
+
+
           </View>
         </View>
       ) : (

@@ -35,7 +35,7 @@ const RegisterScreen = () => {
             "name": name,
             // "password":"12345"
         }
-        // dispatch(addDetails((ob)))
+        dispatch(addDetails(ob))
         fetch('https://kwikm.in/dev_kwikm/api/send-otp.php', {
             method: 'POST', // Change to POST for registration
             headers: {

@@ -31,43 +31,28 @@ const MyStats = () => {
   const [details, setDetails] = useState(0);
   const [userId, setUserId] = useState(null);
   const ProductDetails = useSelector(state => state.details.product_id);
+  const storedUserDetailes = useSelector(state => state.details.login_data);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    setActivityIndicator(true);
-    getValueFromStorage();
-    setTimeout(() => {
-      setActivityIndicator(false);
-    }, 1000);
-  }, []);
 
-  useEffect(() => {
-    CheckSubscriptionsStatus();
-    FethchLeadStatus();
-  }, [userId, authToken]);
 
   useFocusEffect(
     React.useCallback(() => {
-      getValueFromStorage();
+      // console.log("hiii")
+      setActivityIndicator(true);
+      CheckSubscriptionsStatus();
+      FethchLeadStatus();
+      setTimeout(() => {
+        setActivityIndicator(false);
+      }, 300);
     }, []),
   );
 
-  const getValueFromStorage = async () => {
-    try {
-      const id = await AsyncStorage.getItem('user_id');
-      const auth = await AsyncStorage.getItem('auth_token');
 
-      setAuthToken(JSON.parse(auth));
-      setUserId(JSON.parse(id));
-    } catch (error) {
-      // Handle errors
-      console.error(error);
-    }
-  };
 
   const FethchLeadStatus = async () => {
     const ob = {
-      user_id: userId,
+      user_id: storedUserDetailes.user_id,
       product_id: ProductDetails.product_id,
     };
     try {
@@ -93,7 +78,7 @@ const MyStats = () => {
 
   const CheckSubscriptionsStatus = async () => {
     let payload = {
-      user_id: userId,
+      user_id: storedUserDetailes.user_id,
       auth_token: authToken,
     };
     // console.log(payload);
@@ -414,11 +399,11 @@ const MyStats = () => {
                     //   : navigation.navigate('addcustomer', {
                     //       screenName: 'product',
                     //     })
-                    details.success
-                      ? navigation.navigate('addcustomer', {
+                    details.subscription === 0
+                      ? navigation.navigate('subscriptionScreen')
+                      : navigation.navigate('addcustomer', {
                           screenName: 'product',
                         })
-                      : navigation.navigate('subscriptionScreen')
                   }
                   style={{
                     width: responsiveWidth(16),
@@ -533,11 +518,11 @@ const MyStats = () => {
                         //   : navigation.navigate('addcustomer', {
                         //       screenName: 'product',
                         //     })
-                        details.success
-                          ? navigation.navigate('addcustomer', {
+                        details.subscription === 0
+                          ? navigation.navigate('subscriptionScreen')
+                          : navigation.navigate('addcustomer', {
                               screenName: 'product',
                             })
-                          : navigation.navigate('subscriptionScreen')
                       }
                       style={buttonStyle}>
                       <Text

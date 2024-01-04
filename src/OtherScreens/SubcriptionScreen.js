@@ -31,7 +31,6 @@ const SubcriptionScreen = () => {
   const [userId, setUserId] = useState(null);
   const netInfo = useNetInfo();
   const [details, setDetails] = useState(0);
-  const [showBottomSheet, setShowBottomSheet] = useState(false);
   const PaymentStatusDetails = useSelector(
     state => state.details.check_payment_status,
   );
@@ -184,6 +183,7 @@ const SubcriptionScreen = () => {
               </View>
             </View>
           </View>
+          
         </View>
       ) : (
         <NoConnection />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, Image, TextInput, TouchableOpacity,ActivityIndicator } from 'react-native';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from "react-redux"
@@ -7,6 +7,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RegisterOtpScreen = () => {
 
@@ -23,7 +24,7 @@ const RegisterOtpScreen = () => {
 
 
   const Submit = () => {
-
+// console.log("hiii")
     setButttonIndicator(true)
     let ob = {
       "otp": otp,
@@ -44,7 +45,7 @@ const RegisterOtpScreen = () => {
       .then(data => {
 
         // storing the user id generated at the time of otp varification in async storage
-        console.log("checking user id is comming or not from api", data)
+        // console.log("checking user id is comming or not from api", data)
         const id = JSON.stringify(data.user_id)
         // console.log("otp id:",id)
         AsyncStorage.setItem("id", id);
