@@ -25,17 +25,18 @@ import {
   useRoute,
   useFocusEffect,
 } from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LottieView from 'lottie-react-native';
 import NoConnection from '../OtherScreens/NoConnection';
 import useNetInfo from '../OtherScreens/useNetInfo';
-import {addCategoryId, addProductId,addLogin_data} from '../redux/Slice';
+import {addCategoryId, addProductId, addLogin_data} from '../redux/Slice';
 import {encode} from 'base-64';
 
 const HomeScreen = () => {
+  
   // states
   const [sellData, setSellData] = useState();
   const [highEarnData, setHighEarnData] = useState();
@@ -51,11 +52,10 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const [activityIndicator, setActivityIndicator] = useState(false);
   const netinfo = useNetInfo();
+  const storedUserDetailes = useSelector(state => state.details.login_data);
 
   useEffect(() => {
     AsyncStorage.setItem('login', JSON.stringify(true));
-    setActivityIndicator(true);
-
     getUserDetails();
     FetchBalance();
     SellDataFun();
@@ -70,9 +70,9 @@ const HomeScreen = () => {
 
   const getUserDetails = async () => {
     try {
-      await AsyncStorage.getItem('user_details').then((details)=>{
-        dispatch(addLogin_data(JSON.parse(details)))
-      })
+      await AsyncStorage.getItem('user_details').then(details => {
+        dispatch(addLogin_data(JSON.parse(details)));
+      });
       await AsyncStorage.getItem('name').then(user_name => {
         const user = JSON.parse(user_name);
         setName(user.split(' ')[0]);
@@ -90,7 +90,6 @@ const HomeScreen = () => {
       console.log(error);
     }
   };
-
 
   const BannerImg = async () => {
     await fetch('https://kwikm.in/dev_kwikm/api/app_banner.php', {
@@ -144,7 +143,7 @@ const HomeScreen = () => {
           headers: {
             'content-type': 'application/json',
           },
-          body: JSON.stringify({user_id: userId}),
+          body: JSON.stringify({user_id: storedUserDetailes.user_id}),
         },
       );
 
@@ -172,14 +171,12 @@ const HomeScreen = () => {
       .then(response => response.json())
       .then(data => {
         setSellData(data.data);
-        setTimeout(() => {
-          setActivityIndicator(false);
-        }, 1500);
       });
   };
 
   // high earning
   const HighEarningFun = async () => {
+    setActivityIndicator(true);
     await fetch('https://kwikm.in/dev_kwikm/api/higher_earnings.php', {
       method: 'POST',
     })
@@ -202,7 +199,12 @@ const HomeScreen = () => {
       }),
     })
       .then(response => response.json())
-      .then(data => setHighEarnData(data.data));
+      .then(data => {
+        setHighEarnData(data.data);
+        setTimeout(() => {
+          setActivityIndicator(false);
+        },300);
+      });
   };
 
   return (

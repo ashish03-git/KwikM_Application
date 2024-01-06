@@ -20,8 +20,8 @@ import NoConnection from '../OtherScreens/NoConnection';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 import Font from 'react-native-vector-icons/FontAwesome';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import {initiateTransaction} from 'rn-upi-pay';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import { add_check_payment_status } from '../redux/Slice';
 
 // import PhonePe from 'react-native-phonepe';
 
@@ -31,33 +31,35 @@ const SubcriptionScreen = () => {
   const [userId, setUserId] = useState(null);
   const netInfo = useNetInfo();
   const [details, setDetails] = useState(0);
+  const dispatch = useDispatch();
   const PaymentStatusDetails = useSelector(
     state => state.details.check_payment_status,
   );
+  const storedUserDetailes = useSelector(state => state.details.login_data);
 
   useEffect(() => {
-    getValueFromStorage();
+    // getValueFromStorage();
     CheckSubscriptionsStatus();
-  }, [userId, authToken]);
+  }, []);
 
   // extracting id stored in registerOTPScreen from async storage
-  const getValueFromStorage = async () => {
-    try {
-      const id = await AsyncStorage.getItem('user_id');
-      const auth = await AsyncStorage.getItem('auth_token');
+  // const getValueFromStorage = async () => {
+  //   try {
+  //     const id = await AsyncStorage.getItem('user_id');
+  //     const auth = await AsyncStorage.getItem('auth_token');
 
-      setAuthToken(JSON.parse(auth));
-      setUserId(JSON.parse(id));
-    } catch (error) {
-      // Handle errors
-      console.error(error);
-    }
-  };
+  //     setAuthToken(JSON.parse(auth));
+  //     setUserId(JSON.parse(id));
+  //   } catch (error) {
+  //     // Handle errors
+  //     console.error(error);
+  //   }
+  // };
 
   const CheckSubscriptionsStatus = async () => {
     let payload = {
-      user_id: userId,
-      auth_token: authToken,
+      user_id: storedUserDetailes.user_id,
+      auth_token: storedUserDetailes.auth_token,
     };
 
     let response = await fetch(
@@ -72,17 +74,19 @@ const SubcriptionScreen = () => {
     );
 
     let apiResponse = await response.json();
-    console.log(apiResponse);
-    setDetails(apiResponse);
+    // console.log(apiResponse);
+    dispatch(add_check_payment_status(apiResponse));
+    // setDetails(apiResponse);
   };
 
   const handUpiPayment = async () => {
+    // console.log("redux payment details",PaymentStatusDetails)
+
     const apiUrl = 'https://kwikm.in/live/payment.php';
-    const queryString = Object.keys(details)
-      .map(key => `${key}=${encodeURIComponent(details[key])}`)
+    const queryString = Object.keys(PaymentStatusDetails)
+      .map(key => `${key}=${encodeURIComponent(PaymentStatusDetails[key])}`)
       .join('&');
     const fullUrl = `${apiUrl}?${queryString}`;
-    // console.log("url: " + fullUrl);
 
     Linking.openURL(fullUrl).catch(error => {
       console.error('error in opening url: ' + error);
@@ -183,7 +187,6 @@ const SubcriptionScreen = () => {
               </View>
             </View>
           </View>
-          
         </View>
       ) : (
         <NoConnection />

@@ -24,6 +24,7 @@ import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import BottomSheet from 'react-native-simple-bottom-sheet';
+import { useSelector } from 'react-redux';
 
 const UserProfile = () => {
   const navigation = useNavigation();
@@ -35,6 +36,8 @@ const UserProfile = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [error, setError] = useState(false);
   const [msg, setMsg] = useState('');
+  const storedUserDetailes = useSelector(state => state.details.login_data);
+// console.log(storedUserDetailes)
 
   const openBottomSheet = () => {
     setShowDeleteModal(!showDeleteModal);
@@ -42,32 +45,6 @@ const UserProfile = () => {
 
   const closeBottomSheet = () => {
     setShowDeleteModal(false);
-  };
-
-  useEffect(() => {
-    getUserDetails();
-  }, []);
-
-  const getUserDetails = async () => {
-    try {
-      await AsyncStorage.getItem('name').then(user_name => {
-        // console.log(JSON.parse(user_name))
-        setName(JSON.parse(user_name));
-      });
-      await AsyncStorage.getItem('user_number').then(number => {
-        // console.log(JSON.parse(user_name))
-        setPhone(JSON.parse(number));
-      });
-      await AsyncStorage.getItem('user_id').then(id => {
-        // console.log(JSON.parse(user_name))
-        setUserId(JSON.parse(id));
-      });
-      await AsyncStorage.getItem('auth_token').then(token => {
-        setAuthToken(JSON.parse(token));
-      });
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const handleLogOut = () => {
@@ -84,6 +61,9 @@ const UserProfile = () => {
           text: 'Yes',
           onPress: () => {
             AsyncStorage.clear();
+            // AsyncStorage.removeItem('role');
+            // AsyncStorage.removeItem('user_details');
+            // AsyncStorage.removeItem('login');
             navigation.navigate('loginMPIN'), BackHandler.exitApp();
           },
         },
@@ -129,13 +109,13 @@ const UserProfile = () => {
 
   const DeleteAccount = async () => {
     let ob = {
-      user_id: userId,
-      auth_token: authToken,
+      user_id: storedUserDetailes.user_id,
+      auth_token: storedUserDetailes.auth_token,
     };
     // console.log(ob);
     await fetch('https://kwikm.in/dev_kwikm/api/delete_user.php', {
       method: 'POST',
-      // body:JSON.stringify(ob)
+      body: JSON.stringify(ob),
     })
       .then(response => response.json())
       .then(data => {
@@ -160,6 +140,17 @@ const UserProfile = () => {
       });
   };
 
+  const handleGoBack = () =>{
+  const userRole = storedUserDetailes.role;
+  switch (userRole) {
+    case 1 : navigation.navigate('corpDistributorTab'); break;
+    case 2 : navigation.navigate('distributorTab'); break;
+    case 3 : navigation.navigate('tabs'); break;
+    default : break;
+  }
+
+  }
+
   return (
     <>
       <StatusBar backgroundColor="white" />
@@ -167,7 +158,7 @@ const UserProfile = () => {
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <View style={{height: responsiveHeight(8), flexDirection: 'row'}}>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={handleGoBack}
             style={styles.headerIcone}>
             <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
           </TouchableOpacity>
@@ -250,7 +241,7 @@ const UserProfile = () => {
                   color: 'white',
                   fontWeight: '700',
                 }}>
-                Name - {name}
+                Name - {storedUserDetailes.name}
               </Text>
               <Text
                 style={{
@@ -258,7 +249,7 @@ const UserProfile = () => {
                   color: 'white',
                   fontWeight: '400',
                 }}>
-                Emp Code: {userId}
+                Emp Code: {storedUserDetailes.user_id}
               </Text>
               <Text
                 style={{
@@ -266,16 +257,16 @@ const UserProfile = () => {
                   color: 'white',
                   fontWeight: '400',
                 }}>
-                Number - {phone}
+                Number - {storedUserDetailes.user_number}
               </Text>
-              <Text
+              {/* <Text
                 style={{
                   fontSize: responsiveFontSize(1.9),
                   color: 'white',
                   fontWeight: '400',
                 }}>
                 Email - abc@gmail.com
-              </Text>
+              </Text> */}
             </View>
 
             <View
@@ -610,7 +601,6 @@ const UserProfile = () => {
             </BottomSheet>
           ) : null}
         </View>
-        
       </View>
     </>
   );

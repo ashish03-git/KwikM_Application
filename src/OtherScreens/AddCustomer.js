@@ -292,7 +292,6 @@ const AddCustomer = () => {
           </View>
 
           <View style={styles.formContainer}>
-            
             {/* condition based form showing if user is comming from patym screen the this screen will show */}
             {screenName === 'paytm' ? (
               <View style={styles.paytmFormContainer}>
@@ -468,7 +467,15 @@ const AddCustomer = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    {showAlert ? null : (
+                    {showAlert ? (
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'red',
+                        }}>
+                        {err}
+                      </Text>
+                    ) : (
                       <Text
                         style={{
                           fontSize: responsiveFontSize(2),
@@ -572,8 +579,7 @@ const AddCustomer = () => {
               setShowAlert(false);
             }}
           />
-
-        
+          
         </>
       ) : (
         <NoConnection />

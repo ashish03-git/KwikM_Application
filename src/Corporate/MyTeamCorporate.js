@@ -29,39 +29,29 @@ import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
-import {addMyDistibutorList} from '../redux/Slice';
+
 
 const MyTeamCorporate = () => {
-  // variables
+
+
   const navigation = useNavigation();
   const netinfo = useNetInfo();
   const [userId, setUserId] = useState(null);
   const [activityIndicator, setActivityIndicator] = useState(false);
   const [myDistributorsList, setMyDistributorsList] = useState([]);
-  const reduxMyDistributorsList = useSelector(
-    state => state.details.myDistributorsList,
-  );
+  const storedUserDetailes = useSelector(state => state.details.login_data);
   // console.log("my team",reduxMyDistributorsList)
 
   useFocusEffect(
     React.useCallback(() => {
       setActivityIndicator(true);
-      getUserDetails();
       FetchMyDistrubutorsList();
-    }, [userId]),
+    }, []),
   );
-
-  const getUserDetails = async () => {
-    await AsyncStorage.getItem('user_id').then(user_id => {
-      setUserId(JSON.parse(user_id));
-      // console.log("check user id",user_id)
-      // console.log("user id found")
-    });
-  };
 
   const FetchMyDistrubutorsList = async () => {
     const ob = {
-      user_id: userId,
+      user_id: storedUserDetailes.user_id,
     };
     try {
       await fetch('https://kwikm.in/dev_kwikm/api/my_downline.php', {
@@ -76,7 +66,6 @@ const MyTeamCorporate = () => {
       })
         .then(response => response.json())
         .then(myDistributorsListData => {
-          // console.log(myDistributorsListData)
           if (myDistributorsListData.length > 0) {
             // dispatch(addMyDistibutorList(myDistributorsListData))
             setMyDistributorsList(myDistributorsListData);
@@ -91,6 +80,7 @@ const MyTeamCorporate = () => {
       console.log('Failed to fetch recent transactions', error);
     }
   };
+  
 
   return (
     <>

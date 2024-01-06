@@ -50,7 +50,7 @@ const DistributorHome = () => {
     state => state.details.recentTransactions,
   );
   const storedUserDetailes = useSelector(state => state.details.login_data);
-  // console.log(storedUserDetailes);
+
 
   useEffect(() => {
     AsyncStorage.setItem('login', JSON.stringify(true));
@@ -67,16 +67,12 @@ const DistributorHome = () => {
 
   const getUserDetails = async () => {
     await AsyncStorage.getItem('user_details').then(details => {
-      console.log('distributor: ', details);
+      // console.log('distributor: ', details);
       dispatch(addLogin_data(JSON.parse(details)));
     });
     await AsyncStorage.getItem('name').then(user_name => {
       const user = JSON.parse(user_name);
       setName(user.split(' ')[0]);
-    });
-    await AsyncStorage.getItem('user_id').then(userID => {
-      setUserId(JSON.parse(userID));
-      // console.log("check name",userID)
     });
   };
 
@@ -121,7 +117,7 @@ const DistributorHome = () => {
         setActivityIndicator(false);
       }
     } catch (error) {
-      console.log('Failed to fetch recent transactions', error);
+      // console.log('Failed to fetch recent transactions', error);
     }
   };
 

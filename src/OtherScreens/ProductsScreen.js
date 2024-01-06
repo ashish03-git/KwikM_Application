@@ -137,29 +137,20 @@ const ProductsScreen = () => {
     const whatsappUrl = `whatsapp://send?phone=+91${number}&text=${encodeURIComponent(
       message,
     )}`;
-    Linking.canOpenURL(whatsappUrl)
-      .then(supported => {
-        if (!supported) {
-          return Linking.openURL(whatsappUrl);
-        } else {
-          Alert.alert(
-            'WhatsApp is not installed',
-            [
-              {
-                text: 'No',
-                onPress: () => {},
-                style: 'cancel',
-              },
-              {
-                text: 'Ok',
-                onPress: () => {},
-              },
-            ],
-            {cancelable: false},
-          );
-        }
-      })
-      .catch(err => console.error('An error occurred', err));
+    Linking.openURL(whatsappUrl).catch(err => {
+      console.error('Error opening WhatsApp:', err);
+      Alert.alert(
+        'WhatsApp Error',
+        'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+    });
   };
 
   return (
@@ -531,7 +522,11 @@ const ProductsScreen = () => {
               <View style={styles.addBankFormContainer}>
                 <View style={{flex: 1, alignItems: 'flex-end'}}>
                   <TouchableOpacity onPress={() => setBottomSheet(false)}>
-                    <Entypo name='squared-cross' color={"red"} size={responsiveWidth(8)} />
+                    <Entypo
+                      name="squared-cross"
+                      color={'red'}
+                      size={responsiveWidth(8)}
+                    />
                   </TouchableOpacity>
                 </View>
                 <View style={{flex: 1}}>

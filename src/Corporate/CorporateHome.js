@@ -32,7 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from '../OtherScreens/useNetInfo';
 import LottieView from 'lottie-react-native';
 import NoConnection from '../OtherScreens/NoConnection';
-import {addRecentTransactions} from '../redux/Slice';
+import {addRecentTransactions, addLogin_data} from '../redux/Slice';
 
 const CorporateHome = () => {
   // states
@@ -49,6 +49,7 @@ const CorporateHome = () => {
   const reduxRecentTransactions = useSelector(
     state => state.details.recentTransactions,
   );
+  const storedUserDetailes = useSelector(state => state.details.login_data);
   // console.log(reduxRecentTransactions)
 
   useEffect(() => {
@@ -58,28 +59,25 @@ const CorporateHome = () => {
     BannerImg();
     FetchBalance();
     FetchRecentTransactions();
+
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     return () => {
       // Remove the custom back button handler when the component unmounts
       BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
     };
-  }, []);
+  }, [name]);
 
   const getUserDetails = async () => {
+    await AsyncStorage.getItem('user_details').then(details => {
+      dispatch(addLogin_data(JSON.parse(details)));
+    });
     await AsyncStorage.getItem('name').then(user_name => {
       const user = JSON.parse(user_name);
       setName(user.split(' ')[0]);
     });
-    await AsyncStorage.getItem('user_id').then(userID => {
-      setUserId(JSON.parse(userID));
-      // console.log("check name",userID)
-    });
   };
 
   const FetchRecentTransactions = async () => {
-    const ob = {
-      user_id: userId,
-    };
     try {
       const response = await fetch(
         'https://kwikm.in/dev_kwikm/api/upline_trans_history.php',
@@ -91,19 +89,23 @@ const CorporateHome = () => {
             'x-api-key':
               'SW1MNk5lTERieEI4emQvaE43U0tvK1ZyVUs5V2RQMkdVZEZYay9POCswZlo2bk9yN1BTa0hYZnU0NU9ORG42WQ==',
           },
-          body: JSON.stringify(ob),
+          body: JSON.stringify({
+            user_id: storedUserDetailes.user_id,
+          }),
         },
       );
+
       if (response.ok) {
         const recentTransactionData = await response.json();
-        // console.log(recentTransactionData)
         setActivityIndicator(false);
         setRecentTransactions(recentTransactionData);
       } else {
         setRecentTransactions([]);
         setActivityIndicator(false);
       }
+
     } catch (error) {
+      // setActivityIndicator(false);
       console.log('Failed to fetch recent transactions', error);
     }
   };
@@ -117,15 +119,17 @@ const CorporateHome = () => {
           headers: {
             'content-type': 'application/json',
           },
-          body: JSON.stringify({user_id: userId}),
+          body: JSON.stringify({user_id: storedUserDetailes.user_id}),
         },
       );
 
       const userBalance = await response.json();
       if (userBalance.wallet) {
-        // console.log(userBalance)
         setActualBalance(userBalance.wallet.balance);
         setLeadBalance(userBalance.wallet.lead_balance);
+      } else {
+        setActualBalance(0);
+        setLeadBalance(0);
       }
     } catch (error) {
       console.error('Error fetching balance:', error);
@@ -190,6 +194,7 @@ const CorporateHome = () => {
           {netinfo ? (
             <>
               <StatusBar backgroundColor="#eaffea" />
+              
               <View style={styles.main_container}>
                 <View>
                   <View style={styles.name_sec}>
@@ -210,6 +215,7 @@ const CorporateHome = () => {
                         />
                       </TouchableOpacity>
                     </View>
+
                     <View style={{flex: 4.5, flexDirection: 'row'}}>
                       <View
                         style={{
@@ -225,7 +231,9 @@ const CorporateHome = () => {
                           }}>
                           Hii,{' '}
                         </Text>
-                        <Text style={styles.name_txt}>{name}</Text>
+                        <Text style={styles.name_txt}>
+                          {name}
+                        </Text>
                       </View>
                       <View
                         style={{
@@ -246,6 +254,7 @@ const CorporateHome = () => {
                         />
                       </View>
                     </View>
+
                     <View style={styles.name_sec_icon}>
                       <TouchableOpacity>
                         <Font
@@ -414,7 +423,7 @@ const CorporateHome = () => {
                         <Text
                           style={{
                             fontSize: responsiveFontSize(1.7),
-                            color: 'white',
+                            color: 'black',
                           }}>
                           {lead_balance}.00
                         </Text>
@@ -474,7 +483,7 @@ const CorporateHome = () => {
                         <Text
                           style={{
                             fontSize: responsiveFontSize(1.7),
-                            color: 'white',
+                            color: 'black',
                           }}>
                           {actual_balance}.00
                         </Text>

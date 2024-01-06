@@ -52,8 +52,6 @@ const SplashScreen = () => {
             }
         } catch (error) {
             console.log(error);
-            // Set status to false or handle error cases accordingly
-            // setStatus(false);
         }
 
     };

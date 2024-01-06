@@ -19,8 +19,8 @@ import Font6 from 'react-native-vector-icons/FontAwesome6';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcone from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const LeadAddSuccessMesageScreen = () => {
 
+const LeadAddSuccessMesageScreen = () => {
   const leadDetails = useSelector(state => state.details.lead_details);
   const route = useRoute();
   const screenName = route.params.screen;
@@ -43,82 +43,61 @@ const LeadAddSuccessMesageScreen = () => {
     const whatsappUrl = `whatsapp://send?phone=+91${
       leadUserDetails.mobile_no
     }&text=${encodeURIComponent(message)}`;
-    Linking.canOpenURL(whatsappUrl)
-      .then(supported => {
-        if (!supported) {
-          return Linking.openURL(whatsappUrl);
-        } else {
-          Alert.alert(
-            'WhatsApp is not installed',
-            [
-              {
-                text: 'No',
-                onPress: () => {},
-                style: 'cancel',
-              },
-              {
-                text: 'Ok',
-                onPress: () => {},
-              },
-            ],
-            {cancelable: false},
-          );
-        }
-      })
-      .catch(err => console.error('An error occurred', err));
+
+    Linking.openURL(whatsappUrl).catch(err => {
+      console.error('Error opening WhatsApp:', err);
+      Alert.alert(
+        'WhatsApp Error',
+        'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+    });
   };
 
   const handleWhatsAppOpenForPaytm = () => {
     const message = `
+    KWIK M App
 
-        KWIK M App
-
-        Name: ${leadUserDetails.customer_name}\n
-        Phone: ${leadUserDetails.customer_mobile}\n
-        Marchant Code: ${leadUserDetails.merchantcode}\n
-        RefId: ${leadUserDetails.refid}\n
-        Campaign URL: ${leadData.data}\n`;
+    Name: ${leadUserDetails.customer_name}\n
+    Phone: ${leadUserDetails.customer_mobile}\n
+    Marchant Code: ${leadUserDetails.merchantcode}\n
+    RefId: ${leadUserDetails.refid}\n
+    Campaign URL: ${leadData.data}\n`;
 
     const whatsappUrl = `whatsapp://send?phone=+91${
       leadUserDetails.customer_mobile
     }&text=${encodeURIComponent(message)}`;
-    Linking.canOpenURL(whatsappUrl)
-      .then(supported => {
-        if (!supported) {
-          return Linking.openURL(whatsappUrl);
-        } else {
-          Alert.alert(
-            'WhatsApp is not installed',
-            [
-              {
-                text: 'No',
-                onPress: () => {},
-                style: 'cancel',
-              },
-              {
-                text: 'Ok',
-                onPress: () => {},
-              },
-            ],
-            {cancelable: false},
-          );
-        }
-      })
-      .catch(err => console.error('An error occurred', err));
+
+    Linking.openURL(whatsappUrl).catch(err => {
+      console.error('Error opening WhatsApp:', err);
+      Alert.alert(
+        'WhatsApp Error',
+        'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+    });
   };
-  
 
   return (
-    
     <View style={{flex: 1, backgroundColor: '#eaffea'}}>
-         
       <View
         style={{
           flex: 5,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-
         <View
           style={{
             width: responsiveWidth(94),
@@ -823,7 +802,7 @@ const LeadAddSuccessMesageScreen = () => {
               ? handleWhatsAppOpenForPaytm
               : screenName === 'retailer'
               ? handleWhatsAppOpenForRetailer
-              : null
+              : handleWhatsAppOpenForRetailer
           }
           style={{
             width: responsiveWidth(45),
@@ -846,7 +825,6 @@ const LeadAddSuccessMesageScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-
     </View>
   );
 };

@@ -21,7 +21,8 @@ import ActivityLoader from './ActivityLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
 import {add_check_payment_status} from '../redux/Slice';
-// import { useDispatch,useSelector} from 'react-redux';
+
+
 
 const MyStats = () => {
   const navigation = useNavigation();
@@ -34,8 +35,6 @@ const MyStats = () => {
   const storedUserDetailes = useSelector(state => state.details.login_data);
   const dispatch = useDispatch();
 
-
-
   useFocusEffect(
     React.useCallback(() => {
       // console.log("hiii")
@@ -44,11 +43,9 @@ const MyStats = () => {
       FethchLeadStatus();
       setTimeout(() => {
         setActivityIndicator(false);
-      }, 300);
+      }, 400);
     }, []),
   );
-
-
 
   const FethchLeadStatus = async () => {
     const ob = {
@@ -79,7 +76,7 @@ const MyStats = () => {
   const CheckSubscriptionsStatus = async () => {
     let payload = {
       user_id: storedUserDetailes.user_id,
-      auth_token: authToken,
+      auth_token: storedUserDetailes.auth_token,
     };
     // console.log(payload);
     let response = await fetch(
@@ -94,7 +91,7 @@ const MyStats = () => {
     );
 
     let apiResponse = await response.json();
-    // console.log(apiResponse)
+    // console.log("payment intent",apiResponse);
     dispatch(add_check_payment_status(apiResponse));
     setDetails(apiResponse);
   };
@@ -113,29 +110,20 @@ const MyStats = () => {
     const whatsappUrl = `whatsapp://send?phone=+91${
       ob.mobile_no
     }&text=${encodeURIComponent(message)}`;
-    Linking.canOpenURL(whatsappUrl)
-      .then(supported => {
-        if (!supported) {
-          return Linking.openURL(whatsappUrl);
-        } else {
-          Alert.alert(
-            'WhatsApp is not installed',
-            [
-              {
-                text: 'No',
-                onPress: () => {},
-                style: 'cancel',
-              },
-              {
-                text: 'Ok',
-                onPress: () => {},
-              },
-            ],
-            {cancelable: false},
-          );
-        }
-      })
-      .catch(err => console.error('An error occurred', err));
+    Linking.openURL(whatsappUrl).catch(err => {
+      console.error('Error opening WhatsApp:', err);
+      Alert.alert(
+        'WhatsApp Error',
+        'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+    });
   };
 
   const listItemStyle = useMemo(
@@ -399,11 +387,11 @@ const MyStats = () => {
                     //   : navigation.navigate('addcustomer', {
                     //       screenName: 'product',
                     //     })
-                    details.subscription === 0
-                      ? navigation.navigate('subscriptionScreen')
-                      : navigation.navigate('addcustomer', {
+                    details.subscription === 1
+                      ? navigation.navigate('addcustomer', {
                           screenName: 'product',
                         })
+                      : navigation.navigate('subscriptionScreen')
                   }
                   style={{
                     width: responsiveWidth(16),
@@ -518,11 +506,11 @@ const MyStats = () => {
                         //   : navigation.navigate('addcustomer', {
                         //       screenName: 'product',
                         //     })
-                        details.subscription === 0
-                          ? navigation.navigate('subscriptionScreen')
-                          : navigation.navigate('addcustomer', {
+                        details.subscription === 1
+                          ? navigation.navigate('addcustomer', {
                               screenName: 'product',
                             })
+                          : navigation.navigate('subscriptionScreen')
                       }
                       style={buttonStyle}>
                       <Text
