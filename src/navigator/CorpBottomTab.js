@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import the icons you want to use
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icons you want to use
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import ReferrelsScreen from '../MainScreens/ReferrelsScreen';
+import ReferrelsScreen from '../Retailer/ReferrelsScreen';
 import CorporateHome from '../Corporate/CorporateHome';
 import MyTeamCorporate from '../Corporate/MyTeamCorporate';
 import AddDistributor from '../Corporate/AddDistributor';

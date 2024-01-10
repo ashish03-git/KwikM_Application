@@ -56,6 +56,7 @@ import EducationDetailsScreen from './src/ProfileScreens/EducationDetailsScreen'
 import KwikmRegistration from './src/Retailer/KwikmRegistration';
 import SubcriptionScreen from './src/OtherScreens/SubcriptionScreen';
 
+
 const Stack = createStackNavigator();
 const App = () => {
   const netInfo = useNetInfo();

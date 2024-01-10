@@ -29,25 +29,19 @@ import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LottieView from 'lottie-react-native';
 import NoConnection from '../OtherScreens/NoConnection';
 import useNetInfo from '../OtherScreens/useNetInfo';
 import {addCategoryId, addProductId, addLogin_data} from '../redux/Slice';
-import {encode} from 'base-64';
 
 const HomeScreen = () => {
-  
   // states
   const [sellData, setSellData] = useState();
   const [highEarnData, setHighEarnData] = useState();
   const [name, setName] = useState('');
-  const [userId, setUserId] = useState(null);
   const [banner, setBanner] = useState(null);
   const [lead_balance, setLeadBalance] = useState(null);
   const [actual_balance, setActualBalance] = useState(null);
   const [highEarningCategory, setHighEarningCategory] = useState('');
-  const [userPhone, setUserPhone] = useState(null);
-  const [auth_token, setAuth_Token] = useState('');
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [activityIndicator, setActivityIndicator] = useState(false);
@@ -71,21 +65,12 @@ const HomeScreen = () => {
   const getUserDetails = async () => {
     try {
       await AsyncStorage.getItem('user_details').then(details => {
-        dispatch(addLogin_data(JSON.parse(details)));
+        const userDetails = JSON.parse(details);
+        dispatch(addLogin_data(userDetails));
+        const userName = userDetails.name;
+        // console.log(userName.split(' ')[0])
+        setName(userName.split(' ')[0]);
       });
-      await AsyncStorage.getItem('name').then(user_name => {
-        const user = JSON.parse(user_name);
-        setName(user.split(' ')[0]);
-      });
-      await AsyncStorage.getItem('user_id').then(user_id =>
-        setUserId(JSON.parse(user_id)),
-      );
-      await AsyncStorage.getItem('user_number').then(user_phone =>
-        setUserPhone(JSON.parse(user_phone)),
-      );
-      await AsyncStorage.getItem('auth_token').then(auth =>
-        setAuth_Token(JSON.parse(auth)),
-      );
     } catch (error) {
       console.log(error);
     }
@@ -203,7 +188,7 @@ const HomeScreen = () => {
         setHighEarnData(data.data);
         setTimeout(() => {
           setActivityIndicator(false);
-        },300);
+        }, 300);
       });
   };
 

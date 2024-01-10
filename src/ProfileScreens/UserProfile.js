@@ -24,7 +24,7 @@ import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import BottomSheet from 'react-native-simple-bottom-sheet';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const UserProfile = () => {
   const navigation = useNavigation();
@@ -37,7 +37,7 @@ const UserProfile = () => {
   const [error, setError] = useState(false);
   const [msg, setMsg] = useState('');
   const storedUserDetailes = useSelector(state => state.details.login_data);
-// console.log(storedUserDetailes)
+  // console.log(storedUserDetailes)
 
   const openBottomSheet = () => {
     setShowDeleteModal(!showDeleteModal);
@@ -112,7 +112,6 @@ const UserProfile = () => {
       user_id: storedUserDetailes.user_id,
       auth_token: storedUserDetailes.auth_token,
     };
-    // console.log(ob);
     await fetch('https://kwikm.in/dev_kwikm/api/delete_user.php', {
       method: 'POST',
       body: JSON.stringify(ob),
@@ -121,14 +120,12 @@ const UserProfile = () => {
       .then(data => {
         if (data.status) {
           setError(true);
-          AsyncStorage.removeItem('name');
-          AsyncStorage.removeItem('user_id');
-          AsyncStorage.removeItem('role');
-          AsyncStorage.removeItem('user_number');
+          AsyncStorage.clear();
+          setMsg(data.message)
           setTimeout(() => {
             setMsg('');
             navigation.navigate('loginMPIN');
-          }, 2000);
+          },1000);
         } else {
           setError(false);
           setMsg(data.error);
@@ -140,16 +137,22 @@ const UserProfile = () => {
       });
   };
 
-  const handleGoBack = () =>{
-  const userRole = storedUserDetailes.role;
-  switch (userRole) {
-    case 1 : navigation.navigate('corpDistributorTab'); break;
-    case 2 : navigation.navigate('distributorTab'); break;
-    case 3 : navigation.navigate('tabs'); break;
-    default : break;
-  }
-
-  }
+  const handleGoBack = () => {
+    const userRole = storedUserDetailes.role;
+    switch (userRole) {
+      case 1:
+        navigation.navigate('corpDistributorTab');
+        break;
+      case 2:
+        navigation.navigate('distributorTab');
+        break;
+      case 3:
+        navigation.navigate('tabs');
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <>
@@ -157,9 +160,7 @@ const UserProfile = () => {
 
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <View style={{height: responsiveHeight(8), flexDirection: 'row'}}>
-          <TouchableOpacity
-            onPress={handleGoBack}
-            style={styles.headerIcone}>
+          <TouchableOpacity onPress={handleGoBack} style={styles.headerIcone}>
             <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
@@ -562,8 +563,8 @@ const UserProfile = () => {
                   <TouchableOpacity
                     onPress={closeBottomSheet}
                     style={{
-                      width: responsiveWidth(40),
-                      height: responsiveHeight(5),
+                      width: responsiveWidth(42),
+                      paddingVertical: responsiveWidth(4),
                       borderRadius: responsiveWidth(10),
                       backgroundColor: '#CDCDCD',
                       justifyContent: 'center',
@@ -581,8 +582,8 @@ const UserProfile = () => {
                   <TouchableOpacity
                     onPress={DeleteAccount}
                     style={{
-                      width: responsiveWidth(40),
-                      height: responsiveHeight(5),
+                      width: responsiveWidth(42),
+                      paddingVertical: responsiveWidth(4),
                       borderRadius: responsiveWidth(10),
                       backgroundColor: '#CB01CF',
                       justifyContent: 'center',

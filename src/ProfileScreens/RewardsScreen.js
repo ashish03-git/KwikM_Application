@@ -17,13 +17,12 @@ import {
   responsiveHeight,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-import {ScratchCard} from 'rn-scratch-card';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
-// import ScratchCard from 'react-scratchcard';
+import { useSelector } from 'react-redux';
 
 const RewardsScreen = () => {
   const [selectedCard, setSelectedCard] = useState(null);
@@ -34,12 +33,13 @@ const RewardsScreen = () => {
   const [rewardAmount, setRewardAmount] = useState([]);
   const navigation = useNavigation();
   const [activityIndicator, setActivityIndicator] = useState(false);
+  const storedUserDetailes = useSelector(state=>state.details.login_data)
 
   const cards = new Array(10);
 
   useFocusEffect(
     React.useCallback(() => {
-      getUserDetails();
+      // getUserDetails();
       FetchAllScratchCards();
     }, [userId, auth_token]),
   );
@@ -47,8 +47,8 @@ const RewardsScreen = () => {
   const FetchAllScratchCards = async () => {
     setActivityIndicator(true);
     let ob = {
-      user_id: userId,
-      auth_token: auth_token,
+      user_id: storedUserDetailes.user_id,
+      auth_token: storedUserDetailes.auth_token,
     };
     // setSelectedCard(index);
     await fetch('https://kwikm.in/dev_kwikm/api/rewards_fetch.php', {
@@ -72,20 +72,10 @@ const RewardsScreen = () => {
       });
   };
 
-  const getUserDetails = async () => {
-    await AsyncStorage.getItem('user_id').then(user_id => {
-      setUserId(JSON.parse(user_id));
-    });
-    await AsyncStorage.getItem('auth_token').then(token => {
-      setAuth_Token(JSON.parse(token));
-    });
-  };
 
   const handleCardPress = async data => {
     setModalVisible(true);
-    // setSelectedCard(id);
-    // Assuming cards is an array of objects with an 'id' property
-    const activeCard = totalCard.filter(card => card.id === data.id);
+    const activeCard = totalCard.filter(card => card.id === data);
     // console.log("matching card", activeCard[0].amount);
     setRewardAmount(activeCard[0].amount);
   };
@@ -258,7 +248,7 @@ const RewardsScreen = () => {
                             style={{
                               width: '100%',
                               height: responsiveHeight(5),
-                              backgroundColor: ' #7a7a7a',
+                              backgroundColor: '#7a7a7a',
                               position: 'absolute',
                               justifyContent: 'center',
                               alignItems: 'center',
@@ -400,9 +390,9 @@ const styles = StyleSheet.create({
     width: 180,
     height: 180,
     backgroundColor: 'white',
-    elevation: 2,
+    justifyContent:"center",
+    alignItems:"center",
     borderRadius: responsiveWidth(3),
-    // borderra
   },
   notOpenScratchCard: {
     width: 180,

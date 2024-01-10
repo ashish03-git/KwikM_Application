@@ -4,14 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import the icons you want to use
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icons you want to use
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import ReferrelsScreen from '../MainScreens/ReferrelsScreen';
+import ReferrelsScreen from '../Retailer/ReferrelsScreen';
 import DistributorHome from '../Distributor/DistributorHome';
-import SupportScreen from '../MainScreens/SupportScreen';
 import MyTeamDistributor from '../Distributor/MyTeamDistributor';
 import AddRetailer from '../Distributor/AddRetailer';
 import HelpScreen from '../Retailer/HelpScreen';
-
-
 
 
 const Tab = createBottomTabNavigator()

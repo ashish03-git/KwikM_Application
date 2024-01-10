@@ -567,8 +567,8 @@ const AddCustomer = () => {
             }}
             messageStyle={{fontSize: responsiveFontSize(2), color: 'black'}}
             confirmButtonStyle={{
-              backgroundColor: '#DD6B55',
-              width: responsiveWidth(30),
+              backgroundColor: '#A2159C',
+              width: responsiveWidth(36),
               height: responsiveHeight(5),
               borderRadius: responsiveWidth(10),
               alignItems: 'center',

@@ -21,7 +21,7 @@ import Font5 from 'react-native-vector-icons/FontAwesome5';
 import Font from 'react-native-vector-icons/FontAwesome';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
-import { add_check_payment_status } from '../redux/Slice';
+import {add_check_payment_status} from '../redux/Slice';
 
 // import PhonePe from 'react-native-phonepe';
 
@@ -42,19 +42,6 @@ const SubcriptionScreen = () => {
     CheckSubscriptionsStatus();
   }, []);
 
-  // extracting id stored in registerOTPScreen from async storage
-  // const getValueFromStorage = async () => {
-  //   try {
-  //     const id = await AsyncStorage.getItem('user_id');
-  //     const auth = await AsyncStorage.getItem('auth_token');
-
-  //     setAuthToken(JSON.parse(auth));
-  //     setUserId(JSON.parse(id));
-  //   } catch (error) {
-  //     // Handle errors
-  //     console.error(error);
-  //   }
-  // };
 
   const CheckSubscriptionsStatus = async () => {
     let payload = {
@@ -74,9 +61,10 @@ const SubcriptionScreen = () => {
     );
 
     let apiResponse = await response.json();
-    // console.log(apiResponse);
     dispatch(add_check_payment_status(apiResponse));
-    // setDetails(apiResponse);
+    if (apiResponse.subscription === 1) {
+      navigation.navigate('addcustomer');
+    }
   };
 
   const handUpiPayment = async () => {

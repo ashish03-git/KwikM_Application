@@ -2,8 +2,7 @@ import {View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import the icons you want to use
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // Import the icons you want to use
-import HomeScreen from '../MainScreens/HomeScreen';
+import HomeScreen from '../Retailer/HomeScreen';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -13,16 +12,7 @@ import ProductTabScreen from '../Retailer/ProductTabScreen';
 import HelpScreen from '../Retailer/HelpScreen';
 import ScratchCardScreen from '../OtherScreens/ScratchCard';
 
-const CustomTabBarIcon = ({name, size, focused}) => {
-  const iconSize = focused ? size + 2 : size; // Increase the size for the selected tab
-  return (
-    <FontAwesome
-      name={name}
-      size={iconSize}
-      color={focused ? 'blue' : 'black'} // Change the color for the selected tab
-    />
-  );
-};
+
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +26,6 @@ const BottomTab = () => {
           },
           tabBarActiveTintColor: '#0B7E8E',
           tabBarInactiveTintColor: '#444444',
-          // tabBarShowLabel:false
         }}>
         <Tab.Screen
           name="Home"

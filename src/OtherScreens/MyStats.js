@@ -501,11 +501,6 @@ const MyStats = () => {
                     }}>
                     <TouchableOpacity
                       onPress={() =>
-                        // details.subscription == 0
-                        //   ? navigation.navigate('subscriptionScreen')
-                        //   : navigation.navigate('addcustomer', {
-                        //       screenName: 'product',
-                        //     })
                         details.subscription === 1
                           ? navigation.navigate('addcustomer', {
                               screenName: 'product',

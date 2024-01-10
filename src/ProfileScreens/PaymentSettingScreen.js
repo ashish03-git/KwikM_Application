@@ -104,7 +104,6 @@ const PaymentSettingScreen = () => {
     );
     // console.log(ob);
     const data = await availbleBank.json();
-    // console.log(data);
     setAvailableBankList(data);
     setTimeout(() => {
       setActivityIndicator(false);
@@ -204,8 +203,6 @@ const PaymentSettingScreen = () => {
       },
     ]);
   };
-
-  const handleSetPrimaryBankAccount = async () => {};
 
   const handleEditBankAccount = async () => {
     setBankName(editBankDetails.bank_name);
