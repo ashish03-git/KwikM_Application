@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { request, PERMISSIONS } from 'react-native-permissions';
-import SmsRetriever from 'react-native-sms-retriever';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-native-responsive-dimensions';
@@ -25,32 +24,6 @@ const LoginOtpScreen = () => {
     const number = useSelector(state => state.details.number)
     const netInfo = useNetInfo()
     const [buttonIndicator, setButttonIndicator] = useState(false)
-
-    // Add these lines to request SMS permissions
-    useEffect(() => {
-        request(PERMISSIONS.ANDROID.READ_SMS)
-            .then(result => {
-                if (result === 'granted') {
-                    // You have SMS permission, you can start listening for OTP
-                    startListeningForOTP();
-                } else {
-                    // Handle the case where permission is denied
-                }
-            });
-    }, []);
-
-    const startListeningForOTP = async () => {
-        try {
-            const retrievedOTP = await SmsRetriever.startSmsRetriever();
-            if (retrievedOTP) {
-                // Extract the OTP from the message
-                setOtp(retrievedOTP);
-                // You can now submit the OTP automatically or display it to the user
-            }
-        } catch (error) {
-            // Handle any errors that occur during OTP retrieval
-        }
-    };
 
 
     const Submit = () => {

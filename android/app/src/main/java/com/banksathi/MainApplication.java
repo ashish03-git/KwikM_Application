@@ -1,4 +1,4 @@
-package com.banksathi;
+package com.kwikm.app;
 // import com.upi.payment.UpiPaymentPackage;
 import android.app.Application;
 import com.facebook.react.PackageList;

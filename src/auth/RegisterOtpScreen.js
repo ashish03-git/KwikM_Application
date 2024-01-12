@@ -7,7 +7,6 @@ import OTPInputView from '@twotalltotems/react-native-otp-input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RegisterOtpScreen = () => {
 
