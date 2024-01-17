@@ -29,15 +29,11 @@ import {useSelector} from 'react-redux';
 const UserProfile = () => {
   const navigation = useNavigation();
   const [selectImage, setSelectedImage] = useState(null);
-  const [name, setName] = useState(null);
-  const [phone, setPhone] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [authToken, setAuthToken] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [error, setError] = useState(false);
   const [msg, setMsg] = useState('');
   const storedUserDetailes = useSelector(state => state.details.login_data);
-  // console.log(storedUserDetailes)
+  // console.log('login details', storedUserDetailes);
 
   const openBottomSheet = () => {
     setShowDeleteModal(!showDeleteModal);
@@ -121,11 +117,11 @@ const UserProfile = () => {
         if (data.status) {
           setError(true);
           AsyncStorage.clear();
-          setMsg(data.message)
+          setMsg(data.message);
           setTimeout(() => {
             setMsg('');
             navigation.navigate('loginMPIN');
-          },1000);
+          }, 1000);
         } else {
           setError(false);
           setMsg(data.error);
@@ -244,14 +240,36 @@ const UserProfile = () => {
                 }}>
                 Name - {storedUserDetailes.name}
               </Text>
-              <Text
-                style={{
-                  fontSize: responsiveFontSize(1.9),
-                  color: 'white',
-                  fontWeight: '400',
-                }}>
-                Emp Code: {storedUserDetailes.user_id}
-              </Text>
+
+              {storedUserDetailes.role === 1 ? (
+                <Text
+                  style={{
+                    fontSize: responsiveFontSize(1.9),
+                    color: 'white',
+                    fontWeight: '400',
+                  }}>
+                  Corp Code: {storedUserDetailes.user_id}
+                </Text>
+              ) : storedUserDetailes.role === 2 ? (
+                <Text
+                  style={{
+                    fontSize: responsiveFontSize(1.9),
+                    color: 'white',
+                    fontWeight: '400',
+                  }}>
+                  Dist Code: {storedUserDetailes.user_id}
+                </Text>
+              ) : storedUserDetailes.role === 3 ? (
+                <Text
+                  style={{
+                    fontSize: responsiveFontSize(1.9),
+                    color: 'white',
+                    fontWeight: '400',
+                  }}>
+                  Partner Code: {storedUserDetailes.user_id}
+                </Text>
+              ) : null}
+
               <Text
                 style={{
                   fontSize: responsiveFontSize(1.9),

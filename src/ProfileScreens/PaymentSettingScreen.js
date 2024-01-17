@@ -61,7 +61,6 @@ const PaymentSettingScreen = () => {
   useFocusEffect(
     React.useCallback(() => {
       setActivityIndicator(true);
-      // getUserDetails();
       FetchAvailableBankAccounts();
     }, [userId, authToken]),
   );
@@ -69,6 +68,7 @@ const PaymentSettingScreen = () => {
   useEffect(() => {
     Validations();
   }, [name, bankName, accountNumber, confirmAccountNumber, ifsc]);
+
 
   const Validations = () => {
     if (
@@ -85,6 +85,7 @@ const PaymentSettingScreen = () => {
       setButtonStatus(false);
     }
   };
+
 
   const FetchAvailableBankAccounts = async () => {
     let ob = {
@@ -118,6 +119,7 @@ const PaymentSettingScreen = () => {
     setCurrentAccountValue(null);
   };
 
+  
   const handleCurrentAccountPress = () => {
     setCurrentAccount(true);
     setSavingAccount(false);
@@ -252,6 +254,11 @@ const PaymentSettingScreen = () => {
       }, 2000);
     }
   };
+
+  const handleSetPrimaryBankAccount = () =>{
+    console.log("set as primary account")
+  }
+
 
   return (
     <>

@@ -19,7 +19,6 @@ import Font6 from 'react-native-vector-icons/FontAwesome6';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcone from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
 const LeadAddSuccessMesageScreen = () => {
   const leadDetails = useSelector(state => state.details.lead_details);
   const route = useRoute();
@@ -31,14 +30,15 @@ const LeadAddSuccessMesageScreen = () => {
 
   const handleWhatsAppOpenForRetailer = () => {
     const message = `
-
-        KWIK M App
-        Name: ${leadUserDetails.full_name}\n
-        Phone: ${leadUserDetails.mobile_no}\n
-        Email: ${leadUserDetails.email}\n
-        Pan: ${leadUserDetails.pan}\n
-        Lead Code: ${leadData.data.lead_code}\n
-        Campaign URL: ${leadData.data.campaign_url}\n`;
+    📱 **Lead Details** 📱
+    
+    *Name:* ${leadUserDetails.full_name}
+    *Phone:* ${leadUserDetails.mobile_no}
+    *Email:* ${leadUserDetails.email}
+    *Pan:* ${leadUserDetails.pan}
+    *Lead Code:* ${leadData.data.lead_code}
+    *Campaign URL:* ${leadData.data.campaign_url}
+    `;
 
     const whatsappUrl = `whatsapp://send?phone=+91${
       leadUserDetails.mobile_no
@@ -62,13 +62,15 @@ const LeadAddSuccessMesageScreen = () => {
 
   const handleWhatsAppOpenForPaytm = () => {
     const message = `
-    KWIK M App
 
-    Name: ${leadUserDetails.customer_name}\n
-    Phone: ${leadUserDetails.customer_mobile}\n
-    Marchant Code: ${leadUserDetails.merchantcode}\n
-    RefId: ${leadUserDetails.refid}\n
-    Campaign URL: ${leadData.data}\n`;
+    📱 **Lead Details** 📱
+    
+    *Name:* ${leadUserDetails.customer_name}
+    *Phone:* ${leadUserDetails.customer_mobile}
+    *Marchant Code:* ${leadUserDetails.merchantcode}
+    *RefId:* ${leadUserDetails.refid}
+    *Campaign URL:* ${leadData.data}
+    `
 
     const whatsappUrl = `whatsapp://send?phone=+91${
       leadUserDetails.customer_mobile

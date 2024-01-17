@@ -6,6 +6,7 @@ import {
   StatusBar,
   Modal,
   StyleSheet,
+  Linking,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -15,8 +16,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 import Font from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import OctIcon from 'react-native-vector-icons/Octicons';
+import Font6 from 'react-native-vector-icons/FontAwesome6';
 import {
   useFocusEffect,
   useNavigation,
@@ -123,7 +123,6 @@ const AddDistributor = () => {
               setMsg('');
               setEmail('');
               setFull_Name('');
-              setMobile_Num('');
               setMpin('');
             }, 1000);
           } else if (addDistributorStatus.error) {
@@ -142,7 +141,7 @@ const AddDistributor = () => {
   };
 
   const AddRetailer = async () => {
-    // console.log("hiiii")
+    setAddRetailer(true);
     const ob = {
       user_id: userId,
       name: full_name.trim(),
@@ -171,11 +170,9 @@ const AddDistributor = () => {
             setMsg(addRetailerStatus.message);
             setTimeout(() => {
               setNextScreenStatus(true);
-              setAddRetailer(false);
               setMsg('');
               setEmail('');
               setFull_Name('');
-              setMobile_Num('');
               setMpin('');
             }, 1000);
           } else if (addRetailerStatus.error) {
@@ -195,6 +192,7 @@ const AddDistributor = () => {
 
   const goBack = async () => {
     setNextScreenStatus(false);
+    setMobile_Num('');
     naviagtion.navigate('Home');
   };
 
@@ -223,6 +221,36 @@ const AddDistributor = () => {
   const CorpAddDistributor = () => {
     setOpenModal(false);
     setAddRetailer(false);
+  };
+
+  const handleShare = () => {
+    const message = `
+    📱 ${addRetailer ? 'Retailer' : 'Distributor'} Details 📱
+    
+    Name: ${full_name}
+    Phone: ${mobile_nun}
+    Email: ${email}
+    Mpin: ${mpin}
+    `;
+
+    const whatsappUrl = `whatsapp://send?phone=+91${mobile_nun}&text=${encodeURIComponent(
+      message,
+    )}`;
+
+    Linking.openURL(whatsappUrl).catch(err => {
+      console.error('Error opening WhatsApp:', err);
+      Alert.alert(
+        'WhatsApp Error',
+        'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+    });
   };
 
   return (
@@ -353,8 +381,19 @@ const AddDistributor = () => {
                           <TouchableOpacity
                             onPress={goBack}
                             style={styles.nextScreenButton}>
+                            <Text style={styles.nextScreenButtonTxt}>Back</Text>
+                          </TouchableOpacity>
+
+                          <TouchableOpacity
+                            onPress={handleShare}
+                            style={styles.nextScreenButton}>
+                            <Font6
+                              name="share-nodes"
+                              color="white"
+                              size={responsiveWidth(5)}
+                            />
                             <Text style={styles.nextScreenButtonTxt}>
-                              Go Back
+                              Share
                             </Text>
                           </TouchableOpacity>
                         </View>
@@ -668,21 +707,25 @@ const styles = StyleSheet.create({
   nextScreenButtonContainer: {
     width: responsiveWidth(100),
     height: responsiveHeight(30),
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    // backgroundColor: 'red',
   },
   nextScreenButton: {
-    width: responsiveWidth(80),
+    width: responsiveWidth(44),
     height: responsiveHeight(6),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#A2159C',
+    flexDirection: 'row',
     borderRadius: responsiveWidth(10),
   },
   nextScreenButtonTxt: {
     fontSize: responsiveFontSize(2),
     color: 'white',
     fontWeight: '700',
+    marginLeft: responsiveWidth(2),
   },
 });
 

@@ -249,6 +249,7 @@ const AddCustomer = () => {
       })
         .then(response => response.json())
         .then(data => {
+          // console.log(data);
           if (data.status) {
             dispatch(add_lead_Details([data, ob]));
             setMsg(data.message);
@@ -579,7 +580,6 @@ const AddCustomer = () => {
               setShowAlert(false);
             }}
           />
-          
         </>
       ) : (
         <NoConnection />

@@ -26,13 +26,16 @@ import LottieView from 'lottie-react-native';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
 import {useSelector} from 'react-redux';
 
-const MyTeamDistributor = () => {
+const CorpRetailerList = () => {
   // variables
   const navigation = useNavigation();
   const netinfo = useNetInfo();
+  const route = useRoute();
   const [activityIndicator, setActivityIndicator] = useState(false);
   const [myRetailerList, setMyRetailerList] = useState([]);
-  const storedUserDetailes = useSelector(state => state.details.login_data);
+  const distributor_id = route.params.Dist_id;
+  //   console.log(distributor_id)
+
 
   useFocusEffect(
     React.useCallback(() => {
@@ -43,7 +46,7 @@ const MyTeamDistributor = () => {
 
   const FetchMyRetailerList = async () => {
     const ob = {
-      user_id: storedUserDetailes.user_id,
+      user_id: distributor_id,
     };
     try {
       await fetch('https://kwikm.in/dev_kwikm/api/my_downline.php', {
@@ -100,7 +103,7 @@ const MyTeamDistributor = () => {
                 </TouchableOpacity>
                 <View
                   style={{
-                    flex: 4,
+                    flex: 6,
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     flexDirection: 'row',
@@ -112,7 +115,7 @@ const MyTeamDistributor = () => {
                         color: 'black',
                         fontWeight: '700',
                       }}>
-                      My Retailers
+                      Available retailers
                     </Text>
                   </View>
                 </View>
@@ -136,16 +139,7 @@ const MyTeamDistributor = () => {
                         const retailer_balance = item.balance;
 
                         return (
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate('earningDetailsDistributor', {
-                                retailer_id,
-                                retailer_name,
-                                retailer_balance,
-                                logo,
-                              })
-                            }
-                            style={{alignItems: 'center'}}>
+                          <View style={{alignItems: 'center'}}>
                             <View
                               style={{
                                 width: responsiveWidth(94),
@@ -246,7 +240,7 @@ const MyTeamDistributor = () => {
                                 </View>
                               </View>
                             </View>
-                          </TouchableOpacity>
+                          </View>
                         );
                       }}
                     />
@@ -277,7 +271,7 @@ const MyTeamDistributor = () => {
                           fontSize: responsiveFontSize(2.2),
                           fontWeight: '700',
                         }}>
-                        No Retailer Found. . .
+                        No retailers are available for this distributor...
                       </Text>
                     </View>
                   </View>
@@ -293,4 +287,4 @@ const MyTeamDistributor = () => {
   );
 };
 
-export default MyTeamDistributor;
+export default CorpRetailerList;

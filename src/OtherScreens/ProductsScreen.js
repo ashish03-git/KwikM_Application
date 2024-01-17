@@ -185,7 +185,7 @@ const ProductsScreen = () => {
                 </Text>
               </View>
               <View style={{marginRight: responsiveWidth(4)}}>
-                <Font name="heart" color="red" size={responsiveWidth(6)} />
+                {/* <Font name="heart" color="red" size={responsiveWidth(6)} /> */}
               </View>
             </View>
           </View>
@@ -278,6 +278,7 @@ const ProductsScreen = () => {
                 }}
               />
 
+              {/* search field */}
               <View
                 style={{
                   margin: responsiveWidth(3),
@@ -285,20 +286,6 @@ const ProductsScreen = () => {
                   backgroundColor: 'white',
                   borderRadius: responsiveWidth(3),
                 }}>
-                <View style={{flex: 5}}>
-                  <TextInput
-                    // onChange={SearchProduct}
-                    value={search}
-                    onChangeText={text => handleSearch(text)} // Use onChangeText to update search state
-                    style={{
-                      fontSize: responsiveFontSize(2),
-                      alignSelf: 'center',
-                      color: 'black',
-                    }}
-                    placeholder="Search Products / Pincode"
-                    placeholderTextColor={'gray'}
-                  />
-                </View>
                 <TouchableOpacity
                   style={{
                     flex: 1,
@@ -311,6 +298,18 @@ const ProductsScreen = () => {
                     size={responsiveWidth(5)}
                   />
                 </TouchableOpacity>
+                <View style={{flex: 5}}>
+                  <TextInput
+                    value={search}
+                    onChangeText={text => handleSearch(text)} // Use onChangeText to update search state
+                    style={{
+                      fontSize: responsiveFontSize(2),
+                      color: 'black',
+                    }}
+                    placeholder="Search Products"
+                    placeholderTextColor={'gray'}
+                  />
+                </View>
               </View>
             </View>
           </View>
@@ -384,11 +383,11 @@ const ProductsScreen = () => {
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                   }}>
-                                  <Font6
+                                  {/* <Font6
                                     name="heart"
                                     color="#282727"
                                     size={responsiveWidth(5)}
-                                  />
+                                  /> */}
                                 </View>
                               </View>
                               <View style={{flex: 2, flexDirection: 'row'}}>
@@ -492,18 +491,18 @@ const ProductsScreen = () => {
                                   </View>
                                 </View>
                                 <TouchableOpacity
-                                  onPress={() =>
-                                    setBottomSheet(!showBottomSheet)
-                                  }
+                                  // onPress={() =>
+                                  //   setBottomSheet(!showBottomSheet)
+                                  // }
                                   style={{
                                     width: responsiveWidth(40),
                                     justifyContent: 'center',
                                     alignItems: 'flex-end',
                                   }}>
-                                  <Font5
+                                  {/* <Font5
                                     name="share-alt"
                                     size={responsiveWidth(5)}
-                                  />
+                                  /> */}
                                 </TouchableOpacity>
                               </View>
                             </>

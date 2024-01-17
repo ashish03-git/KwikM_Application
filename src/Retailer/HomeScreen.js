@@ -211,6 +211,7 @@ const HomeScreen = () => {
               <StatusBar backgroundColor="#eaffea" />
 
               <View style={styles.main_container}>
+                
                 <View>
                   <View style={styles.name_sec}>
                     <View
@@ -260,7 +261,7 @@ const HomeScreen = () => {
                             height: responsiveHeight(4),
                           }}
                           source={{
-                            uri: 'https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1705276800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=py44HMVai82BD44sP42arUXBwsgd7FTQImGk2Xn9-Uqjlo3Jrwp1~YmcvDry8i8mYNhTAJnksXThIEEL6TjUBH49DAJlv~xr3QpacTZdSl4eNtDAwSMY7mf4xBslgNhadJzQMQ3n1R6RjMTsTI5~RETE1u~Szlq86EXTlMFpDnTleoLX6EuPkFiIihAsiCss8H94-xYgjZW1htOEbAjd2LFavqMTftBFiLkXZxJdAQNfBkryIfjjlr75cCufKP5p6YbF9qPX57EJ8~LPLuCk~vezAk68bkL2u0YhSl96stm2bEP81VWEMZwScYp9XcQF4VMpey3KpNAF8Om4pq8D1g__',
+                            uri: 'https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ACUb4nVPUMvKFAWTMJnlKgVYMV9nqKXH5oVCaL4s~143RJV9Zo8Pq0xI5r17vvG1H2LSvWuZLCswQgUv3VjWC-fXLp0rgj2unGbL0EvM4JSZ9h-mE~586vMlBpiHosHrUZhnWCACiwug28b~ampfra~PrMp4IW8tdwD~S-O0Y~CL6Q8DEybByUwKZ8MJSspAuRQ8-n35GxZ72C5DvGzI2VNKnMkGNXDN-dYOaQA5FCN6NTywbJkAQ~PJfiSO3tquUMEJBHa1xgpUgmVHBqoimMtUoynzS73g5RUPL59j-C7coGpP5-72AVpzJK1Bo4goL95lvZGxTWeCSp5maLnweQ__',
                           }}
                         />
                       </View>
@@ -491,7 +492,7 @@ const HomeScreen = () => {
                           width: responsiveWidth(92),
                           height: responsiveHeight(15),
                           borderRadius: responsiveWidth(3),
-                          resizeMode: 'cover',
+                          resizeMode: "contain",
                         }}
                       />
                     </TouchableOpacity>

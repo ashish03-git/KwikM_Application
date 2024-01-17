@@ -42,6 +42,7 @@ import CorpBottomTab from './src/navigator/CorpBottomTab';
 import MyTeamCorporate from './src/Corporate/MyTeamCorporate';
 import EarningDetailsCorporate from './src/Corporate/EarningDetailsCorporate';
 import AddDistributor from './src/Corporate/AddDistributor';
+import CorpRetailerList from './src/Corporate/CorpRetailerList';
 
 // common imports
 import UserProfile from './src/ProfileScreens/UserProfile';
@@ -55,7 +56,6 @@ import KycDetailsScreen from './src/ProfileScreens/KycDetailsScreen';
 import EducationDetailsScreen from './src/ProfileScreens/EducationDetailsScreen';
 import KwikmRegistration from './src/Retailer/KwikmRegistration';
 import SubcriptionScreen from './src/OtherScreens/SubcriptionScreen';
-
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -296,6 +296,12 @@ const App = () => {
                 options={{headerShown: false}}
                 component={AddDistributor}
               />
+
+              <Stack.Screen
+                name="corpRetailerList"
+                options={{headerShown: false}}
+                component={CorpRetailerList}
+              /> 
             </Stack.Navigator>
           </NavigationContainer>
         ) : (
