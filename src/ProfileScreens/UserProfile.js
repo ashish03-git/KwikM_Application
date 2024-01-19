@@ -90,7 +90,7 @@ const UserProfile = () => {
     try {
       const result = await Share.share({
         message:
-          'KWIKM APP: Checkout my profile on: https://kwikm.in/dev_kwikm/admin/html/login.php',
+          'KWIKM APP: Checkout my profile on: https://play.google.com/store/apps/details?id=com.kwikm.app',
         title: 'KWIKM App',
       });
 

@@ -43,7 +43,6 @@ const ProductsScreen = () => {
   const netInfo = useNetInfo();
   const dispatch = useDispatch();
   const newCategory = useSelector(state => state.details.category_id);
-  const [showAlerts, setShowAlerts] = useState(false);
   const [msg, setMsg] = useState('');
   const [err, setErr] = useState('');
   const [showBottomSheet, setBottomSheet] = useState(false);

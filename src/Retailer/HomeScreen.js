@@ -211,7 +211,6 @@ const HomeScreen = () => {
               <StatusBar backgroundColor="#eaffea" />
 
               <View style={styles.main_container}>
-                
                 <View>
                   <View style={styles.name_sec}>
                     <View
@@ -492,7 +491,7 @@ const HomeScreen = () => {
                           width: responsiveWidth(92),
                           height: responsiveHeight(15),
                           borderRadius: responsiveWidth(3),
-                          resizeMode: "contain",
+                          resizeMode: 'contain',
                         }}
                       />
                     </TouchableOpacity>
@@ -612,7 +611,10 @@ const HomeScreen = () => {
                       </Text>
                     </View>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('products', {id: 3})}
+                      onPress={() => {
+                        dispatch(addCategoryId(3));
+                        navigation.navigate('products');
+                      }}
                       style={{flexDirection: 'row'}}>
                       <Text
                         style={{

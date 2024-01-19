@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useId} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,6 @@ import {
   responsiveHeight,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
@@ -26,22 +25,16 @@ import {add_check_payment_status} from '../redux/Slice';
 // import PhonePe from 'react-native-phonepe';
 
 const SubcriptionScreen = () => {
-  const [authToken, setAuthToken] = useState(null);
   const navigation = useNavigation();
-  const [userId, setUserId] = useState(null);
   const netInfo = useNetInfo();
-  const [details, setDetails] = useState(0);
   const dispatch = useDispatch();
   const PaymentStatusDetails = useSelector(
     state => state.details.check_payment_status,
   );
   const storedUserDetailes = useSelector(state => state.details.login_data);
-
   useEffect(() => {
-    // getValueFromStorage();
     CheckSubscriptionsStatus();
   }, []);
-
 
   const CheckSubscriptionsStatus = async () => {
     let payload = {
