@@ -29,7 +29,7 @@ import PurchaseInsuarance from './src/OtherScreens/PurchaseInsuarance';
 import AddRetailer from './src/Distributor/AddRetailer';
 import LeadAddSuccessMesageScreen from './src/OtherScreens/LeadAddSuccessMesageScreen';
 import ScratchCardScreen from './src/OtherScreens/ScratchCard';
-import RewardsScreen from './src/ProfileScreens/RewardsScreen';
+import RewardsScreen from './src/Retailer/RewardsScreen.js';
 import useNetInfo from './src/OtherScreens/useNetInfo';
 
 // Distributor screens
@@ -56,6 +56,7 @@ import KycDetailsScreen from './src/ProfileScreens/KycDetailsScreen';
 import EducationDetailsScreen from './src/ProfileScreens/EducationDetailsScreen';
 import KwikmRegistration from './src/Retailer/KwikmRegistration';
 import SubcriptionScreen from './src/OtherScreens/SubcriptionScreen';
+import ReferrelsScreen from './src/ProfileScreens/ReferrelsScreen.js';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -189,11 +190,6 @@ const App = () => {
                 component={LeadAddSuccessMesageScreen}
               />
               <Stack.Screen
-                name="scratch"
-                options={{headerShown: false}}
-                component={ScratchCardScreen}
-              />
-              <Stack.Screen
                 name="rewards"
                 options={{headerShown: false}}
                 component={RewardsScreen}
@@ -216,6 +212,11 @@ const App = () => {
                 name="privacyPolicy"
                 options={{headerShown: false}}
                 component={PrivacyPolicyScreen}
+              />
+              <Stack.Screen
+                name="referelScreen"
+                options={{headerShown: false}}
+                component={ReferrelsScreen}
               />
 
               <Stack.Screen
@@ -301,7 +302,7 @@ const App = () => {
                 name="corpRetailerList"
                 options={{headerShown: false}}
                 component={CorpRetailerList}
-              /> 
+              />
             </Stack.Navigator>
           </NavigationContainer>
         ) : (

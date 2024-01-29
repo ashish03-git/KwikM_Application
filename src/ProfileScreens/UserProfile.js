@@ -20,6 +20,7 @@ import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import Font6 from 'react-native-vector-icons/FontAwesome6';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
+import Font from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -341,13 +342,13 @@ const UserProfile = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('rewards')}
+            onPress={() => navigation.navigate('referelScreen')}
             style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
-              <Font5 name="gift" color="#046218" size={responsiveWidth(4.8)} />
+              <Font name="code-fork" color="#046218" size={responsiveWidth(4.8)} />
             </View>
             <View style={styles.userDetailsContainerTitle}>
-              <Text style={styles.userDetailsContainerTitleText}>Rewards</Text>
+              <Text style={styles.userDetailsContainerTitleText}>Referel</Text>
             </View>
             <View style={styles.userDetailsContainerIconeRight}>
               <Font5

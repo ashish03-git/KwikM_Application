@@ -22,7 +22,7 @@ import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const RewardsScreen = () => {
   const [selectedCard, setSelectedCard] = useState(null);
@@ -33,9 +33,15 @@ const RewardsScreen = () => {
   const [rewardAmount, setRewardAmount] = useState([]);
   const navigation = useNavigation();
   const [activityIndicator, setActivityIndicator] = useState(false);
-  const storedUserDetailes = useSelector(state=>state.details.login_data)
+  const storedUserDetailes = useSelector(state => state.details.login_data);
 
-  const cards = new Array(10);
+  // const cards = [
+  //   {id: 1, status: 1, name: 'Opened 1'},
+  //   {id: 2, status: 0, name: 'Closed 1'},
+  //   {id: 3, status: 1, name: 'Opened 2'},
+  //   {id: 4, status: 0, name: 'Closed 2'},
+  // ];
+  // const sortedData = cards.sort((a, b) => a.status - b.status);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -62,7 +68,8 @@ const RewardsScreen = () => {
       .then(data => {
         // console.log(data);
         if (data.status) {
-          setTotalCard(data.rewards);
+          const sortedData = data.rewards.sort((a, b) => a.status - b.status);
+          setTotalCard(sortedData);
         } else {
           setRewardAmount([]);
         }
@@ -71,7 +78,6 @@ const RewardsScreen = () => {
         }, 300);
       });
   };
-
 
   const handleCardPress = async data => {
     setModalVisible(true);
@@ -132,6 +138,7 @@ const RewardsScreen = () => {
           {totalCard.length < 2 ? (
             <View>
               {totalCard.length == 0 ? (
+                //  single scratch card which is not opened
                 <View
                   style={{
                     height: responsiveHeight(80),
@@ -162,6 +169,7 @@ const RewardsScreen = () => {
                   </View>
                 </View>
               ) : (
+                // here i'm checking single card opened or not
                 <>
                   {totalCard[0].status === 0 ? (
                     <TouchableHighlight
@@ -293,30 +301,26 @@ const RewardsScreen = () => {
                 data={totalCard}
                 showsVerticalScrollIndicator={false}
                 numColumns={2}
-                renderItem={({item}) => {
-                  return (
-                    <>
-                      <TouchableOpacity
-                        onPress={() => handleCardPress(item.id)}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    onPress={() => handleCardPress(item.id)}
+                    style={{
+                      alignItems: 'center',
+                      margin: responsiveWidth(1.5),
+                      borderRadius: responsiveWidth(3),
+                      backgroundColor: '#3768f3',
+                    }}>
+                    <View style={styles.notOpenScratchCard}>
+                      <Image
+                        source={require('../../assets/gift-box.png')}
                         style={{
-                          alignItems: 'center',
-                          margin: responsiveWidth(1.5),
-                          borderRadius: responsiveWidth(3),
-                          backgroundColor: '#3768f3',
-                        }}>
-                        <View style={styles.notOpenScratchCard}>
-                          <Image
-                            source={require('../../assets/gift-box.png')}
-                            style={{
-                              width: responsiveWidth(22),
-                              height: responsiveWidth(22),
-                            }}
-                          />
-                        </View>
-                      </TouchableOpacity>
-                    </>
-                  );
-                }}
+                          width: responsiveWidth(22),
+                          height: responsiveWidth(22),
+                        }}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                )}
               />
             </View>
           )}
@@ -390,8 +394,8 @@ const styles = StyleSheet.create({
     width: 180,
     height: 180,
     backgroundColor: 'white',
-    justifyContent:"center",
-    alignItems:"center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: responsiveWidth(3),
   },
   notOpenScratchCard: {

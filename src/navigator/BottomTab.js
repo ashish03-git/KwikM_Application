@@ -10,9 +10,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import ProductTabScreen from '../Retailer/ProductTabScreen';
 import HelpScreen from '../Retailer/HelpScreen';
-import ScratchCardScreen from '../OtherScreens/ScratchCard';
-
-
+import RewardsScreen from '../Retailer/RewardsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -66,14 +64,14 @@ const BottomTab = () => {
           }}
         />
         <Tab.Screen
-          name="referel"
-          component={ScratchCardScreen}
+          name="Rewards"
+          component={RewardsScreen}
           options={{
             headerShown: false,
             tabBarIcon: ({focused, color, size}) => (
               <FontAwesome
-                name="code-fork"
-                size={responsiveWidth(7)}
+                name="gift"
+                size={responsiveWidth(8)}
                 color={color}
               />
             ),
