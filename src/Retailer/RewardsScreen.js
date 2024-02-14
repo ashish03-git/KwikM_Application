@@ -4,13 +4,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  PanResponder,
   FlatList,
   StatusBar,
   Image,
   Modal,
-  ImageBackground,
-  TouchableHighlight,
 } from 'react-native';
 import {
   responsiveWidth,
@@ -19,7 +16,6 @@ import {
 } from 'react-native-responsive-dimensions';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 import LottieView from 'lottie-react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
 import {useSelector} from 'react-redux';
@@ -34,15 +30,6 @@ const RewardsScreen = () => {
   const navigation = useNavigation();
   const [activityIndicator, setActivityIndicator] = useState(false);
   const storedUserDetailes = useSelector(state => state.details.login_data);
-
-  // const cards = [
-  //   {id: 1, status: 1, name: 'Opened 1'},
-  //   {id: 2, status: 0, name: 'Closed 1'},
-  //   {id: 3, status: 1, name: 'Opened 2'},
-  //   {id: 4, status: 0, name: 'Closed 2'},
-  // ];
-  // const sortedData = cards.sort((a, b) => a.status - b.status);
-
   useFocusEffect(
     React.useCallback(() => {
       // getUserDetails();
@@ -84,6 +71,24 @@ const RewardsScreen = () => {
     const activeCard = totalCard.filter(card => card.id === data);
     // console.log("matching card", activeCard[0].amount);
     setRewardAmount(activeCard[0].amount);
+
+    // setting the statur 2 for opened scratch card and finally when its done the fetching all card once again
+    const payload = {
+      reward_id: data,
+      user_id: storedUserDetailes.user_id,
+      status: '2',
+    };
+    await fetch('https://kwikm.in/dev_kwikm/api/update_reward.php', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(response => response.json())
+      .then(data => console.log(data));
+
+    await FetchAllScratchCards();
   };
 
   const closeModal = () => {
@@ -171,8 +176,8 @@ const RewardsScreen = () => {
               ) : (
                 // here i'm checking single card opened or not
                 <>
-                  {totalCard[0].status === 0 ? (
-                    <TouchableHighlight
+                  {totalCard[0].status == 2 ? (
+                    <View
                       onPress={() => handleCardPress(totalCard[0])}
                       style={{
                         width: 180,
@@ -197,6 +202,7 @@ const RewardsScreen = () => {
                             }}
                           />
                         </View>
+
                         {/* text */}
                         <View
                           style={{
@@ -230,7 +236,7 @@ const RewardsScreen = () => {
                             />
                             <Text
                               style={{
-                                fontSize: responsiveFontSize(4.5),
+                                fontSize: responsiveFontSize(4),
                                 color: 'gray',
                                 fontWeight: '700',
                                 marginLeft: responsiveWidth(1),
@@ -241,7 +247,7 @@ const RewardsScreen = () => {
                           </View>
                         </View>
                       </View>
-                    </TouchableHighlight>
+                    </View>
                   ) : (
                     <TouchableOpacity
                       onPress={() => handleCardPress(totalCard[0].id)}
@@ -250,34 +256,67 @@ const RewardsScreen = () => {
                         marginLeft: responsiveWidth(3),
                         borderRadius: responsiveWidth(3),
                       }}>
-                      {totalCard[0].status === 0 ? (
+                      {totalCard[0].status == 2 ? (
                         <View style={styles.openScratchCard}>
+                          {/* image */}
                           <View
                             style={{
-                              width: '100%',
-                              height: responsiveHeight(5),
-                              backgroundColor: '#7a7a7a',
-                              position: 'absolute',
+                              flex: 1.5,
                               justifyContent: 'center',
                               alignItems: 'center',
-                              zIndex: 999,
                             }}>
-                            <Text
+                            <Image
+                              source={require('../../assets/gift-box.png')}
                               style={{
-                                fontSize: responsiveFontSize(4),
-                                color: 'white',
-                              }}>
-                              Claimed
-                            </Text>
+                                width: responsiveWidth(20),
+                                height: responsiveWidth(20),
+                                resizeMode: 'cover',
+                              }}
+                            />
                           </View>
-                          <Image
-                            source={require('../../assets/gift-box.png')}
+                          {/* text */}
+                          <View
                             style={{
-                              width: responsiveWidth(22),
-                              height: responsiveWidth(22),
-                              resizeMode: 'cover',
-                            }}
-                          />
+                              flex: 1,
+                            }}>
+                            <View
+                              style={{
+                                flex: 1,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: responsiveFontSize(2.5),
+                                  color: 'gray',
+                                }}>
+                                You Won
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Font5
+                                name="rupee-sign"
+                                size={responsiveFontSize(2.2)}
+                                color="gray"
+                              />
+                              <Text
+                                style={{
+                                  fontSize: responsiveFontSize(4.5),
+                                  color: 'gray',
+                                  fontWeight: '700',
+                                  marginLeft: responsiveWidth(1),
+                                  marginBottom: responsiveWidth(1),
+                                }}>
+                                {totalCard[0].amount}
+                              </Text>
+                            </View>
+                          </View>
                         </View>
                       ) : (
                         <View style={styles.notOpenScratchCard}>
@@ -296,31 +335,109 @@ const RewardsScreen = () => {
               )}
             </View>
           ) : (
+            // here i'm handling more that one data
             <View style={{alignItems: 'center'}}>
               <FlatList
                 data={totalCard}
                 showsVerticalScrollIndicator={false}
                 numColumns={2}
-                renderItem={({item}) => (
-                  <TouchableOpacity
-                    onPress={() => handleCardPress(item.id)}
-                    style={{
-                      alignItems: 'center',
-                      margin: responsiveWidth(1.5),
-                      borderRadius: responsiveWidth(3),
-                      backgroundColor: '#3768f3',
-                    }}>
-                    <View style={styles.notOpenScratchCard}>
-                      <Image
-                        source={require('../../assets/gift-box.png')}
-                        style={{
-                          width: responsiveWidth(22),
-                          height: responsiveWidth(22),
-                        }}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                )}
+                renderItem={({item}) => {
+                  const cardStatus = item.status;
+                  return (
+                    <>
+                      {cardStatus == 2 ? (
+                        <View
+                          style={{
+                            alignItems: 'center',
+                            margin: responsiveWidth(1.5),
+                            borderRadius: responsiveWidth(3),
+                            // backgroundColor: '#3768f3',
+                          }}>
+                          <View style={styles.openScratchCard}>
+                            {/* image */}
+                            <View
+                              style={{
+                                flex: 1.5,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Image
+                                source={require('../../assets/gift-box.png')}
+                                style={{
+                                  width: responsiveWidth(20),
+                                  height: responsiveWidth(20),
+                                  resizeMode: 'cover',
+                                }}
+                              />
+                            </View>
+                            {/* text */}
+                            <View
+                              style={{
+                                flex: 1,
+                              }}>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={{
+                                    fontSize: responsiveFontSize(2.5),
+                                    color: 'gray',
+                                  }}>
+                                  You Won
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  flex: 2,
+                                  flexDirection: 'row',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Font5
+                                  name="rupee-sign"
+                                  size={responsiveFontSize(2.2)}
+                                  color="gray"
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: responsiveFontSize(4),
+                                    color: 'gray',
+                                    fontWeight: '700',
+                                    marginLeft: responsiveWidth(1),
+                                    marginBottom: responsiveWidth(1),
+                                  }}>
+                                  {totalCard[0].amount}
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                        </View>
+                      ) : (
+                        <TouchableOpacity
+                          onPress={() => handleCardPress(item.id)}
+                          style={{
+                            alignItems: 'center',
+                            margin: responsiveWidth(1.5),
+                            borderRadius: responsiveWidth(3),
+                            backgroundColor: '#3768f3',
+                          }}>
+                          <View style={styles.notOpenScratchCard}>
+                            <Image
+                              source={require('../../assets/gift-box.png')}
+                              style={{
+                                width: responsiveWidth(22),
+                                height: responsiveWidth(22),
+                              }}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                    </>
+                  );
+                }}
               />
             </View>
           )}
