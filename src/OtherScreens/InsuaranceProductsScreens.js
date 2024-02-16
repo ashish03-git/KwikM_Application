@@ -12,7 +12,6 @@ import { useNavigation } from '@react-navigation/native';
 import useNetInfo from './useNetInfo';
 import Font6 from "react-native-vector-icons/FontAwesome6"
 import Font5 from "react-native-vector-icons/FontAwesome5"
-import Font from "react-native-vector-icons/FontAwesome"
 
 
 const InsuaranceProductsScreens = () => {

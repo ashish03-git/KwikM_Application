@@ -104,7 +104,7 @@ const AddRetailer = () => {
               setFull_Name('');
               setMobile_Num('');
               setMpin('');
-            }, 500);
+            },3000);
           } else if (addDistributorStatus.error) {
             // console.log(addDistributorStatus.error)
             setErr(addDistributorStatus.error);
@@ -112,7 +112,7 @@ const AddRetailer = () => {
             setTimeout(() => {
               setNextScreenStatus(false);
               setErr('');
-            }, 500);
+            }, 3000);
           }
         });
     } catch (error) {

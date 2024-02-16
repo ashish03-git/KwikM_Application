@@ -93,10 +93,12 @@ const PurchaseInsuarance = () => {
     headers.append('x-correlation-id', '1700025360961');
 
     const ob = {
-      referenceAuthId: `${user_id}_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+      referenceAuthId: `${user_id}_${mobile_nun}_${Math.floor(
+        Math.random() * 1000,
+      )}`,
       mobile: mobile_nun,
     };
-
+    // console.log(ob)
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -111,13 +113,11 @@ const PurchaseInsuarance = () => {
         setActivityIndicator(false);
         navigation.navigate('openWebView', {token});
       } else {
-        console.log('token not found');
         setActivityIndicator(false);
       }
     } catch (error) {
       console.log('Catch error: ' + error);
     }
-    
   };
 
   const Purchase = async () => {

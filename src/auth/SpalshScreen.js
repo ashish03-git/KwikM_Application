@@ -71,7 +71,7 @@ const SplashScreen = () => {
       <Animated.View entering={ZoomIn.duration(1500).easing(Easing.ease)}>
         <Image
           source={{
-            uri: 'https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ACUb4nVPUMvKFAWTMJnlKgVYMV9nqKXH5oVCaL4s~143RJV9Zo8Pq0xI5r17vvG1H2LSvWuZLCswQgUv3VjWC-fXLp0rgj2unGbL0EvM4JSZ9h-mE~586vMlBpiHosHrUZhnWCACiwug28b~ampfra~PrMp4IW8tdwD~S-O0Y~CL6Q8DEybByUwKZ8MJSspAuRQ8-n35GxZ72C5DvGzI2VNKnMkGNXDN-dYOaQA5FCN6NTywbJkAQ~PJfiSO3tquUMEJBHa1xgpUgmVHBqoimMtUoynzS73g5RUPL59j-C7coGpP5-72AVpzJK1Bo4goL95lvZGxTWeCSp5maLnweQ__',
+            uri: 'https://kwikm.in/live/images/app-logo.png',
           }}
           style={{
             width: responsiveWidth(50),

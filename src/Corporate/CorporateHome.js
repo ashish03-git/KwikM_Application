@@ -9,7 +9,7 @@ import {
   Alert,
   StyleSheet,
   StatusBar,
-  ImageBackground,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -36,6 +36,7 @@ import {addRecentTransactions, addLogin_data} from '../redux/Slice';
 
 const CorporateHome = () => {
   // states
+  const [refreshing, setRefreshing] = useState(false);
   const [name, setName] = useState('');
   const [userId, setUserId] = useState('');
   const [banner, setBanner] = useState(null);
@@ -94,7 +95,7 @@ const CorporateHome = () => {
           }),
         },
       );
-
+      setRefreshing(false);
       if (response.ok) {
         const recentTransactionData = await response.json();
         setActivityIndicator(false);
@@ -103,7 +104,6 @@ const CorporateHome = () => {
         setRecentTransactions([]);
         setActivityIndicator(false);
       }
-
     } catch (error) {
       // setActivityIndicator(false);
       console.log('Failed to fetch recent transactions', error);
@@ -178,6 +178,16 @@ const CorporateHome = () => {
     return true; // Prevent the default back button behavior
   };
 
+  // refresh control
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setActivityIndicator(true);
+    getUserDetails();
+    BannerImg();
+    FetchBalance();
+    FetchRecentTransactions();
+  }, [name]);
+
   return (
     <>
       {activityIndicator ? (
@@ -185,7 +195,10 @@ const CorporateHome = () => {
           <ActivityLoader />
         </View>
       ) : (
-        <View
+        <ScrollView
+          refreshControl={
+            <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+          }
           style={{
             width: responsiveWidth(100),
             height: responsiveHeight(100),
@@ -194,7 +207,7 @@ const CorporateHome = () => {
           {netinfo ? (
             <>
               <StatusBar backgroundColor="#eaffea" />
-              
+
               <View style={styles.main_container}>
                 <View>
                   <View style={styles.name_sec}>
@@ -231,9 +244,7 @@ const CorporateHome = () => {
                           }}>
                           Hii,{' '}
                         </Text>
-                        <Text style={styles.name_txt}>
-                          {name}
-                        </Text>
+                        <Text style={styles.name_txt}>{name}</Text>
                       </View>
                       <View
                         style={{
@@ -249,7 +260,7 @@ const CorporateHome = () => {
                             resizeMode: 'cover',
                           }}
                           source={{
-                            uri: 'https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1705276800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=py44HMVai82BD44sP42arUXBwsgd7FTQImGk2Xn9-Uqjlo3Jrwp1~YmcvDry8i8mYNhTAJnksXThIEEL6TjUBH49DAJlv~xr3QpacTZdSl4eNtDAwSMY7mf4xBslgNhadJzQMQ3n1R6RjMTsTI5~RETE1u~Szlq86EXTlMFpDnTleoLX6EuPkFiIihAsiCss8H94-xYgjZW1htOEbAjd2LFavqMTftBFiLkXZxJdAQNfBkryIfjjlr75cCufKP5p6YbF9qPX57EJ8~LPLuCk~vezAk68bkL2u0YhSl96stm2bEP81VWEMZwScYp9XcQF4VMpey3KpNAF8Om4pq8D1g__',
+                            uri: 'https://kwikm.in/live/images/app-logo.png',
                           }}
                         />
                       </View>
@@ -671,7 +682,7 @@ const CorporateHome = () => {
           ) : (
             <NoConnection />
           )}
-        </View>
+        </ScrollView>
       )}
     </>
   );

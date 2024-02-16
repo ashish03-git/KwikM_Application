@@ -257,10 +257,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
   },
   submitButtonContainer: {
-    width: responsiveWidth(90),
-    height: responsiveHeight(68),
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
+    marginBottom: responsiveWidth(10),
   },
   submitButton: {
     width: responsiveWidth(90),

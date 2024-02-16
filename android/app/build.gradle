@@ -1,6 +1,9 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services"
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -115,6 +118,11 @@ android {
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
+     // Import the Firebase BoM
+        implementation platform('com.google.firebase:firebase-bom:32.7.1')
+        // Add the dependencies for Firebase products you want to use
+        // When using the BoM, don't specify versions in Firebase dependencies
+        implementation 'com.google.firebase:firebase-analytics'
     implementation("com.facebook.react:react-android")
 implementation project(':react-native-vector-icons')
 implementation project(':react-native-contacts')

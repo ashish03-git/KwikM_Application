@@ -8,6 +8,7 @@ import {
   FlatList,
   StatusBar,
   StyleSheet,
+  Linking
 } from 'react-native';
 import React, {useEffect, useState, useMemo, useCallback} from 'react';
 import {
@@ -82,30 +83,53 @@ const ReferrelsScreen = () => {
       setStatus(true);
       setMsg(apiResponse.success);
       setTimeout(() => {
-        setStatus(null);
         setMsg('');
-        setName('');
-        setEmail('');
-        setMobile_Num('');
       }, 2000);
     } else {
-      setStatus(false);
       setErr(apiResponse.error);
       setTimeout(() => {
-        setStatus(null);
         setErr('');
       }, 2000);
     }
   };
 
+  const handleShare = () => {
+    // console.log(ob)
+    const message = `
+
+  KwikM App :
+
+  Name: ${name}\n
+  Phone: ${mobile_num}\n
+  Email:${email}\n
+  Joining Link: ${'joining link'}\n
+  Playstore Link:  https://play.google.com/store/apps/details?id=com.kwikm.app\n`;
+
+    const whatsappUrl = `whatsapp://send?phone=+91${mobile_num}&text=${encodeURIComponent(
+      message,
+    )}`;
+    Linking.openURL(whatsappUrl).catch(err => {
+      console.error('Error opening WhatsApp:', err);
+      Alert.alert(
+        'WhatsApp Error',
+        'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+    });
+  };
   return (
     <>
       {netInfo ? (
         <>
           <StatusBar backgroundColor={'#EAFFEA'} barStyle={'dark-content'} />
-          
-          <View style={{flex: 1, backgroundColor: '#eaffea'}}>
 
+          <View style={{flex: 1, backgroundColor: '#eaffea'}}>
             {/* screen title */}
             <View style={{height: responsiveHeight(7), flexDirection: 'row'}}>
               <TouchableOpacity
@@ -152,7 +176,7 @@ const ReferrelsScreen = () => {
               }}>
               <Image
                 source={{
-                  uri: 'https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1704067200&Signature=GsWU2Fi7~7trotpbLAk7HlSQt9X1LMW~f8~Eomx5srzmJx9QqyjA66UhfjTIeOONoyh-x6ynHa--mqesRZYts~MvxC7D9Co8r7~pENNxT3nRrrlDAzQfFvsrrYW22Pwz4A~MQRt7xZ08rBEIb6u9gl9bYdhjo4wlli7V5ILsAKkIx86pG5xVJN4IlUavs5Bg7uqvcL3~tHzSE4-8iX-W7W2vgioOacMNtCsiL1pQBbKf2Ub0y~ouM2BNrlZwHNz5iJpz8Q1F~Q6RM3oSK-IyEmDkPtqvoc17cD6xUKAo9XUm243yBm8ZcOujBECjXxaQ5wMeIHVpr4RB69ULQYQLbw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
+                  uri: 'https://kwikm.in/live/images/app-logo.png',
                 }}
                 style={{
                   width: responsiveWidth(96),
@@ -301,33 +325,74 @@ const ReferrelsScreen = () => {
 
               {/* button container */}
               <View style={style.btnContainer}>
-                <TouchableOpacity
-                  onPress={() => navigation.goBack()}
-                  style={style.cancleBtn}>
-                  <Text
+                {status ? (
+                  <View
                     style={{
-                      fontSize: responsiveFontSize(2),
-                      color: 'black',
+                      flex: 1,
+                      justifyContent: 'space-evenly',
+                      alignItems: 'center',
+                      flexDirection: 'row',
                     }}>
-                    Cancel
-                  </Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setName('');
+                        setEmail('');
+                        setMobile_Num('');
+                        setStatus(false);
+                      }}
+                      style={style.cancleBtn}>
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'black',
+                        }}>
+                        Cancel
+                      </Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                  onPress={submitHandler}
-                  style={style.activeBtn}>
-                  <Text
-                    style={{
-                      fontSize: responsiveFontSize(2),
-                      color: 'white',
-                      fontWeight: '700',
-                    }}>
-                    Add Referral
-                  </Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={handleShare}
+                      style={style.shareBtn}>
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'white',
+                          fontWeight: '700',
+                        }}>
+                        Share On Whatsapp
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <>
+                    <TouchableOpacity
+                      onPress={() => navigation.goBack()}
+                      style={style.cancleBtn}>
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'black',
+                        }}>
+                        Cancel
+                      </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={submitHandler}
+                      style={style.activeBtn}>
+                      <Text
+                        style={{
+                          fontSize: responsiveFontSize(2),
+                          color: 'white',
+                          fontWeight: '700',
+                        }}>
+                        Add Referral
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                )}
               </View>
             </View>
-
           </View>
         </>
       ) : (
@@ -364,6 +429,16 @@ const style = StyleSheet.create({
     //   backgroundColor: 'red',
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  shareBtn: {
+    width: responsiveWidth(42),
+    paddingVertical: responsiveWidth(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#CB01CF',
+    borderWidth: 1,
+    borderColor: '#CB01CF',
+    borderRadius: responsiveWidth(3),
   },
   cancleBtn: {
     width: responsiveWidth(42),

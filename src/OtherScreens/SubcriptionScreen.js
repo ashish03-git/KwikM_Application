@@ -124,7 +124,7 @@ const SubcriptionScreen = () => {
               <View>
                 <Image
                   source={{
-                    uri: 'https://s3-alpha-sig.figma.com/img/d554/26aa/56a1eb3f928d32506149fad3c301fcd0?Expires=1704672000&Signature=fNbWmBKvVJU8OcALIKUeKHuqsV36SBCAY69DSOjX7OMPSxIyk8~yJhdsyT8P627TvJ034bUku9lAwss~I52a5dC~Op5wmYJRSCgP-VY8FeTZIlbYx4Ju84an0PhRevw3Og4ueVNx9ez3UW0njRERtVKGAcRt0WcF~e6SsElUOasxQ-ECZjEKZTYv7dNriEJEwkizs1a9145OCdkeZmvX7q02UPhusv8CsqNYHvTEAPSxtbj5XZ6GERVNItA97RAAVA4fYOFzPqs9siSPfWkeVk0XYQfSUsbc61fYczS1xW0c1QwMtlSAK2VDdqi1pjvMQHIdnnxONFV3n4FT1k~w4A__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4 ',
+                    uri: 'https://kwikm.in/live/images/app-logo.png',
                   }}
                   style={{
                     width: responsiveWidth(50),

@@ -122,7 +122,7 @@ const PaytmScreen = () => {
                                             <Image
                                                 source={{
                                                     uri:
-                                                        "https://s3-alpha-sig.figma.com/img/9187/ed89/ad6786507da60004a172c93ff2bfda2c?Expires=1702252800&Signature=iRRNySEdcedbb-Bk4cW~NjhvUNDyHJsSIWH8gJwfndHwV7GQeW-H3qm1qOJBPli55x75c3Qx29ddU9PcPmqsxf1Z5UY-RwIld79SrYnGcqyeNvw7LsHS84QNx3rPXgzUn1Z5oWeQlJtwxATZbFdIfE4ZzganHeQkxAtwz9W3PB8aOcM3p7GkaK~74FfS9I2UkpAkljYcIPDbZUVz2hv2Ay9-Lm2ye7DIgGVNeE7X7DFXBROka8UMSonn4XDNTFDIeUfL2vErgQLII-UiQoLetR1XBVhN9NQSnMu9gRCtMjwn1o1ArF2qiJJykt~tocUJA2Uj0ti6D~omU9zS2~~CLg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                                                        "https://kwikm.in/live/images/paytm.png"
                                                 }}
                                                 style={{
                                                     borderRadius: responsiveWidth(3),

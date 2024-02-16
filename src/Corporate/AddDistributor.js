@@ -102,6 +102,7 @@ const AddDistributor = () => {
       upline: userId,
     };
     // console.log(ob)
+    // console.log(storedToken)
     try {
       await fetch('https://kwikm.in/dev_kwikm/api/add_distributor.php', {
         method: 'POST',
@@ -126,7 +127,7 @@ const AddDistributor = () => {
               setMpin('');
             }, 1000);
           } else if (addDistributorStatus.error) {
-            // console.log(addDistributorStatus.error)
+            console.log(addDistributorStatus)
             setErr(addDistributorStatus.error);
             setErrorStatus(true);
             setTimeout(() => {
@@ -151,7 +152,7 @@ const AddDistributor = () => {
       upline: value,
       auth_token: storedToken,
     };
-    // console.log(storedToken)
+    // console.log('final Object', ob);
     try {
       await fetch('https://kwikm.in/dev_kwikm/api/add_retailer.php', {
         method: 'POST',
@@ -174,7 +175,7 @@ const AddDistributor = () => {
               setEmail('');
               setFull_Name('');
               setMpin('');
-            }, 1000);
+            }, 2000);
           } else if (addRetailerStatus.error) {
             // console.log(addDistributorStatus.error)
             setErr(addRetailerStatus.error);
@@ -182,7 +183,7 @@ const AddDistributor = () => {
             setTimeout(() => {
               setNextScreenStatus(false);
               setErr('');
-            }, 1000);
+            }, 2000);
           }
         });
     } catch (error) {

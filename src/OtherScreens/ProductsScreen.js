@@ -392,6 +392,7 @@ const ProductsScreen = () => {
                               <View style={{flex: 2, flexDirection: 'row'}}>
                                 <TouchableOpacity
                                   onPress={() => {
+                                    // console.log(item)
                                     dispatch(addProductId(item));
                                     navigation.navigate('productDetails');
                                   }}
@@ -412,6 +413,7 @@ const ProductsScreen = () => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                   onPress={() => {
+                                    // console.log(item)
                                     dispatch(addProductId(item));
                                     navigation.navigate('productDetails');
                                   }}

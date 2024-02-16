@@ -71,7 +71,7 @@ const LoginWithNumber = () => {
                     <ScrollView style={{ width: responsiveWidth(100), height: responsiveHeight(90) }}>
                         <View style={styles.view1}>
                             <Image
-                               source={{uri:"https://s3-alpha-sig.figma.com/img/9fc4/9eb3/9a99be95977a6a0f5d2fe5cd0dcba7eb?Expires=1702252800&Signature=AM2uey0VjRWdHbebXB0GFqsTpX63hHz2UIsDaI5KP-GbchZkXOWNM6Gw-454f3hnXGuvZOeIUIOh0iLS8RgYF-S3wXqzn14CenpoaHJS43gdhCscuy5eLO8rauqI2fe9G~~ZQEtKvMr8EDcjciF3IZI77Tbh0~95VQ9Uv56tmWRq6fTrNGCMqTsBcbQpftNeGDhIxh8tFEYXcfp-o3e3ZwDh8Io~r2xIccMe7W0T6wHyldry6Dm~Fn9X8j6lbj~H-t9xXxwNATcsVxe58GHpwwMs9sZMUUwGipGmVLtmhWeIntPvEJnz3EWnSFrotuxL9Ts2j9CL~Bls0e~4kukd1g__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"}}
+                               source={{uri:"https://kwikm.in/live/images/top-image.png"}}
                                 style={{ 
                                     width: responsiveWidth(100), 
                                     height: responsiveHeight(30), 

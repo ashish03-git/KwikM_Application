@@ -87,7 +87,7 @@ const RegisterOtpScreen = () => {
           <ScrollView style={styles.scrollView}>
             <View style={styles.view1}>
               <Image
-                source={{ uri: "https://s3-alpha-sig.figma.com/img/1093/9990/a4997316d3551e1edd75c9441b6e7417?Expires=1702857600&Signature=hChmfQtTn6AiDZkXkC7H~MinrFKXcuVtDNMNn9pv~bL82BJkLRjMWVUYO9bn4pFNJC9Hdwn1qwzIO5skrPjtCoPmMKQIkypu5Lq5NbplaiVCsSFaLI6XAr7VX3vJUJjyAqz~CuSYRjcVT81e15DSRXvjOHNAfgTbxNAZf2Daj3WEk2CnBWhH93X5IK7sYAehU0lV4uRHfKNTpXYf28y6oUq~pj0tkn2zR-im12F11pZUSLGVtHr1vggFS3dAX2J9F8AK4qYZGifEnLKvzrBmSe-MkucdjZJmor0c4n4DUe1LlMqDGtrKYR5rVzUWTMG~jHPYJXhlVjOfDDT64isbZw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4" }}
+                source={{ uri: "https://kwikm.in/live/images/top-image.png" }}
                 style={{
                   width: responsiveWidth(100),
                   height: responsiveHeight(30),

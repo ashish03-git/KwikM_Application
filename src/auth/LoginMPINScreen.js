@@ -107,7 +107,7 @@ const LoginMPINScreen = () => {
     })
       .then(response => response.json())
       .then(data => {
-        // console.log('data',data) 
+        // console.log('data',data)
         dispatch(addLogin_data(data));
         if (data.status) {
           AsyncStorage.setItem('name', JSON.stringify(data.name));
@@ -126,7 +126,7 @@ const LoginMPINScreen = () => {
             user_number: phone,
           };
           // console.log("before storing",user_details);
-          AsyncStorage.setItem('user_details',JSON.stringify(user_details));
+          AsyncStorage.setItem('user_details', JSON.stringify(user_details));
 
           setTimeout(() => {
             setMPIN(' ');
@@ -170,7 +170,7 @@ const LoginMPINScreen = () => {
               <View style={styles.view1}>
                 <Image
                   source={{
-                    uri: 'https://s3-alpha-sig.figma.com/img/9fc4/9eb3/9a99be95977a6a0f5d2fe5cd0dcba7eb?Expires=1702252800&Signature=AM2uey0VjRWdHbebXB0GFqsTpX63hHz2UIsDaI5KP-GbchZkXOWNM6Gw-454f3hnXGuvZOeIUIOh0iLS8RgYF-S3wXqzn14CenpoaHJS43gdhCscuy5eLO8rauqI2fe9G~~ZQEtKvMr8EDcjciF3IZI77Tbh0~95VQ9Uv56tmWRq6fTrNGCMqTsBcbQpftNeGDhIxh8tFEYXcfp-o3e3ZwDh8Io~r2xIccMe7W0T6wHyldry6Dm~Fn9X8j6lbj~H-t9xXxwNATcsVxe58GHpwwMs9sZMUUwGipGmVLtmhWeIntPvEJnz3EWnSFrotuxL9Ts2j9CL~Bls0e~4kukd1g__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4',
+                    uri: 'https://kwikm.in/live/images/top-image.png',
                   }}
                   style={{
                     width: responsiveWidth(100),

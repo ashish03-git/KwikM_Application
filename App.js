@@ -1,5 +1,5 @@
-import {View, Text, StatusBar} from 'react-native';
-import React from 'react';
+import {View, Text, StatusBar, RefreshControl} from 'react-native';
+import React, {useState,useEffect} from 'react';
 import RegisterScreen from './src/auth/RegisterScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -61,8 +61,9 @@ import ReferrelsScreen from './src/ProfileScreens/ReferrelsScreen.js';
 const Stack = createStackNavigator();
 const App = () => {
   const netInfo = useNetInfo();
+  
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1}} >
       <Provider store={store}>
         <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
         {netInfo ? (
