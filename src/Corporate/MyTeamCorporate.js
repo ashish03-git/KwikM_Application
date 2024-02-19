@@ -8,6 +8,8 @@ import {
   FlatList,
   StatusBar,
   StyleSheet,
+  Linking,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useId, useState} from 'react';
 import {
@@ -15,9 +17,7 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
-import Font6 from 'react-native-vector-icons/FontAwesome6';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
-import Font from 'react-native-vector-icons/FontAwesome';
 import LottieView from 'lottie-react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -27,13 +27,9 @@ import {
 } from '@react-navigation/native';
 import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
 
-
 const MyTeamCorporate = () => {
-
-
   const navigation = useNavigation();
   const netinfo = useNetInfo();
   const [userId, setUserId] = useState(null);
@@ -66,6 +62,7 @@ const MyTeamCorporate = () => {
       })
         .then(response => response.json())
         .then(myDistributorsListData => {
+          // console.log(myDistributorsListData);
           if (myDistributorsListData.length > 0) {
             // dispatch(addMyDistibutorList(myDistributorsListData))
             setMyDistributorsList(myDistributorsListData);
@@ -80,7 +77,34 @@ const MyTeamCorporate = () => {
       console.log('Failed to fetch recent transactions', error);
     }
   };
-  
+
+  const shareDetails = async item => {
+    const message = `
+    📱Details 📱
+    Name: ${item.name}
+    Phone: ${item.phone}
+    Balance: ${item.balance}
+    `;
+
+    const whatsappUrl = `whatsapp://send?phone=+91${
+      item.phone
+    }&text=${encodeURIComponent(message)}`;
+
+    Linking.openURL(whatsappUrl).catch(err => {
+      console.error('Error opening WhatsApp:', err);
+      Alert.alert(
+        'WhatsApp Error',
+        'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+    });
+  };
 
   return (
     <>
@@ -107,7 +131,7 @@ const MyTeamCorporate = () => {
 
                 <View style={styles.headerTxtContainer}>
                   <View>
-                    <Text style={styles.headerTxt}>My Distributors</Text>
+                    <Text style={styles.headerTxt}>My Retailer and Distributor</Text>
                   </View>
                 </View>
               </View>
@@ -129,18 +153,21 @@ const MyTeamCorporate = () => {
                         const distributor_balance = item.balance;
 
                         return (
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate('earingDetailsCorporate', {
-                                distributor_id,
-                                distributor_name,
-                                distributor_balance,
-                                logo,
-                              })
-                            }
-                            style={{alignItems: 'center'}}>
+                          <View style={{alignItems: 'center'}}>
                             <View style={styles.listItemContainer}>
-                              <View style={styles.listItemLogoContainer}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate(
+                                    'earingDetailsCorporate',
+                                    {
+                                      distributor_id,
+                                      distributor_name,
+                                      distributor_balance,
+                                      logo,
+                                    },
+                                  )
+                                }
+                                style={styles.listItemLogoContainer}>
                                 {logo.length > 1 ? (
                                   <Image
                                     source={{uri: logo}}
@@ -154,18 +181,42 @@ const MyTeamCorporate = () => {
                                     </Text>
                                   </View>
                                 )}
-                              </View>
+                              </TouchableOpacity>
 
-                              <View style={{flex: 3, justifyContent: 'center'}}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate(
+                                    'earingDetailsCorporate',
+                                    {
+                                      distributor_id,
+                                      distributor_name,
+                                      distributor_balance,
+                                      logo,
+                                    },
+                                  )
+                                }
+                                style={{flex: 3, justifyContent: 'center'}}>
                                 <Text style={styles.listItemDistri_name_txt}>
                                   {item.name}
                                 </Text>
                                 <Text style={styles.listItemDistri_id_txt}>
                                   ID: {item.id}
                                 </Text>
-                              </View>
+                              </TouchableOpacity>
 
-                              <View style={styles.listItem_balance_container}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate(
+                                    'earingDetailsCorporate',
+                                    {
+                                      distributor_id,
+                                      distributor_name,
+                                      distributor_balance,
+                                      logo,
+                                    },
+                                  )
+                                }
+                                style={styles.listItem_balance_container}>
                                 <Text style={styles.listItem_balance_txt}>
                                   Balance
                                 </Text>
@@ -180,9 +231,24 @@ const MyTeamCorporate = () => {
                                     {item.balance}.00
                                   </Text>
                                 </View>
+                              </TouchableOpacity>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  // backgroundColor: 'red',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <TouchableOpacity
+                                  onPress={() => shareDetails(item)}>
+                                  <Font5
+                                    name="share-alt"
+                                    size={responsiveWidth(5.5)}
+                                  />
+                                </TouchableOpacity>
                               </View>
                             </View>
-                          </TouchableOpacity>
+                          </View>
                         );
                       }}
                     />
@@ -205,7 +271,6 @@ const MyTeamCorporate = () => {
                   </View>
                 )}
               </View>
-              
             </View>
           ) : (
             <NoConnection />

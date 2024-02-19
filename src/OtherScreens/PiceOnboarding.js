@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState, useMemo, useCallback} from 'react';
 import {
@@ -105,6 +106,7 @@ const PiceOnboarding = () => {
   };
 
   const Pice_Enquiry = async () => {
+    setActivityIndicatiors(true);
     const formData = new FormData();
     try {
       formData.append('customer_name', name);
@@ -146,6 +148,7 @@ const PiceOnboarding = () => {
       if (responseStatus.message) {
         setStatus(true);
         setMsg(responseStatus.message);
+        setActivityIndicatiors(false);
         setTimeout(() => {
           setMsg('');
           setMobile_Num('');
@@ -159,6 +162,7 @@ const PiceOnboarding = () => {
         }, 1000);
       }
       if (responseStatus.error) {
+        setActivityIndicatiors(false);
         setStatus(false);
         setMsg(responseStatus.error);
         setTimeout(() => {
@@ -623,14 +627,18 @@ const PiceOnboarding = () => {
                           borderColor: '#0545A6',
                           borderRadius: responsiveWidth(3),
                         }}>
-                        <Text
-                          style={{
-                            fontSize: responsiveFontSize(2),
-                            color: 'white',
-                            fontWeight: '700',
-                          }}>
-                          Save
-                        </Text>
+                        {activityIndicatiors ? (
+                          <ActivityIndicator size={'large'}  color={"white"}/>
+                        ) : (
+                          <Text
+                            style={{
+                              fontSize: responsiveFontSize(2),
+                              color: 'white',
+                              fontWeight: '700',
+                            }}>
+                            Save
+                          </Text>
+                        )}
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity

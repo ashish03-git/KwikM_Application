@@ -36,7 +36,6 @@ const CorpRetailerList = () => {
   const distributor_id = route.params.Dist_id;
   //   console.log(distributor_id)
 
-
   useFocusEffect(
     React.useCallback(() => {
       setActivityIndicator(true);
@@ -61,6 +60,7 @@ const CorpRetailerList = () => {
       })
         .then(response => response.json())
         .then(myRetailerListData => {
+          // console.log(myRetailerListData)
           if (myRetailerListData.length > 0) {
             // dispatch(addMyDistibutorList(myDistributorsListData))
             setMyRetailerList(myRetailerListData);
@@ -240,6 +240,7 @@ const CorpRetailerList = () => {
                                 </View>
                               </View>
                             </View>
+                           
                           </View>
                         );
                       }}

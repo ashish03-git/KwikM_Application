@@ -21,8 +21,6 @@ import {
 } from 'react-native-responsive-dimensions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
-import Font from 'react-native-vector-icons/FontAwesome';
-import LottieView from 'lottie-react-native';
 import Netinfo from '@react-native-community/netinfo';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
 import NoConnection from '../OtherScreens/NoConnection';

@@ -7,6 +7,9 @@ import {
   Image,
   FlatList,
   StatusBar,
+  Alert,
+  Linking,
+  StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -73,6 +76,34 @@ const MyTeamDistributor = () => {
     }
   };
 
+  const shareDetails = async item => {
+    const message = `
+    📱Details 📱
+    Name: ${item.name}
+    Phone: ${item.phone}
+    Balance: ${item.balance}
+    `;
+
+    const whatsappUrl = `whatsapp://send?phone=+91${
+      item.phone
+    }&text=${encodeURIComponent(message)}`;
+
+    Linking.openURL(whatsappUrl).catch(err => {
+      console.error('Error opening WhatsApp:', err);
+      Alert.alert(
+        'WhatsApp Error',
+        'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
+        {cancelable: false},
+      );
+    });
+  };
+
   return (
     <>
       {activityIndicator ? (
@@ -136,117 +167,102 @@ const MyTeamDistributor = () => {
                         const retailer_balance = item.balance;
 
                         return (
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate('earningDetailsDistributor', {
-                                retailer_id,
-                                retailer_name,
-                                retailer_balance,
-                                logo,
-                              })
-                            }
-                            style={{alignItems: 'center'}}>
-                            <View
-                              style={{
-                                width: responsiveWidth(94),
-                                height: responsiveHeight(8),
-                                backgroundColor: 'white',
-                                borderRadius: responsiveWidth(3),
-                                flexDirection: 'row',
-                                margin: responsiveWidth(1.5),
-                                borderWidth: 1,
-                                borderRadius: responsiveWidth(3),
-                                borderColor: '#DADADA',
-                              }}>
-                              <View
-                                style={{
-                                  flex: 1.2,
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
+                          <View style={{alignItems: 'center'}}>
+                            <View style={styles.listItemContainer}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate(
+                                    'earningDetailsDistributor',
+                                    {
+                                      retailer_id,
+                                      retailer_name,
+                                      retailer_balance,
+                                      logo,
+                                    },
+                                  )
+                                }
+                                style={styles.listItemLogoContainer}>
                                 {logo.length > 1 ? (
                                   <Image
                                     source={{uri: logo}}
-                                    style={{
-                                      width: responsiveWidth(12),
-                                      height: responsiveWidth(12),
-                                      borderRadius: responsiveWidth(6),
-                                      resizeMode: 'cover',
-                                    }}
+                                    style={styles.listItemLogoImg}
                                   />
                                 ) : (
                                   <View
-                                    style={{
-                                      width: responsiveWidth(14),
-                                      height: responsiveWidth(14),
-                                      borderRadius: responsiveWidth(7),
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
-                                      backgroundColor: '#7BD7FF',
-                                    }}>
-                                    <Text
-                                      style={{
-                                        fontSize: responsiveFontSize(4.2),
-                                        color: 'black',
-                                        fontWeight: '700',
-                                      }}>
+                                    style={styles.listItemLogoNameTxtContainer}>
+                                    <Text style={styles.listItemLogoNameTxt}>
                                       {logo}
                                     </Text>
                                   </View>
                                 )}
-                              </View>
-                              <View style={{flex: 3, justifyContent: 'center'}}>
-                                <Text
-                                  style={{
-                                    fontSize: responsiveFontSize(1.8),
-                                    color: 'black',
-                                    fontWeight: '700',
-                                  }}>
+                              </TouchableOpacity>
+
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate(
+                                    'earningDetailsDistributor',
+                                    {
+                                      retailer_id,
+                                      retailer_name,
+                                      retailer_balance,
+                                      logo,
+                                    },
+                                  )
+                                }
+                                style={{flex: 3, justifyContent: 'center'}}>
+                                <Text style={styles.listItemDistri_name_txt}>
                                   {item.name}
                                 </Text>
-                                <Text
-                                  style={{
-                                    fontSize: responsiveFontSize(1.7),
-                                    color: 'black',
-                                    fontWeight: '400',
-                                  }}>
+                                <Text style={styles.listItemDistri_id_txt}>
                                   ID: {item.id}
                                 </Text>
-                              </View>
-                              <View
-                                style={{
-                                  flex: 1.2,
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
-                                <Text
-                                  style={{
-                                    fontSize: responsiveFontSize(1.6),
-                                    color: 'black',
-                                    fontWeight: '400',
-                                  }}>
+                              </TouchableOpacity>
+
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate(
+                                    'earningDetailsDistributor',
+                                    {
+                                      retailer_id,
+                                      retailer_name,
+                                      retailer_balance,
+                                      logo,
+                                    },
+                                  )
+                                }
+                                style={styles.listItem_balance_container}>
+                                <Text style={styles.listItem_balance_txt}>
                                   Balance
                                 </Text>
+
                                 <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                  }}>
+                                  style={
+                                    styles.listItem_balance_amount_container
+                                  }>
                                   <Font5 name="rupee-sign" color="#0D950A" />
                                   <Text
-                                    style={{
-                                      fontSize: responsiveFontSize(1.7),
-                                      color: '#0D950A',
-                                      fontWeight: '700',
-                                    }}>
-                                    {' '}
+                                    style={styles.listItem_balance_amount_txt}>
                                     {item.balance}.00
                                   </Text>
                                 </View>
+                              </TouchableOpacity>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  // backgroundColor: 'red',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <TouchableOpacity
+                                  onPress={() => shareDetails(item)}>
+                                  <Font5
+                                    name="share-alt"
+                                    size={responsiveWidth(5.5)}
+                                  />
+                                </TouchableOpacity>
                               </View>
                             </View>
-                          </TouchableOpacity>
+                          </View>
                         );
                       }}
                     />
@@ -292,5 +308,103 @@ const MyTeamDistributor = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  headerArrowIcone: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerTxtContainer: {
+    flex: 6,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  headerTxt: {
+    fontSize: responsiveFontSize(2.5),
+    color: 'black',
+    fontWeight: '700',
+  },
+  listItemContainer: {
+    width: responsiveWidth(94),
+    height: responsiveHeight(8),
+    backgroundColor: 'white',
+    borderRadius: responsiveWidth(3),
+    flexDirection: 'row',
+    margin: responsiveWidth(1.5),
+    borderWidth: 1,
+    borderRadius: responsiveWidth(3),
+    borderColor: '#DADADA',
+  },
+  listItemLogoContainer: {
+    flex: 1.2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listItemLogoImg: {
+    width: responsiveWidth(12),
+    height: responsiveWidth(12),
+    borderRadius: responsiveWidth(6),
+    resizeMode: 'cover',
+  },
+  listItemLogoNameTxtContainer: {
+    width: responsiveWidth(14),
+    height: responsiveWidth(14),
+    borderRadius: responsiveWidth(7),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#7BD7FF',
+  },
+  listItemLogoNameTxt: {
+    fontSize: responsiveFontSize(4.2),
+    color: 'black',
+    fontWeight: '700',
+  },
+  listItemDistri_name_txt: {
+    fontSize: responsiveFontSize(1.8),
+    color: 'black',
+    fontWeight: '700',
+  },
+  listItemDistri_id_txt: {
+    fontSize: responsiveFontSize(1.7),
+    color: 'black',
+  },
+  listItem_balance_container: {
+    flex: 1.2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listItem_balance_txt: {
+    fontSize: responsiveFontSize(1.6),
+    color: 'black',
+    fontWeight: '400',
+  },
+  listItem_balance_amount_container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listItem_balance_amount_txt: {
+    fontSize: responsiveFontSize(1.7),
+    color: '#0D950A',
+    fontWeight: '700',
+  },
+  no_data_container: {
+    height: responsiveHeight(80),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  no_data_animation: {
+    height: responsiveHeight(80),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  no_data_txt: {
+    color: 'black',
+    fontSize: responsiveFontSize(2.2),
+    fontWeight: '700',
+  },
+});
 
 export default MyTeamDistributor;

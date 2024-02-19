@@ -42,6 +42,7 @@ const CorporateHome = () => {
   const [banner, setBanner] = useState(null);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [socialIcons, setSocialIcons] = useState([]);
   const [activityIndicator, setActivityIndicator] = useState(false);
   const netinfo = useNetInfo();
   const [lead_balance, setLeadBalance] = useState(0);
@@ -59,6 +60,7 @@ const CorporateHome = () => {
     getUserDetails();
     BannerImg();
     FetchBalance();
+    fetchSocialIcons()
     FetchRecentTransactions();
 
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
@@ -67,6 +69,51 @@ const CorporateHome = () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
     };
   }, [name]);
+
+  // Social Icons
+  const fetchSocialIcons = async () => {
+    await fetch('https://kwikm.in/dev_kwikm/api/social_links.php', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(data => setSocialIcons(data));
+  };
+
+  // const Icons = [
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '1',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '2',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '3',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '4',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '5',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  // ];
 
   const getUserDetails = async () => {
     await AsyncStorage.getItem('user_details').then(details => {
@@ -677,6 +724,41 @@ const CorporateHome = () => {
                     </View>
                   )}
                 </View>
+              </View>
+
+              {/* social icon */}
+              <View
+                style={{
+                  width: responsiveWidth(100),
+                  // marginBottom: responsiveWidth(6),
+                  paddingVertical: responsiveWidth(3),
+                }}>
+                <FlatList
+                  data={socialIcons}
+                  showsHorizontalScrollIndicator={false}
+                  horizontal
+                  contentContainerStyle={{
+                    // width: responsiveWidth(100),
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                  }}
+                  renderItem={({item}) => {
+                    return (
+                      <TouchableOpacity
+                        style={{marginHorizontal: responsiveWidth(4)}}
+                        onPress={() => Linking.openURL(item.url)}>
+                        <Image
+                          source={{uri: item.icon}}
+                          style={{
+                            width: responsiveWidth(16),
+                            height: responsiveWidth(16),
+                          }}
+                          resizeMode="contain"
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
               </View>
             </>
           ) : (

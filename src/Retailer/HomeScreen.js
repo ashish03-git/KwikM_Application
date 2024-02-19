@@ -41,6 +41,7 @@ const HomeScreen = () => {
   const [lead_balance, setLeadBalance] = useState(null);
   const [actual_balance, setActualBalance] = useState(null);
   const [highEarningCategory, setHighEarningCategory] = useState('');
+  const [socialIcons, setSocialIcons] = useState([]);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [activityIndicator, setActivityIndicator] = useState(false);
@@ -54,7 +55,7 @@ const HomeScreen = () => {
     SellDataFun();
     HighEarningFun();
     BannerImg();
-
+    fetchSocialIcons();
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
@@ -203,35 +204,49 @@ const HomeScreen = () => {
   }, [highEarningCategory, lead_balance]);
 
   // Social Icons
-  const Icons = [
-    {
-      icon_name: 'Facebook',
-      icon: 'facebook-with-circle',
-      img: require('../../assets/facebook.png'),
-      size: responsiveWidth(10),
-      width: responsiveWidth(20),
-      height: responsiveWidth(20),
-      borderRadius: responsiveWidth(10),
-    },
-    {
-      icon_name: 'Instagram',
-      img: require('../../assets/instagram.png'),
-      icon: 'instagram-with-circle',
-      size: responsiveWidth(10),
-      width: responsiveWidth(20),
-      height: responsiveWidth(20),
-      borderRadius: responsiveWidth(10),
-    },
-    {
-      icon_name: 'Youtube',
-      icon: 'youtube-with-circle',
-      img: require('../../assets/youtube.png'),
-      size: responsiveWidth(10),
-      width: responsiveWidth(20),
-      height: responsiveWidth(20),
-      borderRadius: responsiveWidth(10),
-    },
-  ];
+  const fetchSocialIcons = async () => {
+    await fetch('https://kwikm.in/dev_kwikm/api/social_links.php', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(data => setSocialIcons(data));
+  };
+
+  // const Icons = [
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '1',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '2',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '3',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '4',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '5',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  // ];
 
   return (
     <>
@@ -888,29 +903,32 @@ const HomeScreen = () => {
                 </ScrollView>
               </View>
 
+              {/* social icon */}
               <View
                 style={{
                   width: responsiveWidth(100),
-                  marginBottom: responsiveWidth(6),
-                  paddingVertical: responsiveWidth(2),
+                  // marginBottom: responsiveWidth(6),
+                  paddingVertical: responsiveWidth(3),
                 }}>
                 <FlatList
-                  data={Icons}
+                  data={socialIcons}
                   showsHorizontalScrollIndicator={false}
                   horizontal
                   contentContainerStyle={{
-                    width: responsiveWidth(100),
+                    // width: responsiveWidth(100),
                     justifyContent: 'space-around',
                     alignItems: 'center',
                   }}
                   renderItem={({item}) => {
                     return (
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        style={{marginHorizontal: responsiveWidth(5)}}
+                        onPress={() => Linking.openURL(item.url)}>
                         <Image
-                          source={item.img}
+                          source={{uri: item.icon}}
                           style={{
-                            width: item.width,
-                            height: item.height,
+                            width: responsiveWidth(16),
+                            height: responsiveWidth(16),
                           }}
                           resizeMode="contain"
                         />

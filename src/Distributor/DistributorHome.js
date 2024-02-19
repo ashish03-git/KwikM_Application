@@ -46,6 +46,7 @@ const DistributorHome = () => {
   const netinfo = useNetInfo();
   const [lead_balance, setLeadBalance] = useState(0);
   const [actual_balance, setActualBalance] = useState(0);
+  const [socialIcons, setSocialIcons] = useState([]);
   const [recentTransactions, setRecentTransactions] = useState([]);
   const reduxRecentTransactions = useSelector(
     state => state.details.recentTransactions,
@@ -58,6 +59,7 @@ const DistributorHome = () => {
     getUserDetails();
     FetchRecentTransactions();
     BannerImg();
+    fetchSocialIcons()
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     return () => {
       // Remove the custom back button handler when the component unmounts
@@ -174,6 +176,51 @@ const DistributorHome = () => {
     return true; // Prevent the default back button behavior
   };
 
+  // Social Icons
+  const fetchSocialIcons = async () => {
+    await fetch('https://kwikm.in/dev_kwikm/api/social_links.php', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(data => setSocialIcons(data));
+  };
+
+  // const Icons = [
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '1',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '2',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '3',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '4',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  //   {
+  //     icon: 'https://cdn-icons-png.flaticon.com/512/145/145802.png',
+  //     id: '5',
+  //     name: 'Facebook',
+  //     url: 'https://www.facebook.com/profile.php?id=61553748237205',
+  //   },
+  // ];
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     FetchBalance();
@@ -241,14 +288,14 @@ const DistributorHome = () => {
                       <View
                         style={{
                           flex: 2.5,
-                          flexShrink:2,
+                          flexShrink: 2,
                           justifyContent: 'center',
                           alignItems: 'flex-start',
                           paddingLeft: responsiveWidth(1),
                         }}>
                         <Image
                           style={{
-                            marginLeft:responsiveWidth(4),
+                            marginLeft: responsiveWidth(4),
                             width: responsiveWidth(25),
                             height: responsiveHeight(4),
                           }}
@@ -670,6 +717,41 @@ const DistributorHome = () => {
                     </View>
                   )}
                 </View>
+              </View>
+
+              {/* social icon */}
+              <View
+                style={{
+                  width: responsiveWidth(100),
+                  // marginBottom: responsiveWidth(6),
+                  paddingVertical: responsiveWidth(3),
+                }}>
+                <FlatList
+                  data={socialIcons}
+                  showsHorizontalScrollIndicator={false}
+                  horizontal
+                  contentContainerStyle={{
+                    // width: responsiveWidth(100),
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                  }}
+                  renderItem={({item}) => {
+                    return (
+                      <TouchableOpacity
+                        style={{marginHorizontal: responsiveWidth(4)}}
+                        onPress={() => Linking.openURL(item.url)}>
+                        <Image
+                          source={{uri: item.icon}}
+                          style={{
+                            width: responsiveWidth(16),
+                            height: responsiveWidth(16),
+                          }}
+                          resizeMode="contain"
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
               </View>
             </ScrollView>
           )}
