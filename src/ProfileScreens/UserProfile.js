@@ -345,7 +345,11 @@ const UserProfile = () => {
             onPress={() => navigation.navigate('referelScreen')}
             style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
-              <Font name="code-fork" color="#046218" size={responsiveWidth(4.8)} />
+              <Font
+                name="code-fork"
+                color="#046218"
+                size={responsiveWidth(4.8)}
+              />
             </View>
             <View style={styles.userDetailsContainerTitle}>
               <Text style={styles.userDetailsContainerTitleText}>Referel</Text>
@@ -594,7 +598,7 @@ const UserProfile = () => {
                         fontSize: responsiveFontSize(2),
                         color: 'black',
                       }}>
-                      Cancle
+                      Cancel
                     </Text>
                   </TouchableOpacity>
 

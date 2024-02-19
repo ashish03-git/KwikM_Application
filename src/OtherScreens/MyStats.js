@@ -22,8 +22,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
 import {add_check_payment_status} from '../redux/Slice';
 
-
-
 const MyStats = () => {
   const navigation = useNavigation();
   const [leadList, setLeadList] = useState([]);
@@ -432,7 +430,11 @@ const MyStats = () => {
                         color: '#690B6A',
                         fontWeight: '700',
                       }}>
-                      Earn {ProductDetails.commission} Rs.
+                      Earn{' '}
+                      {ProductDetails.commission
+                        ? ProductDetails.commission
+                        : 0}{' '}
+                      Rs.
                     </Text>
                     <Text
                       style={{

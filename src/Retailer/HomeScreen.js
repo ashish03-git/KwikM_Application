@@ -21,11 +21,8 @@ import {
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 import Font from 'react-native-vector-icons/FontAwesome';
 import Font6 from 'react-native-vector-icons/FontAwesome6';
-import {
-  useNavigation,
-  useRoute,
-  useFocusEffect,
-} from '@react-navigation/native';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import ActivityLoader from '../OtherScreens/ActivityLoader';
@@ -204,6 +201,37 @@ const HomeScreen = () => {
     HighEarningFun();
     BannerImg();
   }, [highEarningCategory, lead_balance]);
+
+  // Social Icons
+  const Icons = [
+    {
+      icon_name: 'Facebook',
+      icon: 'facebook-with-circle',
+      img: require('../../assets/facebook.png'),
+      size: responsiveWidth(10),
+      width: responsiveWidth(20),
+      height: responsiveWidth(20),
+      borderRadius: responsiveWidth(10),
+    },
+    {
+      icon_name: 'Instagram',
+      img: require('../../assets/instagram.png'),
+      icon: 'instagram-with-circle',
+      size: responsiveWidth(10),
+      width: responsiveWidth(20),
+      height: responsiveWidth(20),
+      borderRadius: responsiveWidth(10),
+    },
+    {
+      icon_name: 'Youtube',
+      icon: 'youtube-with-circle',
+      img: require('../../assets/youtube.png'),
+      size: responsiveWidth(10),
+      width: responsiveWidth(20),
+      height: responsiveWidth(20),
+      borderRadius: responsiveWidth(10),
+    },
+  ];
 
   return (
     <>
@@ -754,7 +782,6 @@ const HomeScreen = () => {
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginBottom: responsiveWidth(10),
                 }}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <TouchableOpacity
@@ -859,6 +886,38 @@ const HomeScreen = () => {
                     </LinearGradient>
                   </TouchableOpacity>
                 </ScrollView>
+              </View>
+
+              <View
+                style={{
+                  width: responsiveWidth(100),
+                  marginBottom: responsiveWidth(6),
+                  paddingVertical: responsiveWidth(2),
+                }}>
+                <FlatList
+                  data={Icons}
+                  showsHorizontalScrollIndicator={false}
+                  horizontal
+                  contentContainerStyle={{
+                    width: responsiveWidth(100),
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                  }}
+                  renderItem={({item}) => {
+                    return (
+                      <TouchableOpacity>
+                        <Image
+                          source={item.img}
+                          style={{
+                            width: item.width,
+                            height: item.height,
+                          }}
+                          resizeMode="contain"
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
               </View>
             </>
           ) : (

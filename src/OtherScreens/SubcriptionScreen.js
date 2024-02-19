@@ -41,7 +41,7 @@ const SubcriptionScreen = () => {
       user_id: storedUserDetailes.user_id,
       auth_token: storedUserDetailes.auth_token,
     };
-
+    // console.log(payload);
     let response = await fetch(
       'https://kwikm.in/dev_kwikm/api/check_susbs.php',
       {

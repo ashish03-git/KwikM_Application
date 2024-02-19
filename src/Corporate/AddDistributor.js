@@ -127,7 +127,7 @@ const AddDistributor = () => {
               setMpin('');
             }, 1000);
           } else if (addDistributorStatus.error) {
-            console.log(addDistributorStatus)
+            console.log(addDistributorStatus);
             setErr(addDistributorStatus.error);
             setErrorStatus(true);
             setTimeout(() => {
@@ -484,6 +484,7 @@ const AddDistributor = () => {
 
                           {addRetailer ? (
                             <DropDownPicker
+                              placeholder="Select Distributor"
                               open={open}
                               value={value}
                               items={distributorList.map(item => ({

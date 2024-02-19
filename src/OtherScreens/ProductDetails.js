@@ -63,7 +63,7 @@ const ProductDetails = () => {
       .then(response => response.json())
       .then(data => {
         // console.log(data.data.attribute[0].content)
-        setContent(data.data.attribute[0].content)
+        setContent(data.data.attribute[0].content);
       });
   };
 
@@ -172,7 +172,6 @@ const ProductDetails = () => {
                     height: responsiveWidth(0.5),
                     backgroundColor: stats ? '#6D0E8F' : '#C6C6C6',
                   }}></View>
-                {/* <View style={{ width: responsiveWidth(20), height: responsiveWidth(0.5), backgroundColor: "blue" }}></View> */}
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {

@@ -19,7 +19,6 @@ import Font6 from 'react-native-vector-icons/FontAwesome6';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
 
 import Entypo from 'react-native-vector-icons/Entypo';
-import Font from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import ActivityLoader from './ActivityLoader';
@@ -487,7 +486,8 @@ const ProductsScreen = () => {
                                   <View
                                     style={{flex: 4, justifyContent: 'center'}}>
                                     <Text style={{color: 'black'}}>
-                                      Earn Upto {item.commission} Rs
+                                      Earn Upto{' '}
+                                      {item.commission ? item.commission : 0} Rs
                                     </Text>
                                   </View>
                                 </View>

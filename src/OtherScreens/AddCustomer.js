@@ -113,6 +113,10 @@ const AddCustomer = () => {
         .then(data => {
           if (data.status === 'Success') {
             PaytmSprint(data);
+            setMsg(data.message)
+            setTimeout(() => {
+              setMsg("")
+            }, 3000);
           }
           if (data.status === 'Failure') {
             setPaytmSprintStatus(false);
@@ -125,7 +129,7 @@ const AddCustomer = () => {
     }
   };
 
-  const PaytmSprint = data => {
+  const PaytmSprint = async data => {
     let ob = {
       refid: data.refid,
       merchantcode: data.merchantcode,
@@ -133,7 +137,7 @@ const AddCustomer = () => {
       customer_mobile: data.customer_mobile,
     };
 
-    fetch(
+  const response =   await fetch(
       'https://paysprint.in/service-api/api/v1/service/paytm-qr/Registration/getlink',
       {
         method: 'POST',
@@ -146,22 +150,25 @@ const AddCustomer = () => {
         body: JSON.stringify(ob),
       },
     )
-      .then(response => response.json())
-      .then(paySprintData => {
-        setPaytmSprintStatus(paySprintData.status);
-
-        if (paySprintData.status) {
-          setMsg(paySprintData.message);
-          dispatch(add_lead_Details([paySprintData, ob]));
-          setTimeout(() => {
-            setMsg('');
-            naviagtion.navigate('leadSuccessMsg', {screen: 'paytm'});
-          }, 1000);
-        } else {
-          setShowAlert(true);
-          setErr(paySprintData.message);
-        }
-      });
+    const paySprintData = await response.json();
+    console.log(paySprintData)
+      // .then(response => response.json())
+      // .then(paySprintData => {
+      //   setPaytmSprintStatus(paySprintData.status);
+      //   console.log('final data', paySprintData);
+      //   if (paySprintData.status) {
+      //     console.log(paySprintData);
+      //     setMsg(paySprintData.message);
+      //     dispatch(add_lead_Details([paySprintData, ob]));
+      //     setTimeout(() => {
+      //       setMsg('');
+      //       naviagtion.navigate('leadSuccessMsg', {screen: 'paytm'});
+      //     }, 1000);
+      //   } else {
+      //     setShowAlert(true);
+      //     setErr(paySprintData.message);
+      //   }
+      // });
   };
 
   const VerifyDetails = async () => {

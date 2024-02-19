@@ -29,6 +29,9 @@ import NoConnection from '../OtherScreens/NoConnection';
 import {useDispatch} from 'react-redux';
 import {addLogin_data} from '../redux/Slice';
 
+// firebase
+import messaging from '@react-native-firebase/messaging';
+
 const LoginMPINScreen = () => {
   const [MPIN, setMPIN] = useState('');
   let [phone, setPhone] = useState('');
@@ -61,6 +64,12 @@ const LoginMPINScreen = () => {
     };
   }, []);
 
+  const getDeviceToken = async () => {
+    const deviceId = await messaging().getToken();
+    // console.log(deviceId);
+    return deviceId;
+  };
+
   // handleling back button
   const handleBackButton = () => {
     if (navigation.isFocused()) {
@@ -91,13 +100,14 @@ const LoginMPINScreen = () => {
     return true; // Prevent the default back button behavior
   };
 
-  const Login = () => {
+  const Login = async () => {
     setButttonIndicator(true);
-    var ob = {
+    let ob = {
       phone: phone,
       mpin: MPIN,
+      device_id: await getDeviceToken(),
     };
-
+    // console.log(ob);
     fetch('https://kwikm.in/dev_kwikm/api/login_mpin.php', {
       method: 'POST',
       headers: {
