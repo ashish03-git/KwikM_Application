@@ -1,4 +1,11 @@
-import {View, Text, TouchableOpacity, Image, FlatList,Linking} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  Linking,
+} from 'react-native';
 import React, {useEffect, useState, useMemo, useRef} from 'react';
 import {
   responsiveHeight,
@@ -11,12 +18,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import Font6 from 'react-native-vector-icons/FontAwesome6';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
-import Font from 'react-native-vector-icons/FontAwesome';
-import Details from './Details';
-import MyStats from './MyStats';
-import Training from './Training';
 import ActivityLoader from './ActivityLoader';
 import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
@@ -25,19 +27,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const PiceLeadScreen = () => {
   // variables
   const navigation = useNavigation();
-  const [stats, setStats] = useState(true);
-  const [details, setDetails] = useState(false);
-  const [training, setTraining] = useState(false);
   const [activityIndicator, setActivityIndicator] = useState(false);
   const route = useRoute();
-
-  const [content, setContent] = useState(null);
   const [piceLeadList, setPiceLeadList] = useState([]);
   const [piceLeadListStatus, setPiceLeadListStatus] = useState(false);
   // const [user_id, setUser_Id] = useState(null)
   const netInfo = useNetInfo();
   const [msg, setMsg] = useState(null);
-  const fetchStatusRef = useRef(false);
 
   const fetchData = async () => {
     try {
@@ -164,6 +160,7 @@ const PiceLeadScreen = () => {
           ) : (
             <>
               <View style={{flex: 1, backgroundColor: '#EAFFEA'}}>
+                {/* header container */}
                 <View
                   style={{height: responsiveHeight(8), flexDirection: 'row'}}>
                   <TouchableOpacity
@@ -200,6 +197,7 @@ const PiceLeadScreen = () => {
                   </View>
                 </View>
 
+                {/* pice frame */}
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <LinearGradient
                     colors={['#DB3DB8', '#3546A0']}
@@ -239,6 +237,7 @@ const PiceLeadScreen = () => {
                     </View>
                   </LinearGradient>
                 </View>
+
 
                 {/* {piceLeadList} */}
                 {piceLeadListStatus ? (
@@ -448,7 +447,7 @@ const PiceLeadScreen = () => {
                             alignItems: 'center',
                             backgroundColor: '#A2159C',
                             position: 'absolute',
-                            margin: responsiveWidth(4),
+                            // margin: responsiveWidth(4),
                             zIndex: 1,
                             // marginTop:responsiveWidth(3)
                             top: responsiveHeight(70),
@@ -457,7 +456,7 @@ const PiceLeadScreen = () => {
                           }}>
                           <Text
                             style={{
-                              fontSize: responsiveFontSize(7),
+                              fontSize: responsiveFontSize(5),
                               color: 'white',
                             }}>
                             +

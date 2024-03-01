@@ -12,6 +12,7 @@ const slice = createSlice({
     paytm_lead_details: [],
     check_payment_status: [],
     edit_bank_account: [],
+    pice_lead_details: {},
 
     // corporate redux store
     recentTransactions: [],
@@ -60,6 +61,9 @@ const slice = createSlice({
     add_edit_bank_account_details: (state, action) => {
       state.edit_bank_account = action.payload;
     },
+    add_pice_lead_details: (state, action) => {
+      state.edit_bank_account = action.payload;
+    },
   },
 });
 
@@ -75,5 +79,6 @@ export const {
   add_paytm_lead_details,
   add_check_payment_status,
   add_edit_bank_account_details,
+  add_pice_lead_details,
 } = slice.actions;
 export default slice.reducer;

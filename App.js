@@ -31,6 +31,7 @@ import LeadAddSuccessMesageScreen from './src/OtherScreens/LeadAddSuccessMesageS
 import ScratchCardScreen from './src/OtherScreens/ScratchCard';
 import RewardsScreen from './src/Retailer/RewardsScreen.js';
 import useNetInfo from './src/OtherScreens/useNetInfo';
+import PiceLeadShareScreen from './src/OtherScreens/PiceLeadShareScreen.js';
 
 // Distributor screens
 import DistributorBottomTab from './src/navigator/DistributorBottomTab';
@@ -164,6 +165,11 @@ const App = () => {
                 name="piceLeadScreen"
                 options={{headerShown: false}}
                 component={PiceLeadScreen}
+              />
+              <Stack.Screen
+                name="piceLeadShareScreen"
+                options={{headerShown: false}}
+                component={PiceLeadShareScreen}
               />
               <Stack.Screen
                 name="piceOnboarding"

@@ -123,7 +123,7 @@ const LoginMPINScreen = () => {
           AsyncStorage.setItem('role', JSON.stringify(data.role));
           AsyncStorage.setItem('auth_token', JSON.stringify(data.auth_token));
           AsyncStorage.setItem('user_mpin', MPIN);
-          AsyncStorage.setItem('user_number', phone);
+          AsyncStorage.setItem('user_number', data.phone);
 
           const user_details = {
             name: data.name,
@@ -131,7 +131,7 @@ const LoginMPINScreen = () => {
             role: data.role,
             auth_token: data.auth_token,
             user_mpin: MPIN,
-            user_number: phone,
+            user_number: data.phone,
           };
           // console.log("before storing",user_details);
           AsyncStorage.setItem('user_details', JSON.stringify(user_details));

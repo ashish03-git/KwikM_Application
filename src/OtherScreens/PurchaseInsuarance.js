@@ -9,7 +9,6 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
-import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import React, {useEffect, useState, useMemo} from 'react';
 import {
   responsiveHeight,
@@ -45,6 +44,7 @@ const PurchaseInsuarance = () => {
   const [msg, setMsg] = useState('');
   const [activityIndicator, setActivityIndicator] = useState(false);
   const storedUserDetailes = useSelector(state => state.details.login_data);
+  // console.log(storedUserDetailes)
 
   useEffect(() => {
     getUserDetails();
@@ -81,33 +81,27 @@ const PurchaseInsuarance = () => {
   const openInsuaranceSite = async () => {
     setActivityIndicator(true);
     const url =
-      'https://partnerapi-staging.insurancedekho.com/iam-pos/api/v1/user/auth/partner';
+      'https://partnerapi.insurancedekho.com/iam-pos/api/v1/user/auth/partner';
     const username = 'growwell';
-    const password = 'la9xfvAZAt';
+    const password = 'DINSGBcMzf';
 
     const base64credentials = encode(`${username}:${password}`);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', `Basic ${base64credentials}`);
-    headers.append('x-api-key', 'zwCM1OENMeVYHSHg94QtJ5SsFxYC');
-    headers.append('x-correlation-id', '1700025360961');
+    headers.append('x-api-key', 'OH7J6dNXE8p5GvcF8QZY0RopF3fK');
+    headers.append('x-correlation-id', '1705484329808');
 
     const ob = {
-      referenceAuthId: `${user_id}_${mobile_nun}_${Math.floor(
-        Math.random() * 1000,
-      )}`,
-      mobile: mobile_nun,
+      referenceAuthId: `${storedUserDetailes.phone}`,
+      mobile: `${storedUserDetailes.phone}`,
     };
-    // console.log(ob)
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(ob),
       });
-      if (!response.ok) {
-        console.log('Error found');
-      }
       const token = response.headers.get('One-Time-Token');
       if (token) {
         setActivityIndicator(false);
@@ -116,7 +110,7 @@ const PurchaseInsuarance = () => {
         setActivityIndicator(false);
       }
     } catch (error) {
-      console.log('Catch error: ' + error);
+      console.log('Catch error: >>>>>' + error);
     }
   };
 
@@ -132,13 +126,16 @@ const PurchaseInsuarance = () => {
       user_id: user_id,
     };
     // console.log(ob)
-    await fetch('https://kwikm.in/dev_kwikm/api/insurance_enquiry.php', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
+    const response = await fetch(
+      'https://kwikm.in/dev_kwikm/api/insurance_enquiry.php',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(ob),
       },
-      body: JSON.stringify(ob),
-    })
+    )
       .then(response => response.json())
       .then(data => {
         // console.log(data)
@@ -146,17 +143,21 @@ const PurchaseInsuarance = () => {
         if (data.status) {
           setErrorStatus(false);
           setMsg(data.message);
-          setTimeout(() => {
-            setMsg('');
-            setFull_Name('');
-            setMobile_Num('');
-          }, 500);
+          // setTimeout(() => {
+          //   setMsg('');
+          //   setFull_Name('');
+          //   setMobile_Num('');
+          //   // setMobile_Num('')
+          //   setEmail('');
+          //   setAddress('');
+          //   setState('');
+          // }, 500);
         } else {
           setErr(data.error);
-          setTimeout(() => {
-            setErrorStatus(true);
-            setErr('');
-          }, 500);
+          // setTimeout(() => {
+          //   setErrorStatus(true);
+          //   setErr('');
+          // }, 500);
         }
       });
   };

@@ -23,6 +23,8 @@ import ActivityLoader from './ActivityLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
+import {add_pice_lead_details} from '../redux/Slice';
+import { useDispatch } from 'react-redux';
 
 const PiceOnboarding = () => {
   const navigation = useNavigation();
@@ -45,6 +47,9 @@ const PiceOnboarding = () => {
   const [nameErr, setNameErr] = useState('');
   const [mobileErr, setMobileErr] = useState('');
   const [panErr, setPanErr] = useState('');
+  const dispatch = useDispatch()
+
+
 
   useEffect(() => {
     setActivityIndicatiors(true);
@@ -149,6 +154,7 @@ const PiceOnboarding = () => {
         setStatus(true);
         setMsg(responseStatus.message);
         setActivityIndicatiors(false);
+        dispatch(add_pice_lead_details({name:name,phone:mobile_num,pan:pan}));
         setTimeout(() => {
           setMsg('');
           setMobile_Num('');
@@ -158,7 +164,7 @@ const PiceOnboarding = () => {
           setPan('');
           setName('');
           setSelectedPhotoName('');
-          navigation.navigate('piceLeadScreen');
+          navigation.navigate('piceLeadShareScreen');
         }, 1000);
       }
       if (responseStatus.error) {
@@ -190,6 +196,7 @@ const PiceOnboarding = () => {
             <ScrollView
               showsVerticalScrollIndicator={false}
               style={{width: responsiveWidth(100)}}>
+              {/* header container */}
               <View style={{height: responsiveHeight(7), flexDirection: 'row'}}>
                 <TouchableOpacity
                   onPress={() => navigation.goBack()}
@@ -224,6 +231,7 @@ const PiceOnboarding = () => {
                   </View>
                 </View>
               </View>
+              {/* image container */}
               <View
                 style={{
                   flex: 1,
@@ -242,6 +250,7 @@ const PiceOnboarding = () => {
                   }}
                 />
               </View>
+
               <View style={{flex: 2}}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                   <Text
@@ -256,8 +265,10 @@ const PiceOnboarding = () => {
                   </Text>
                 </View>
                 <>
+                  {/* form container */}
                   <View
                     style={{justifyContent: 'center', alignItems: 'center'}}>
+                    {/* name */}
                     <View
                       style={{
                         width: responsiveWidth(94),
@@ -298,7 +309,7 @@ const PiceOnboarding = () => {
                       style={{color: 'red', fontSize: responsiveFontSize(1.8)}}>
                       {nameErr}
                     </Text>
-
+                    {/* mobile number */}
                     <View
                       style={{
                         width: responsiveWidth(94),
@@ -342,7 +353,7 @@ const PiceOnboarding = () => {
                       style={{color: 'red', fontSize: responsiveFontSize(1.8)}}>
                       {mobileErr}
                     </Text>
-
+                    {/* pan card */}
                     <View
                       style={{
                         width: responsiveWidth(94),
@@ -386,7 +397,7 @@ const PiceOnboarding = () => {
                       style={{color: 'red', fontSize: responsiveFontSize(1.8)}}>
                       {panErr}
                     </Text>
-
+                    {/* gst container */}
                     <View
                       style={{
                         width: responsiveWidth(94),
@@ -431,7 +442,7 @@ const PiceOnboarding = () => {
                         />
                       </View>
                     </View>
-
+                    {/* upload business document */}
                     <View
                       style={{
                         width: responsiveWidth(94),
@@ -489,14 +500,13 @@ const PiceOnboarding = () => {
                         </View>
                       </View>
                     </View>
-
+                    {/* upload show photo */}
                     <View
                       style={{
                         width: responsiveWidth(94),
                         borderWidth: 1,
                         borderColor: '#BCB4B4',
                         backgroundColor: 'white',
-                        // flexDirection: "row",
                         borderRadius: responsiveWidth(3),
                         marginTop: responsiveWidth(3),
                         padding: responsiveWidth(2),
@@ -515,6 +525,7 @@ const PiceOnboarding = () => {
                           <Text style={{color: 'black'}}> (optional)</Text>
                         </Text>
                       </View>
+
                       <View
                         style={{
                           margin: responsiveWidth(3),
@@ -628,7 +639,7 @@ const PiceOnboarding = () => {
                           borderRadius: responsiveWidth(3),
                         }}>
                         {activityIndicatiors ? (
-                          <ActivityIndicator size={'large'}  color={"white"}/>
+                          <ActivityIndicator size={'small'} color={'white'} />
                         ) : (
                           <Text
                             style={{
