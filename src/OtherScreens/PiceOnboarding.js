@@ -149,12 +149,14 @@ const PiceOnboarding = () => {
         },
       );
       const responseStatus = await piceResponse.json();
+      console.log("response data>>>>",responseStatus.entered_data);
+      dispatch(add_pice_lead_details(responseStatus.entered_data));
       // console.log(responseStatus)
       if (responseStatus.message) {
         setStatus(true);
         setMsg(responseStatus.message);
         setActivityIndicatiors(false);
-        dispatch(add_pice_lead_details({name:name,phone:mobile_num,pan:pan}));
+        
         setTimeout(() => {
           setMsg('');
           setMobile_Num('');

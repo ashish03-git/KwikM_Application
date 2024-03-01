@@ -23,57 +23,27 @@ const PiceLeadShareScreen = () => {
   const navigation = useNavigation();
 
   const piceLeadDetails = useSelector(state => state.details.pice_lead_details);
-  console.log(piceLeadDetails);
+  // console.log(piceLeadDetails,"pice data");
   const handleWhatsAppOpenForRetailer = () => {
+
     const message = `
       📱 **Lead Details** 📱
       
-      *Name:* ${leadUserDetails.full_name}
-      *Phone:* ${leadUserDetails.mobile_no}
-      *Email:* ${leadUserDetails.email}
-      *Pan:* ${leadUserDetails.pan}
-      *Lead Code:* ${leadData.data.lead_code}
-      *Campaign URL:* ${leadData.data.campaign_url}
+      *User id:* ${piceLeadDetails.user_id}
+      *Name:* ${piceLeadDetails.customer_name}
+      *Phone:* ${piceLeadDetails.customer_phone}
+      *Pan:* ${piceLeadDetails.customer_pan}
+      *Gst:* ${piceLeadDetails.customer_gst}
+      *App Url:* "https://playstore.com"
+      *Campaign URL:* "https://playstore.com"
       `;
 
     const whatsappUrl = `whatsapp://send?phone=+91${
-      leadUserDetails.mobile_no
+      piceLeadDetails.phone
     }&text=${encodeURIComponent(message)}`;
 
     Linking.openURL(whatsappUrl).catch(err => {
-      console.error('Error opening WhatsApp:', err);
-      Alert.alert(
-        'WhatsApp Error',
-        'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
-        [
-          {
-            text: 'Ok',
-            onPress: () => {},
-          },
-        ],
-        {cancelable: false},
-      );
-    });
-  };
-
-  const handleWhatsAppOpenForPaytm = () => {
-    const message = `
-  
-      📱 **Lead Details** 📱
-      
-      *Name:* ${leadUserDetails.customer_name}
-      *Phone:* ${leadUserDetails.customer_mobile}
-      *Marchant Code:* ${leadUserDetails.merchantcode}
-      *RefId:* ${leadUserDetails.refid}
-      *Campaign URL:* ${leadData.data}
-      `;
-
-    const whatsappUrl = `whatsapp://send?phone=+91${
-      leadUserDetails.customer_mobile
-    }&text=${encodeURIComponent(message)}`;
-
-    Linking.openURL(whatsappUrl).catch(err => {
-      console.error('Error opening WhatsApp:', err);
+      // console.error('Error opening WhatsApp:', err);
       Alert.alert(
         'WhatsApp Error',
         'An error occurred while trying to open WhatsApp. Please make sure it is installed on your device.',
@@ -106,7 +76,8 @@ const PiceLeadShareScreen = () => {
             style={{
               padding: responsiveWidth(5),
             }}>
-            <View style={{marginBottom: responsiveWidth(5)}}>
+            <View>
+
               <View
                 style={{
                   flexDirection: 'row',
@@ -134,7 +105,7 @@ const PiceLeadShareScreen = () => {
                     // fontWeight: "700",
                     marginLeft: responsiveWidth(1),
                   }}>
-                  {piceLeadDetails.name}
+                  {piceLeadDetails.customer_name}
                 </Text>
               </View>
 
@@ -165,7 +136,7 @@ const PiceLeadShareScreen = () => {
                     // fontWeight: "700",
                     marginLeft: responsiveWidth(1),
                   }}>
-                  {piceLeadDetails.phone}
+                  {piceLeadDetails.customer_phone}
                 </Text>
               </View>
 
@@ -196,51 +167,9 @@ const PiceLeadShareScreen = () => {
                     // fontWeight: "700",
                     marginLeft: responsiveWidth(1),
                   }}>
-                  {piceLeadDetails.pan}
+                  {piceLeadDetails.customer_pan}
                 </Text>
               </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginVertical: responsiveWidth(2),
-                  paddingLeft: responsiveWidth(2),
-                }}>
-                <MaterialIcone
-                  name="email"
-                  size={responsiveWidth(5.5)}
-                  color="#686868"
-                />
-                <Text
-                  style={{
-                    fontSize: responsiveFontSize(2),
-                    color: 'black',
-                    fontWeight: '700',
-                    marginLeft: responsiveWidth(2),
-                  }}>
-                  Email -
-                </Text>
-                <Text
-                  style={{
-                    fontSize: responsiveFontSize(1.8),
-                    color: 'black',
-                    // fontWeight: "700",
-                    marginLeft: responsiveWidth(1),
-                  }}>
-                  jhhgjhfhfhgf
-                </Text>
-              </View>
-            </View>
-
-            <View style={{marginBottom: responsiveWidth(3)}}>
-              <Text
-                style={{
-                  fontSize: responsiveFontSize(2.2),
-                  color: 'black',
-                  fontWeight: '700',
-                }}>
-                Lead Status -
-              </Text>
             </View>
 
             <View style={{marginBottom: responsiveWidth(5)}}>
@@ -265,7 +194,7 @@ const PiceLeadShareScreen = () => {
                     fontWeight: '700',
                     marginLeft: responsiveWidth(1),
                   }}>
-                  playstore app url
+                  {piceLeadDetails.app_url}
                 </Text>
               </View>
 
@@ -291,7 +220,7 @@ const PiceLeadShareScreen = () => {
                     // fontWeight: "700",
                     marginLeft: responsiveWidth(1),
                   }}>
-                  campaign url
+                  {piceLeadDetails.campaign_url}
                 </Text>
               </View>
             </View>
@@ -328,7 +257,7 @@ const PiceLeadShareScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={handleAddLead}
+          onPress={handleWhatsAppOpenForRetailer}
           style={{
             width: responsiveWidth(45),
             height: responsiveHeight(6),

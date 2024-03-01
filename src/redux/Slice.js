@@ -62,7 +62,8 @@ const slice = createSlice({
       state.edit_bank_account = action.payload;
     },
     add_pice_lead_details: (state, action) => {
-      state.edit_bank_account = action.payload;
+      //  console.log(action.payload)
+      state.pice_lead_details = action.payload;
     },
   },
 });

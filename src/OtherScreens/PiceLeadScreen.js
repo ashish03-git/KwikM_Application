@@ -447,10 +447,10 @@ const PiceLeadScreen = () => {
                             alignItems: 'center',
                             backgroundColor: '#A2159C',
                             position: 'absolute',
-                            // margin: responsiveWidth(4),
+                            margin: responsiveWidth(4),
                             zIndex: 1,
                             // marginTop:responsiveWidth(3)
-                            top: responsiveHeight(70),
+                            top: responsiveHeight(60),
                             left: responsiveWidth(73),
                             // right:1
                           }}>
