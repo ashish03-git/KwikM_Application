@@ -29,13 +29,12 @@ const PiceLeadShareScreen = () => {
     const message = `
       📱 **Lead Details** 📱
       
-      *User id:* ${piceLeadDetails.user_id}
-      *Name:* ${piceLeadDetails.customer_name}
-      *Phone:* ${piceLeadDetails.customer_phone}
-      *Pan:* ${piceLeadDetails.customer_pan}
-      *Gst:* ${piceLeadDetails.customer_gst}
-      *App Url:* "https://playstore.com"
-      *Campaign URL:* "https://playstore.com"
+      *User id:* ${piceLeadDetails.user_id} \n
+      *Name:* ${piceLeadDetails.customer_name} \n
+      *Phone:* ${piceLeadDetails.customer_phone} \n
+      *Pan:* ${piceLeadDetails.customer_pan} \n
+      *Gst:* ${piceLeadDetails.customer_gst} \n
+      *App Url:* ${piceLeadDetails.app_url} \n
       `;
 
     const whatsappUrl = `whatsapp://send?phone=+91${
@@ -198,7 +197,7 @@ const PiceLeadShareScreen = () => {
                 </Text>
               </View>
 
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   marginVertical: responsiveWidth(2),
@@ -222,7 +221,7 @@ const PiceLeadShareScreen = () => {
                   }}>
                   {piceLeadDetails.campaign_url}
                 </Text>
-              </View>
+              </View> */}
             </View>
           </View>
         </View>
