@@ -23,7 +23,8 @@ const PiceLeadShareScreen = () => {
   const navigation = useNavigation();
 
   const piceLeadDetails = useSelector(state => state.details.pice_lead_details);
-  // console.log(piceLeadDetails,"pice data");
+  const pice_campaign_url = useSelector(state => state.details.pice_campaign_url)
+  // console.log(pice_campaign_url,"pice data");
   const handleWhatsAppOpenForRetailer = () => {
 
     const message = `
@@ -34,11 +35,10 @@ const PiceLeadShareScreen = () => {
       *Phone:* ${piceLeadDetails.customer_phone} \n
       *Pan:* ${piceLeadDetails.customer_pan} \n
       *Gst:* ${piceLeadDetails.customer_gst} \n
-      *App Url:* ${piceLeadDetails.app_url} \n
-      `;
+      *Campaign Url:* ${pice_campaign_url.campaign_url} \n`;
 
     const whatsappUrl = `whatsapp://send?phone=+91${
-      piceLeadDetails.phone
+      piceLeadDetails.customer_phone
     }&text=${encodeURIComponent(message)}`;
 
     Linking.openURL(whatsappUrl).catch(err => {
@@ -174,7 +174,7 @@ const PiceLeadShareScreen = () => {
             <View style={{marginBottom: responsiveWidth(5)}}>
               <View
                 style={{
-                  flexDirection: 'row',
+                  // flexDirection: 'row',
                   marginVertical: responsiveWidth(2),
                 }}>
                 <Text
@@ -184,16 +184,18 @@ const PiceLeadShareScreen = () => {
                     fontWeight: '700',
                     marginLeft: responsiveWidth(3),
                   }}>
-                  App url -
+                  Campaign_url  -
                 </Text>
                 <Text
                   style={{
                     fontSize: responsiveFontSize(1.8),
-                    color: 'green',
-                    fontWeight: '700',
+                    color: '#0000FF',
+                    // fontWeight: '600',
+                  // textAlign:"center",
+                  alignSelf:"center",
                     marginLeft: responsiveWidth(1),
                   }}>
-                  {piceLeadDetails.app_url}
+                  {pice_campaign_url.campaign_url}
                 </Text>
               </View>
 

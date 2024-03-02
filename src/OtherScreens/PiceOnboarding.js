@@ -23,7 +23,7 @@ import ActivityLoader from './ActivityLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
-import {add_pice_lead_details} from '../redux/Slice';
+import {add_pice_campaign_url, add_pice_lead_details} from '../redux/Slice';
 import { useDispatch } from 'react-redux';
 
 const PiceOnboarding = () => {
@@ -151,6 +151,7 @@ const PiceOnboarding = () => {
       const responseStatus = await piceResponse.json();
       console.log("response data>>>>",responseStatus.entered_data);
       dispatch(add_pice_lead_details(responseStatus.entered_data));
+      dispatch(add_pice_campaign_url({campaign_url:responseStatus.campaign_url}))
       // console.log(responseStatus)
       if (responseStatus.message) {
         setStatus(true);

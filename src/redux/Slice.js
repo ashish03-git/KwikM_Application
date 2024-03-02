@@ -13,6 +13,7 @@ const slice = createSlice({
     check_payment_status: [],
     edit_bank_account: [],
     pice_lead_details: {},
+    pice_campaign_url: {},
 
     // corporate redux store
     recentTransactions: [],
@@ -65,6 +66,9 @@ const slice = createSlice({
       //  console.log(action.payload)
       state.pice_lead_details = action.payload;
     },
+    add_pice_campaign_url: (state, action) => {
+      state.pice_campaign_url = action.payload;
+    },
   },
 });
 
@@ -81,5 +85,6 @@ export const {
   add_check_payment_status,
   add_edit_bank_account_details,
   add_pice_lead_details,
+  add_pice_campaign_url
 } = slice.actions;
 export default slice.reducer;
