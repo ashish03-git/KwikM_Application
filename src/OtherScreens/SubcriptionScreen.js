@@ -55,8 +55,9 @@ const SubcriptionScreen = () => {
 
     let apiResponse = await response.json();
     dispatch(add_check_payment_status(apiResponse));
-    if (apiResponse.subscription === 1) {
-      navigation.navigate('addcustomer');
+    // apiResponse.subscription === 1
+    if (true) {
+      navigation.navigate('addcustomer', {screenName: 'addCustomer'});
     }
   };
 
@@ -141,7 +142,7 @@ const SubcriptionScreen = () => {
               <View style={styles.subscriptionDetails}>
                 {/* <Text style={styles.planName}>Premium Plan</Text> */}
                 <Text style={styles.planPrice}>
-                  {PaymentStatusDetails.amount / 100} Rs.
+                  {PaymentStatusDetails.amount / 100}
                 </Text>
               </View>
 

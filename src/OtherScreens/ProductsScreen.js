@@ -93,7 +93,7 @@ const ProductsScreen = () => {
         // api data converted into JSON
         const apiData = JSON.parse(data);
 
-        // console.log(data.data)
+        // console.log("product by category",apiData)
         // setting the data to get in flat list
         setApiProducts(apiData.data);
         setFilteredProducts(apiData.data);

@@ -58,6 +58,7 @@ import EducationDetailsScreen from './src/ProfileScreens/EducationDetailsScreen'
 import KwikmRegistration from './src/Retailer/KwikmRegistration';
 import SubcriptionScreen from './src/OtherScreens/SubcriptionScreen';
 import ReferrelsScreen from './src/ProfileScreens/ReferrelsScreen.js';
+import ShareLead from './src/Distributor/ShareLead.js';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -281,6 +282,11 @@ const App = () => {
                 name="addRetailer"
                 options={{headerShown: false}}
                 component={AddRetailer}
+              />
+              <Stack.Screen
+                name="leadMessage"
+                options={{headerShown: false}}
+                component={ShareLead}
               />
 
               {/* Corporate Partner   */}

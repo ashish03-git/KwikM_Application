@@ -82,6 +82,7 @@ const MyTeamDistributor = () => {
     Name: ${item.name}
     Phone: ${item.phone}
     Balance: ${item.balance}
+    App url:"https://play.google.com/store/apps/details?id=com.kwikm.app"
     `;
 
     const whatsappUrl = `whatsapp://send?phone=+91${

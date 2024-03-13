@@ -149,7 +149,7 @@ const PiceOnboarding = () => {
         },
       );
       const responseStatus = await piceResponse.json();
-      console.log("response data>>>>",responseStatus.entered_data);
+      // console.log("response data>>>>",responseStatus.entered_data);
       dispatch(add_pice_lead_details(responseStatus.entered_data));
       dispatch(add_pice_campaign_url({campaign_url:responseStatus.campaign_url}))
       // console.log(responseStatus)

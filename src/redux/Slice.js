@@ -18,6 +18,9 @@ const slice = createSlice({
     // corporate redux store
     recentTransactions: [],
     myDistributorsList: [],
+
+    // distributor
+    distributor_leadMessage: {},
   },
 
   reducers: {
@@ -69,6 +72,9 @@ const slice = createSlice({
     add_pice_campaign_url: (state, action) => {
       state.pice_campaign_url = action.payload;
     },
+    add_distributor_leadMessage: (state, action) => {
+      state.distributor_leadMessage = action.payload;
+    },
   },
 });
 
@@ -85,6 +91,7 @@ export const {
   add_check_payment_status,
   add_edit_bank_account_details,
   add_pice_lead_details,
-  add_pice_campaign_url
+  add_pice_campaign_url,
+  add_distributor_leadMessage,
 } = slice.actions;
 export default slice.reducer;

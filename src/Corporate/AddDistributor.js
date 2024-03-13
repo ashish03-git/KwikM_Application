@@ -215,7 +215,7 @@ const AddDistributor = () => {
       .then(response => response.json())
       .then(distriList => {
         // console.log(distriList);
-        setDistributorList(distriList.data);
+        setDistributorList(distriList.data ? distriList.data : []);
       });
   };
 
@@ -232,6 +232,7 @@ const AddDistributor = () => {
     Phone: ${mobile_nun}
     Email: ${email}
     Mpin: ${mpin}
+    App url : "https://play.google.com/store/apps/details?id=com.kwikm.app"
     `;
 
     const whatsappUrl = `whatsapp://send?phone=+91${mobile_nun}&text=${encodeURIComponent(
@@ -487,11 +488,18 @@ const AddDistributor = () => {
                               placeholder="Select Distributor"
                               open={open}
                               value={value}
-                              items={distributorList.map(item => ({
-                                label: item.name.trim(),
-                                value: item.id.toString(),
-                                key: item.id.toString(),
-                              }))}
+                              items={distributorList}
+                              // items={
+                              //   distributorList.length > 0 ? (
+                              //     distributorList.map(item => ({
+                              //       label: item.name.trim(),
+                              //       value: item.id.toString(),
+                              //       key: item.id.toString(),
+                              //     }))
+                              //   ) : (
+                              //     <Text>no record found</Text>
+                              //   )
+                              // }
                               setOpen={setOpen}
                               setValue={setValue}
                               setItems={setDistributorList}
@@ -503,7 +511,8 @@ const AddDistributor = () => {
                               }}
                               defaultValue={'defaultDistributorId'}
                             />
-                          ) : null}
+                          ) : // <Text>Not found</Text>
+                          null}
                         </View>
 
                         <View

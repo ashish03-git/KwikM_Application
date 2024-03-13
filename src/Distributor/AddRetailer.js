@@ -23,7 +23,8 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNetInfo from '../OtherScreens/useNetInfo';
 import NoConnection from '../OtherScreens/NoConnection';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {add_distributor_leadMessage} from '../redux/Slice';
 
 const AddRetailer = () => {
   const naviagtion = useNavigation();
@@ -41,6 +42,7 @@ const AddRetailer = () => {
   const [errorStatus, setErrorStatus] = useState(false);
   const [nextScreenStatus, setNextScreenStatus] = useState(false);
   // const [nextScreen, setNextScreen] = useState(false)
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getUserDetails();
@@ -81,7 +83,7 @@ const AddRetailer = () => {
       email: email.trim(),
       mpin: mpin.trim(),
       upline: userId,
-      auth_token:storedToken
+      auth_token: storedToken,
     };
 
     try {
@@ -97,20 +99,26 @@ const AddRetailer = () => {
           if (addDistributorStatus.message) {
             setErrorStatus(false);
             setMsg(addDistributorStatus.message);
+            let details = {
+              name: full_name,
+              phone: mobile_nun,
+              email: email,
+              mpin: mpin,
+            };
+            dispatch(add_distributor_leadMessage(details));
             setTimeout(() => {
-              setNextScreenStatus(true);
+              naviagtion.navigate('leadMessage');
               setMsg('');
               setEmail('');
               setFull_Name('');
               setMobile_Num('');
               setMpin('');
-            },3000);
+            }, 3000);
           } else if (addDistributorStatus.error) {
             // console.log(addDistributorStatus.error)
             setErr(addDistributorStatus.error);
             setErrorStatus(true);
             setTimeout(() => {
-              setNextScreenStatus(false);
               setErr('');
             }, 3000);
           }
@@ -354,7 +362,7 @@ const AddRetailer = () => {
                         color="#535353"
                       />
                     </View>
-                    
+
                     <View style={{flex: 5}}>
                       <TextInput
                         onChangeText={text => setMpin(text)}

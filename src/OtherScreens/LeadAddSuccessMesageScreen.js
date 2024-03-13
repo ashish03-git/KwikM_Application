@@ -70,7 +70,7 @@ const LeadAddSuccessMesageScreen = () => {
     *Marchant Code:* ${leadUserDetails.merchantcode}
     *RefId:* ${leadUserDetails.refid}
     *Campaign URL:* ${leadData.data}
-    `
+    `;
 
     const whatsappUrl = `whatsapp://send?phone=+91${
       leadUserDetails.customer_mobile
@@ -273,7 +273,7 @@ const LeadAddSuccessMesageScreen = () => {
                       fontWeight: '700',
                       marginLeft: responsiveWidth(3),
                     }}>
-                    message -
+                    App url -
                   </Text>
                   <Text
                     style={{
@@ -282,7 +282,7 @@ const LeadAddSuccessMesageScreen = () => {
                       // fontWeight: "700",
                       marginLeft: responsiveWidth(1),
                     }}>
-                    {leadData.message}
+                    ""https://play.google.com/store/apps/details?id=com.kwikm.app""
                   </Text>
                 </View>
 
@@ -494,7 +494,7 @@ const LeadAddSuccessMesageScreen = () => {
                       fontWeight: '700',
                       marginLeft: responsiveWidth(3),
                     }}>
-                    message -
+                    App url -
                   </Text>
                   <Text
                     style={{
@@ -503,7 +503,7 @@ const LeadAddSuccessMesageScreen = () => {
                       // fontWeight: "700",
                       marginLeft: responsiveWidth(1),
                     }}>
-                    {leadData.data.message}
+                    "https://play.google.com/store/apps/details?id=com.kwikm.app"
                   </Text>
                 </View>
 
