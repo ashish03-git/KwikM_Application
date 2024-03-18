@@ -56,7 +56,7 @@ const SubcriptionScreen = () => {
     let apiResponse = await response.json();
     dispatch(add_check_payment_status(apiResponse));
     // apiResponse.subscription === 1
-    if (true) {
+    if (apiResponse.subscription === 1) {
       navigation.navigate('addcustomer', {screenName: 'addCustomer'});
     }
   };
