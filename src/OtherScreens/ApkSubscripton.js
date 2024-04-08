@@ -133,7 +133,7 @@ const ApkSubscripton = () => {
                   margin: responsiveWidth(2),
                 }}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('kwikmRegistration')}
+                  onPress={() => navigation.navigate('kwikmLeadScreen')}
                   style={{
                     width: responsiveWidth(46),
                     height: responsiveHeight(12),

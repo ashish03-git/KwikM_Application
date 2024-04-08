@@ -267,7 +267,7 @@ const ProductsScreen = () => {
                               fontWeight: '700',
                               fontSize: responsiveFontSize(1.6),
                             }}>
-                            Earn Upto {item.commission} Rs.
+                            Earn Upto {item.commission}
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -487,7 +487,7 @@ const ProductsScreen = () => {
                                     style={{flex: 4, justifyContent: 'center'}}>
                                     <Text style={{color: 'black'}}>
                                       Earn Upto{' '}
-                                      {item.commission ? item.commission : 0} Rs
+                                      {item.commission ? item.commission : 0} 
                                     </Text>
                                   </View>
                                 </View>

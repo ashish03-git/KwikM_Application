@@ -32,6 +32,7 @@ const KwikmRegistration = () => {
   const [status, setStatus] = useState(false);
   const [userId, setUserId] = useState(null);
   const [authToken, setAuthToken] = useState(null);
+  const [commission, setCommission] = useState(0);
   const [activityIndicator, setActivityIndicatiors] = useState(false);
   const netInfo = useNetInfo();
   const [err, setErr] = useState('');
@@ -124,6 +125,24 @@ const KwikmRegistration = () => {
       );
     });
   };
+
+  const fetchCommissions = async () => {
+    let response = await fetch(
+      'https://kwikm.in/dev_kwikm/api/commission_api.php',
+      {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+      },
+    );
+    if (response.ok) {
+      let data = await response.json();
+      // console.log('commission data>>>>', data);
+      setCommission(data.pice[0]);
+    }
+  };
+
 
   return (
     <>

@@ -24,6 +24,7 @@ const Details = (props) => {
 
     const contentTextStyle = useMemo(() => ({
         fontSize: responsiveFontSize(2),
+        color:"gray"
     }), []);
 
     return (

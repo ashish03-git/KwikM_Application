@@ -4,12 +4,7 @@ import LottieView from 'lottie-react-native'
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 
 const ActivityLoader = () => {
-
     // variables 
-
-
-
-
     return (
 
         <>

@@ -132,6 +132,7 @@ const LoginMPINScreen = () => {
             auth_token: data.auth_token,
             user_mpin: MPIN,
             user_number: data.phone,
+            image:data.p_image
           };
           // console.log("before storing",user_details);
           AsyncStorage.setItem('user_details', JSON.stringify(user_details));

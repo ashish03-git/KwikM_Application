@@ -24,13 +24,13 @@ import useNetInfo from './useNetInfo';
 import NoConnection from './NoConnection';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const PiceLeadScreen = () => {
+const KwikmLeadScreen = () => {
   // variables
   const navigation = useNavigation();
   const [activityIndicator, setActivityIndicator] = useState(false);
   const route = useRoute();
-  const [piceLeadList, setPiceLeadList] = useState([]);
-  const [piceLeadListStatus, setPiceLeadListStatus] = useState(false);
+  const [kwikmLeadList, setKwikmLeadList] = useState([]);
+  const [kwikmLeadListStatus, setKwikMLeadListStatus] = useState(false);
   // const [user_id, setUser_Id] = useState(null)
   const [commission, setCommission] = useState(0);
   const netInfo = useNetInfo();
@@ -40,7 +40,7 @@ const PiceLeadScreen = () => {
     try {
       const userId = await AsyncStorage.getItem('user_id');
       if (userId) {
-        await FetchPiceLead(userId);
+        await FetchKwikmLeadList(userId);
         setActivityIndicator(false);
       }
     } catch (error) {
@@ -64,7 +64,7 @@ const PiceLeadScreen = () => {
     }, []),
   );
 
-  const FetchPiceLead = async userId => {
+  const FetchKwikmLeadList = async userId => {
     try {
       const response = await fetch(
         'https://kwikm.in/dev_kwikm/api/pice_leads.php',
@@ -81,10 +81,10 @@ const PiceLeadScreen = () => {
       const apiData = await response.json();
 
       if (apiData.status) {
-        setPiceLeadListStatus(true);
-        setPiceLeadList(apiData.data);
+        setKwikMLeadListStatus(true);
+        setKwikmLeadList(apiData.data);
       } else {
-        setPiceLeadListStatus(false);
+        setKwikMLeadListStatus(false);
         setMsg(apiData.message);
       }
     } catch (error) {
@@ -105,7 +105,7 @@ const PiceLeadScreen = () => {
     if (response.ok) {
       let data = await response.json();
       // console.log('commission data>>>>', data);
-      setCommission(data.pice[0]);
+      setCommission(data.kwik[0]);
     }
   };
 
@@ -142,12 +142,12 @@ const PiceLeadScreen = () => {
   const handleLeadShare = ob => {
     // console.log(ob)
     const message = `
-
-        Lead Details :
-
-        Name: ${ob.customer_name}\n
-        Phone: ${ob.customer_phone}\n
-        Lead Date: ${ob.lead_date}\n`;
+  
+          Lead Details :
+  
+          Name: ${ob.customer_name}\n
+          Phone: ${ob.customer_phone}\n
+          Lead Date: ${ob.lead_date}\n`;
 
     const whatsappUrl = `whatsapp://send?phone=+91${
       ob.customer_phone
@@ -210,7 +210,7 @@ const PiceLeadScreen = () => {
                           fontWeight: '700',
                         }}>
                         {' '}
-                        Pice{' '}
+                        KwikM{' '}
                       </Text>
                     </View>
                   </View>
@@ -234,12 +234,13 @@ const PiceLeadScreen = () => {
                       }}>
                       <Image
                         source={{
-                          uri: 'https://kwikm.in/live/images/pice.png',
+                          uri: 'https://kwikm.in/live/images/app-logo.png',
                         }}
                         style={{
                           borderRadius: responsiveWidth(3),
                           width: responsiveWidth(25),
                           height: responsiveHeight(9),
+                          backgroundColor:"white",
                           resizeMode: 'contain',
                         }}
                       />
@@ -251,14 +252,14 @@ const PiceLeadScreen = () => {
                           color: 'white',
                         }}>
                         {' '}
-                        Pice Onboarding Process
+                       KwikM onboarding process
                       </Text>
                     </View>
                   </LinearGradient>
                 </View>
 
                 {/* {piceLeadList} */}
-                {piceLeadListStatus ? (
+                {kwikmLeadListStatus ? (
                   <View
                     style={{
                       flex: 1,
@@ -270,7 +271,7 @@ const PiceLeadScreen = () => {
                     ) : (
                       <>
                         <FlatList
-                          data={piceLeadList}
+                          data={kwikmLeadList}
                           showsVerticalScrollIndicator={false}
                           style={{marginTop: responsiveWidth(2)}}
                           renderItem={({item}) => {
@@ -456,7 +457,7 @@ const PiceLeadScreen = () => {
                           }}
                         />
                         <TouchableOpacity
-                          onPress={() => navigation.navigate('piceOnboarding')}
+                          onPress={() => navigation.navigate('kwikmOnboarding')}
                           style={{
                             width: responsiveWidth(16),
                             height: responsiveWidth(16),
@@ -576,7 +577,7 @@ const PiceLeadScreen = () => {
                           justifyContent: 'center',
                         }}>
                         <TouchableOpacity
-                          onPress={() => navigation.navigate('piceOnboarding')}
+                          onPress={() => navigation.navigate('kwikmOnboarding')}
                           style={buttonStyle}>
                           <Text
                             style={{
@@ -601,4 +602,4 @@ const PiceLeadScreen = () => {
   );
 };
 
-export default PiceLeadScreen;
+export default KwikmLeadScreen;

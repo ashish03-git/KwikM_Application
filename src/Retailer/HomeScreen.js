@@ -66,6 +66,7 @@ const HomeScreen = () => {
     try {
       await AsyncStorage.getItem('user_details').then(details => {
         const userDetails = JSON.parse(details);
+        // console.log('user details >>>', userDetails);
         dispatch(addLogin_data(userDetails));
         const userName = userDetails.name;
         // console.log(userName.split(' ')[0])
@@ -640,7 +641,7 @@ const HomeScreen = () => {
                               color: 'black',
                               fontSize: responsiveFontSize(1.6),
                             }}>
-                            FLAT {item.commission} Rs
+                            FLAT {item.commission}
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -781,7 +782,7 @@ const HomeScreen = () => {
                                   fontSize: responsiveFontSize(1.6),
                                 }}>
                                 {' '}
-                                Earn Upto {item.commission} Rs
+                                Earn upto {item.commission}
                               </Text>
                             </View>
                           </TouchableOpacity>
@@ -904,7 +905,7 @@ const HomeScreen = () => {
               </View>
 
               {/* social icon */}
-              <View
+              {/* <View
                 style={{
                   width: responsiveWidth(100),
                   // marginBottom: responsiveWidth(6),
@@ -936,7 +937,7 @@ const HomeScreen = () => {
                     );
                   }}
                 />
-              </View>
+              </View> */}
             </>
           ) : (
             <>{activityIndicator ? <ActivityLoader /> : <NoConnection />}</>

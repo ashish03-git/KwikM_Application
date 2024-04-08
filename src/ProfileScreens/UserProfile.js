@@ -9,6 +9,8 @@ import {
   Image,
   BackHandler,
   Modal,
+  FlatList,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
 import {
@@ -29,11 +31,12 @@ import {useSelector} from 'react-redux';
 
 const UserProfile = () => {
   const navigation = useNavigation();
-  const [selectImage, setSelectedImage] = useState(null);
+  const [selectImage, setSelectedImage] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [error, setError] = useState(false);
   const [msg, setMsg] = useState('');
   const storedUserDetailes = useSelector(state => state.details.login_data);
+  const [socialIcons, setSocialIcons] = useState([]);
   // console.log('login details', storedUserDetailes);
 
   const openBottomSheet = () => {
@@ -43,6 +46,11 @@ const UserProfile = () => {
   const closeBottomSheet = () => {
     setShowDeleteModal(false);
   };
+
+  useEffect(() => {
+    fetchSocialIcons();
+    setSelectedImage(storedUserDetailes.image);
+  }, []);
 
   const handleLogOut = () => {
     Alert.alert(
@@ -81,6 +89,68 @@ const UserProfile = () => {
       // Access the cropped image URI
       // console.log(image)
       setSelectedImage(image.path);
+      let formData = new FormData();
+      formData.append('user_id', storedUserDetailes.user_id);
+      if (image.path) {
+        // Extract filename from the image path
+        const imageName = image.path.substring(image.path.lastIndexOf('/') + 1);
+        formData.append('p_image', {
+          name: imageName, // Use the extracted filename as image name
+          type: 'image/jpeg',
+          uri: image.path,
+        });
+      }
+      Alert.alert(
+        'Upload Image',
+        'Upload this selected image as profile image',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {
+              // setSelectedImage('');
+            },
+          },
+          {
+            text: 'Upload',
+            onPress: async () => {
+              console.log('form data >>>>', formData);
+              let response = await fetch(
+                'https://kwikm.in/dev_kwikm/api/update_pimage.php',
+                {
+                  method: 'POST',
+                  body: formData,
+                  headers: {
+                    'content-type': 'multipart/form-data',
+                  },
+                },
+              );
+              if (response.ok) {
+                let data = await response.json();
+                if (data.success) {
+                  Alert.alert('Success', `${data.message}`, [
+                    {
+                      text: 'OK',
+                      onPress: () => {
+                        // setSelectedImage('');
+                      },
+                    },
+                  ]);
+                } else {
+                  Alert.alert('Failed', `${data.message}`, [
+                    {
+                      text: 'OK',
+                      onPress: () => {
+                        // setSelectedImage('');
+                      },
+                    },
+                  ]);
+                }
+                console.log('image uploaded successfully', data);
+              }
+            },
+          },
+        ],
+      );
     } catch (error) {
       // Handle error
       console.log(error);
@@ -151,11 +221,23 @@ const UserProfile = () => {
     }
   };
 
+  // Social Icons
+  const fetchSocialIcons = async () => {
+    await fetch('https://kwikm.in/dev_kwikm/api/social_links.php', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(data => setSocialIcons(data));
+  };
+
   return (
     <>
       <StatusBar backgroundColor="white" />
 
-      <View style={{flex: 1, backgroundColor: 'white'}}>
+      <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
         <View style={{height: responsiveHeight(8), flexDirection: 'row'}}>
           <TouchableOpacity onPress={handleGoBack} style={styles.headerIcone}>
             <Font5 name="arrow-left" color="black" size={responsiveWidth(6)} />
@@ -184,7 +266,9 @@ const UserProfile = () => {
               }}>
               {selectImage ? (
                 <Image
-                  source={{uri: selectImage}}
+                  source={{
+                    uri: selectImage,
+                  }}
                   style={{
                     width: responsiveWidth(22),
                     height: responsiveWidth(22),
@@ -388,6 +472,30 @@ const UserProfile = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            onPress={() => navigation.navigate('withdrawScreen')}
+            style={styles.userDetailsContainer}>
+            <View style={styles.userDetailsContainerIconeLeft}>
+              <Font5
+                name="wallet"
+                color="#046218"
+                size={responsiveWidth(4.8)}
+              />
+            </View>
+            <View style={styles.userDetailsContainerTitle}>
+              <Text style={styles.userDetailsContainerTitleText}>
+                Withdraw Amount
+              </Text>
+            </View>
+            <View style={styles.userDetailsContainerIconeRight}>
+              <Font5
+                name="chevron-circle-right"
+                color="#046218"
+                size={responsiveWidth(4.5)}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
             onPress={() => navigation.navigate('educationDetails')}
             style={styles.userDetailsContainer}>
             <View style={styles.userDetailsContainerIconeLeft}>
@@ -434,7 +542,7 @@ const UserProfile = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={{flex: 1.5}}>
+        <View style={{flex: 1.7}}>
           <View style={styles.userDetailsContainer}>
             <View style={{flex: 3, alignItems: 'center'}}>
               <Text
@@ -529,6 +637,50 @@ const UserProfile = () => {
             </View>
             <View style={styles.userDetailsContainerIconeRight}></View>
           </TouchableOpacity>
+
+          {/* social icon */}
+          <View
+            style={{
+              width: responsiveWidth(100),
+              // marginBottom: responsiveWidth(6),
+              paddingVertical: responsiveWidth(2),
+            }}>
+            <Text
+              style={{
+                fontSize: responsiveFontSize(1.9),
+                color: '#CB01CF',
+                marginLeft: responsiveWidth(5),
+                margin: responsiveWidth(2),
+              }}>
+              Social Links :
+            </Text>
+            <FlatList
+              data={socialIcons}
+              showsHorizontalScrollIndicator={false}
+              horizontal
+              contentContainerStyle={{
+                // width: responsiveWidth(100),
+                justifyContent: 'space-around',
+                alignItems: 'center',
+              }}
+              renderItem={({item}) => {
+                return (
+                  <TouchableOpacity
+                    style={{marginHorizontal: responsiveWidth(5)}}
+                    onPress={() => Linking.openURL(item.url)}>
+                    <Image
+                      source={{uri: item.icon}}
+                      style={{
+                        width: responsiveWidth(16),
+                        height: responsiveWidth(16),
+                      }}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
 
           {showDeleteModal ? (
             <BottomSheet isOpen>
@@ -625,7 +777,7 @@ const UserProfile = () => {
             </BottomSheet>
           ) : null}
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 };

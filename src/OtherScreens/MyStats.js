@@ -434,7 +434,6 @@ const MyStats = () => {
                       {ProductDetails.commission
                         ? ProductDetails.commission
                         : 0}{' '}
-                      Rs.
                     </Text>
                     <Text
                       style={{

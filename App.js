@@ -1,5 +1,5 @@
 import {View, Text, StatusBar, RefreshControl} from 'react-native';
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import RegisterScreen from './src/auth/RegisterScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -59,13 +59,15 @@ import KwikmRegistration from './src/Retailer/KwikmRegistration';
 import SubcriptionScreen from './src/OtherScreens/SubcriptionScreen';
 import ReferrelsScreen from './src/ProfileScreens/ReferrelsScreen.js';
 import ShareLead from './src/Distributor/ShareLead.js';
+import KwikmLeadScreen from './src/OtherScreens/KwikmLeadScreen.js';
+import WithdrawScreen from './src/OtherScreens/WithdrawScreen.js';
 
 const Stack = createStackNavigator();
 const App = () => {
   const netInfo = useNetInfo();
-  
+
   return (
-    <View style={{flex: 1}} >
+    <View style={{flex: 1}}>
       <Provider store={store}>
         <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
         {netInfo ? (
@@ -178,6 +180,16 @@ const App = () => {
                 component={PiceOnboarding}
               />
               <Stack.Screen
+                name="kwikmOnboarding"
+                options={{headerShown: false}}
+                component={KwikmRegistration}
+              />
+              <Stack.Screen
+                name="kwikmLeadScreen"
+                options={{headerShown: false}}
+                component={KwikmLeadScreen}
+              />
+              <Stack.Screen
                 name="insuaranceProducts"
                 options={{headerShown: false}}
                 component={InsuaranceProductsScreens}
@@ -208,6 +220,11 @@ const App = () => {
                 name="userProfile"
                 options={{headerShown: false}}
                 component={UserProfile}
+              />
+              <Stack.Screen
+                name="withdrawScreen"
+                options={{headerShown: false}}
+                component={WithdrawScreen}
               />
 
               <Stack.Screen
